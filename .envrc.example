@@ -1,0 +1,13 @@
+# Copy to .envrc and run `direnv allow`
+
+export DATABASE_URL=postgres://localhost/elearning_development
+export REDIS_URL=redis://localhost:6379/0
+
+# Optional: override individual database names
+# export DB_NAME=elearning_development
+# export DB_TEST_NAME=elearning_test
+
+# Rails
+# export RAILS_MAX_THREADS=3
+# export RAILS_LOG_LEVEL=debug
+# export PORT=3000

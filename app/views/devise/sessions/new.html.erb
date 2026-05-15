@@ -1,0 +1,121 @@
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
+
+  .auth-body {
+    font-family: 'Inter', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .auth-card {
+    width: 100%;
+    max-width: 400px;
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  }
+
+  /* Override SimpleForm's default spacing */
+  .form-control {
+    margin-bottom: 1.25rem !important;
+  }
+
+  .label-text {
+    font-size: 0.875rem !important;
+    font-weight: 500 !important;
+    color: #374151 !important;
+    margin-bottom: 0.5rem !important;
+    padding: 0 !important;
+  }
+
+  .input-auth {
+    height: 2.75rem !important;
+    padding-left: 0.875rem !important;
+    padding-right: 0.875rem !important;
+    background: #ffffff !important;
+    border: 1px solid #d1d5db !important;
+    border-radius: 6px !important;
+    font-size: 0.875rem !important;
+    transition: all 0.2s ease;
+    width: 100% !important;
+  }
+
+  .input-auth:focus {
+    outline: none !important;
+    border-color: #2563eb !important;
+    box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.1) !important;
+  }
+
+  .checkbox-auth {
+    width: 1rem !important;
+    height: 1rem !important;
+    border-radius: 4px !important;
+    border: 1px solid #d1d5db !important;
+    cursor: pointer;
+    margin-right: 0.5rem !important;
+  }
+
+  .btn-auth {
+    height: 2.5rem !important;
+    background: #111827 !important;
+    color: #ffffff !important;
+    font-weight: 500 !important;
+    font-size: 0.875rem !important;
+    border-radius: 6px !important;
+    border: none !important;
+    width: 100% !important;
+    cursor: pointer;
+    transition: background 0.2s ease;
+  }
+
+  .btn-auth:hover {
+    background: #1f2937 !important;
+  }
+
+  .links-container a {
+    color: #2563eb;
+    text-decoration: none;
+    font-size: 0.875rem;
+  }
+
+  .links-container a:hover {
+    text-decoration: underline;
+  }
+</style>
+
+<div class="auth-body min-h-screen bg-gray-50 flex flex-col items-center justify-center p-4">
+  <div class="auth-card rounded-xl p-8">
+    <div class="mb-8 text-center">
+      <p class="text-sm text-gray-500 mt-1">Sign in to your account</p>
+    </div>
+
+    <%= simple_form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+      <div class="form-inputs">
+        <%= f.input :email,
+                    required: false,
+                    autofocus: true,
+                    label: "Email",
+                    input_html: { class: "input-auth", placeholder: "name@company.com" } %>
+
+        <%= f.input :password,
+                    required: false,
+                    label: "Password",
+                    input_html: { class: "input-auth", placeholder: "••••••••" } %>
+
+        <% if devise_mapping.rememberable? %>
+          <div class="mb-6 flex items-center">
+            <%= f.check_box :remember_me, class: "checkbox-auth" %>
+            <%= f.label :remember_me, class: "ml-2 text-sm text-gray-600 cursor-pointer" %>
+          </div>
+        <% end %>
+      </div>
+
+      <div class="form-actions">
+        <%= f.button :submit, "Continue", class: "btn-auth" %>
+      </div>
+    <% end %>
+
+    <div class="mt-8 pt-6 border-t border-gray-100 space-y-3 links-container text-center">
+      <%= render "devise/shared/links" %>
+    </div>
+  </div>
+</div>

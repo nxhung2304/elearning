@@ -1,0 +1,25 @@
+require "test_helper"
+
+class <%= class_name %>Test < ActiveSupport::TestCase
+  test "valid factory" do
+    assert build(:<%= singular_name %>).valid?
+  end
+<% presence_attrs = attributes.reject(&:reference?).select { |a| %w[string text].include?(a.type.to_s) } -%>
+<% ref_attrs = attributes.select(&:reference?) -%>
+<% if presence_attrs.any? -%>
+
+  context "validations" do
+<% presence_attrs.each do |attr| -%>
+    should validate_presence_of(:<%= attr.name %>)
+<% end -%>
+  end
+<% end -%>
+<% if ref_attrs.any? -%>
+
+  context "associations" do
+<% ref_attrs.each do |attr| -%>
+    should belong_to(:<%= attr.name %>)
+<% end -%>
+  end
+<% end -%>
+end

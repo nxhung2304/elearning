@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+profile="$(cat .rails_starter_profile 2>/dev/null || true)"
+
+if [[ "$profile" == "web" || "$profile" == "web_auth" ]]; then
+  if bin/rails tailwindcss:build >/dev/null 2>&1; then
+    bin/rails tailwindcss:watch &
+    watcher_pid=$!
+    trap 'kill "$watcher_pid" >/dev/null 2>&1 || true' EXIT INT TERM
+  fi
+fi
+
+exec bin/rails server "$@"

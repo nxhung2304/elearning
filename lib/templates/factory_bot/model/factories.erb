@@ -1,0 +1,32 @@
+FactoryBot.define do
+  factory :<%= singular_name %> do
+<% attributes.reject(&:reference?).each do |attr| -%>
+<%   val = case attr.name.to_s
+           when /\Aemail\z/i       then "Faker::Internet.unique.email"
+           when /name/i            then "Faker::Name.name"
+           when /title/i           then "Faker::Lorem.sentence(word_count: 3)"
+           when /body|content|description/i then "Faker::Lorem.paragraph"
+           when /phone/i           then "Faker::PhoneNumber.phone_number"
+           when /url|website/i     then "Faker::Internet.url"
+           when /slug/i            then "Faker::Internet.slug"
+           when /address/i         then "Faker::Address.street_address"
+           when /color|colour/i    then "Faker::Color.hex_color"
+           else
+             case attr.type.to_s
+             when "string"         then "Faker::Lorem.word"
+             when "text"           then "Faker::Lorem.paragraph"
+             when "integer"        then "rand(1..100)"
+             when "float","decimal" then "rand(1.0..100.0).round(2)"
+             when "boolean"        then "true"
+             when "date"           then "Date.today"
+             when "datetime","timestamp" then "Time.current"
+             else "nil"
+             end
+           end -%>
+    <%= attr.name %> { <%= val %> }
+<% end -%>
+<% attributes.select(&:reference?).each do |attr| -%>
+    association :<%= attr.name %>
+<% end -%>
+  end
+end

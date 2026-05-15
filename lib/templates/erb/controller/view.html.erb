@@ -1,0 +1,131 @@
+<% resource_name  = file_name.singularize -%>
+<% resource_class = class_name.demodulize.singularize -%>
+<% if @action == "index" -%>
+<section class="mx-auto max-w-6xl px-6 py-8">
+  <div class="mb-6 flex items-center justify-between">
+    <h1 class="text-2xl font-bold text-slate-900">
+      <%%= t("activerecord.models.<%= resource_name %>.other", default: "<%= resource_class.pluralize %>") %>
+    </h1>
+    <%%= link_to t("helpers.links.new", model: <%= resource_class %>.model_name.human, default: "New <%= resource_class %>"),
+          new_<%= resource_name %>_path,
+          class: "rounded-lg bg-slate-900 px-4 py-2 text-sm font-medium text-white hover:bg-slate-700" %>
+    <%%#= link_to t("helpers.links.new", model: <%= resource_class %>.model_name.human), new_<%= resource_name %>_path if can?(:create, <%= resource_class %>) %>
+  </div>
+
+  <%%= search_form_for @q, url: <%= file_name %>_path, html: { class: "mb-6" } do |f| %>
+    <div class="flex gap-2">
+      <%%= f.search_field :_cont,
+            placeholder: t("helpers.search.placeholder", default: "Search..."),
+            class: "flex-1 rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-slate-900" %>
+      <%%= f.submit t("helpers.search.submit", default: "Search"),
+            class: "rounded-lg bg-slate-100 px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-200" %>
+    </div>
+  <%% end %>
+
+  <div class="overflow-hidden rounded-xl border border-slate-200">
+    <table class="w-full text-sm">
+      <thead class="bg-slate-50">
+        <tr>
+          <%% <%= resource_class %>.column_names.each do |col| %>
+            <th class="px-4 py-3 text-left font-medium text-slate-600"><%%= <%= resource_class %>.human_attribute_name(col) %></th>
+          <%% end %>
+          <th class="px-4 py-3"></th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-slate-200">
+        <%% @<%= file_name %>.each do |<%= resource_name %>| %>
+          <tr class="hover:bg-slate-50">
+            <%% <%= resource_class %>.column_names.each do |col| %>
+              <td class="px-4 py-3 text-slate-700"><%%= <%= resource_name %>.public_send(col) %></td>
+            <%% end %>
+            <td class="px-4 py-3 text-right">
+              <%%= link_to t("helpers.links.show", default: "Show"),
+                    <%= resource_name %>_path(<%= resource_name %>),
+                    class: "text-slate-500 hover:text-slate-900 mr-3" %>
+              <%%= link_to t("helpers.links.edit", default: "Edit"),
+                    edit_<%= resource_name %>_path(<%= resource_name %>),
+                    class: "text-slate-500 hover:text-slate-900" %>
+            </td>
+          </tr>
+        <%% end %>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="mt-4 flex justify-center">
+    <%%= pagy_nav(@pagy) if @pagy.pages > 1 %>
+  </div>
+</section>
+<% elsif @action == "show" -%>
+<section class="mx-auto max-w-3xl px-6 py-8">
+  <div class="mb-6 flex items-center justify-between">
+    <h1 class="text-2xl font-bold text-slate-900"><%%= <%= resource_class %>.model_name.human %></h1>
+    <%%= link_to t("helpers.links.back", default: "Back"),
+          <%= file_name %>_path,
+          class: "text-sm text-slate-500 hover:text-slate-900" %>
+  </div>
+
+  <dl class="divide-y divide-slate-200 rounded-xl border border-slate-200">
+    <%% @<%= resource_name %>.class.column_names.each do |col| %>
+      <div class="flex px-4 py-3 gap-4">
+        <dt class="w-1/3 font-medium text-slate-600"><%%= <%= resource_class %>.human_attribute_name(col) %></dt>
+        <dd class="text-slate-900"><%%= @<%= resource_name %>.public_send(col) %></dd>
+      </div>
+    <%% end %>
+  </dl>
+</section>
+<% elsif @action == "new" -%>
+<section class="mx-auto max-w-2xl px-6 py-8">
+  <h1 class="mb-6 text-2xl font-bold text-slate-900">
+    <%%= t("helpers.submit.create", model: <%= resource_class %>.model_name.human, default: "New <%= resource_class %>") %>
+  </h1>
+
+  <%%= simple_form_for @<%= resource_name %> do |f| %>
+    <%% <%= resource_class %>.column_names.reject { |c| %w[id created_at updated_at].include?(c) }.each do |col| %>
+      <%%= f.input col.to_sym %>
+    <%% end %>
+
+    <div class="mt-6 flex items-center gap-3">
+      <%%= f.button :submit,
+            t("helpers.submit.create", model: <%= resource_class %>.model_name.human, default: "Create <%= resource_class %>"),
+            class: "rounded-lg bg-slate-900 px-4 py-2 text-sm font-medium text-white hover:bg-slate-700" %>
+      <%%= link_to t("helpers.links.cancel", default: "Cancel"),
+            <%= file_name %>_path,
+            class: "text-sm text-slate-500 hover:text-slate-900" %>
+    </div>
+  <%% end %>
+</section>
+<% elsif @action == "edit" -%>
+<section class="mx-auto max-w-2xl px-6 py-8">
+  <div class="mb-6 flex items-center justify-between">
+    <h1 class="text-2xl font-bold text-slate-900">
+      <%%= t("helpers.submit.update", model: <%= resource_class %>.model_name.human, default: "Edit <%= resource_class %>") %>
+    </h1>
+    <%%= button_to t("helpers.links.delete", default: "Delete"),
+          <%= resource_name %>_path(@<%= resource_name %>),
+          method: :delete,
+          data: { turbo_confirm: t("helpers.confirm", default: "Are you sure?") },
+          class: "rounded-lg border border-red-200 bg-red-50 px-4 py-2 text-sm font-medium text-red-600 hover:bg-red-100" %>
+    <%%#= button_to t("helpers.links.delete"), <%= resource_name %>_path(@<%= resource_name %>), method: :delete, if: can?(:destroy, @<%= resource_name %>) %>
+  </div>
+
+  <%%= simple_form_for @<%= resource_name %> do |f| %>
+    <%% @<%= resource_name %>.class.column_names.reject { |c| %w[id created_at updated_at].include?(c) }.each do |col| %>
+      <%%= f.input col.to_sym %>
+    <%% end %>
+
+    <div class="mt-6 flex items-center gap-3">
+      <%%= f.button :submit,
+            t("helpers.submit.update", model: <%= resource_class %>.model_name.human, default: "Update <%= resource_class %>"),
+            class: "rounded-lg bg-slate-900 px-4 py-2 text-sm font-medium text-white hover:bg-slate-700" %>
+      <%%= link_to t("helpers.links.cancel", default: "Cancel"),
+            <%= file_name %>_path,
+            class: "text-sm text-slate-500 hover:text-slate-900" %>
+    </div>
+  <%% end %>
+</section>
+<% else -%>
+<section class="mx-auto max-w-6xl px-6 py-8">
+  <h1><%%= t(".title", default: "<%= @action.humanize %>") %></h1>
+</section>
+<% end -%>

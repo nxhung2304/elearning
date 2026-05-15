@@ -1,0 +1,24 @@
+en:
+  hello: "Hello world"
+
+  controller:
+    created: "%{text} was successfully created."
+    updated: "%{text} was successfully updated."
+    destroyed: "%{text} was successfully destroyed."
+    destroy_fail: "Could not destroy %{text}."
+
+  helpers:
+    confirm: "Are you sure?"
+    links:
+      new: "New %{model}"
+      show: "Show"
+      edit: "Edit"
+      back: "Back"
+      cancel: "Cancel"
+      delete: "Delete"
+    search:
+      placeholder: "Search..."
+      submit: "Search"
+    submit:
+      create: "Create %{model}"
+      update: "Update %{model}"

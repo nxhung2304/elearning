@@ -1,0 +1,116 @@
+require "test_helper"
+require "pry-rails"
+
+<% is_resource = file_name == file_name.pluralize || (actions & %w[create update destroy]).any? -%>
+<% resource_name  = file_name.singularize -%>
+<% resource_class = class_name.demodulize.singularize -%>
+class <%= class_name %>ControllerTest < ActionDispatch::IntegrationTest
+  include Devise::Test::IntegrationHelpers
+
+<% if is_resource -%>
+  setup do
+    @<%= resource_name %> = <%= file_name %>(:one)
+    @user = users(:admin)
+    sign_in @user
+    # @role = roles(:admin)
+  end
+
+<% if actions.include?("index") -%>
+  test "should get index" do
+    get <%= file_name %>_url
+    assert_response :success
+  end
+
+<% end -%>
+<% if actions.include?("new") -%>
+  test "should get new" do
+    get new_<%= resource_name %>_url
+    assert_response :success
+  end
+
+<% end -%>
+<% if actions.include?("create") -%>
+  test "should create <%= resource_name %>" do
+    assert_difference("<%= resource_class %>.count", 1) do
+      post <%= file_name %>_url, params: { <%= resource_name %>: {
+        # TODO: add valid attributes
+      } }
+    end
+
+    assert_redirected_to <%= file_name %>_url
+  end
+
+  test "should not create <%= resource_name %>" do
+    assert_no_difference("<%= resource_class %>.count") do
+      post <%= file_name %>_url, params: { <%= resource_name %>: {
+        # TODO: add invalid attributes
+      } }
+    end
+
+    assert_response :success
+  end
+
+<% end -%>
+<% if actions.include?("show") -%>
+  test "should show <%= resource_name %>" do
+    get <%= resource_name %>_url(@<%= resource_name %>)
+    assert_response :success
+  end
+
+<% end -%>
+<% if actions.include?("edit") -%>
+  test "should get edit" do
+    get edit_<%= resource_name %>_url(@<%= resource_name %>)
+    assert_response :success
+  end
+
+<% end -%>
+<% if actions.include?("update") -%>
+  test "should update <%= resource_name %> as admin" do
+    patch <%= resource_name %>_url(@<%= resource_name %>), params: { <%= resource_name %>: {
+      # TODO: add valid attributes
+    } }
+    
+    assert_redirected_to <%= file_name %>_url
+  end
+
+  test "should update <%= resource_name %> as non-admin" do
+    # sign_in users(:user) # Use a non-admin fixture
+    patch <%= resource_name %>_url(@<%= resource_name %>), params: { <%= resource_name %>: {
+      # TODO: add valid attributes
+    } }
+    
+    # This assertion depends on the current_user role and the controller logic
+    # assert_redirected_to edit_<%= resource_name %>_path(@<%= resource_name %>)
+  end
+
+  test "should not update <%= resource_name %>" do
+    # Assuming assert_no_changes is available or use assert_equal
+    patch <%= resource_name %>_url(@<%= resource_name %>), params: { <%= resource_name %>: {
+      # TODO: add invalid attributes
+    } }
+
+    assert_response :success
+  end
+
+<% end -%>
+<% if actions.include?("destroy") -%>
+  test "should destroy <%= resource_name %>" do
+    assert_difference("<%= resource_class %>.count", -1) do
+      delete <%= resource_name %>_url(@<%= resource_name %>)
+    end
+
+    assert_redirected_to <%= file_name %>_url
+  end
+
+<% end -%>
+<% else -%>
+<% actions.each do |action| -%>
+  test "GET #<%= action %>" do
+    get <%= routing_path %>
+    assert_response :success
+  end
+
+<% end -%>
+<% end -%>
+end

@@ -1,0 +1,25 @@
+<% flash.each do |type, message| %>
+  <%
+    # Determine styling based on flash type
+    bg_class = case type
+               when 'notice', 'success'
+                 'bg-green-50 border-green-200'
+               when 'alert', 'error'
+                 'bg-red-50 border-red-200'
+               else
+                 'bg-blue-50 border-blue-200'
+               end
+
+    text_class = case type
+                 when 'notice', 'success'
+                   'text-green-700'
+                 when 'alert', 'error'
+                   'text-red-700 font-semibold'
+                 else
+                   'text-blue-700'
+                 end
+  %>
+  <div class="mx-auto mt-4 max-w-md rounded-lg border <%= bg_class %> px-6 py-4 text-sm text-center <%= text_class %> shadow-sm">
+    <%= message %>
+  </div>
+<% end %>

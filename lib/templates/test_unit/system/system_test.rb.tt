@@ -1,0 +1,48 @@
+require "application_system_test_case"
+
+<% resource_name  = file_name.singularize -%>
+<% resource_class = class_name.demodulize.singularize -%>
+class <%= class_name %>Test < ApplicationSystemTestCase
+  setup do
+    @<%= resource_name %> = create(:<%= resource_name %>)
+    @user = create(:user)
+    sign_in @user
+  end
+
+  test "visiting the index" do
+    visit <%= file_name %>_url
+    assert_selector "h1", text: t("activerecord.models.<%= resource_name %>.other", default: "<%= resource_class.pluralize %>")
+  end
+
+  test "should create <%= resource_name %>" do
+    visit <%= file_name %>_url
+    click_on t("helpers.links.new", model: <%= resource_class %>.model_name.human)
+
+    # TODO: fill_in ..., with: ...
+    click_on t("helpers.submit.create", model: <%= resource_class %>.model_name.human)
+
+    assert_text t("controller.created", text: "#{<%= resource_class %>.model_name.human} #{@user.email}") # Example check
+  end
+
+  test "should update <%= resource_name %>" do
+    visit <%= file_name %>_url
+    within "tr", text: @<%= resource_name %>.id.to_s do # Assuming ID is in the table
+      click_on t("helpers.links.edit")
+    end
+
+    # TODO: fill_in ..., with: ...
+    click_on t("helpers.submit.update", model: <%= resource_class %>.model_name.human)
+
+    assert_text t("controller.updated", text: "#{<%= resource_class %>.model_name.human} #{@user.email}") # Example check
+  end
+
+  test "should destroy <%= resource_name %>" do
+    visit edit_<%= resource_name %>_url(@<%= resource_name %>)
+
+    accept_confirm do
+      click_on t("helpers.links.delete")
+    end
+
+    assert_text t("controller.destroyed", text: "#{<%= resource_class %>.model_name.human} #{@user.email}") # Example check
+  end
+end

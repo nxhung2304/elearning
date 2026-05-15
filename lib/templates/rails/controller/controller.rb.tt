@@ -1,0 +1,107 @@
+<% module_namespacing do -%>
+<% is_resource = file_name == file_name.pluralize || (actions & %w[create update destroy]).any? -%>
+<% resource_name  = file_name.singularize -%>
+<% resource_class = class_name.demodulize.singularize -%>
+class <%= class_name %>Controller < ApplicationController
+<% if is_resource -%>
+  before_action :authenticate_user! if respond_to?(:authenticate_user!)
+  # load_and_authorize_resource  # uncomment if using CanCanCan
+  before_action :set_<%= resource_name %>, only: %i[<%= (actions & %w[show edit update destroy]).join(" ") %>]
+
+<% if actions.include?("index") -%>
+  def index
+    @q = <%= resource_class %>.ransack(params[:q])
+    @pagy, @<%= file_name %> = pagy(@q.result(distinct: true))
+  end
+
+<% end -%>
+<% if actions.include?("show") -%>
+  def show; end
+
+<% end -%>
+<% if actions.include?("new") -%>
+  def new
+    @<%= resource_name %> = <%= resource_class %>.new
+  end
+
+<% end -%>
+<% if actions.include?("edit") -%>
+  def edit; end
+
+<% end -%>
+<% if actions.include?("create") -%>
+  def create
+    @<%= resource_name %> = <%= resource_class %>.new(<%= resource_name %>_params)
+
+    if @<%= resource_name %>.save
+      flash[:success] = t("controller.created", text: "#{<%= resource_class %>.model_name.human} #{@<%= resource_name %>.try(:email) || @<%= resource_name %>.try(:name) || @<%= resource_name %>.id}")
+      redirect_to <%= file_name %>_url
+    else
+      render :new, status: :unprocessable_entity
+    end
+  end
+
+<% end -%>
+<% if actions.include?("update") -%>
+  def update
+    account_params = update_params
+
+    # authorize! :update, @<%= resource_name %>, :roles if account_params[:role_ids].present?
+
+    if @<%= resource_name %>.update(account_params)
+      flash[:success] = t("controller.updated", text: "#{<%= resource_class %>.model_name.human} #{@<%= resource_name %>.try(:email) || @<%= resource_name %>.try(:name) || @<%= resource_name %>.id}")
+      if current_user.respond_to?(:has_role?) && current_user.has_role?(:admin)
+        redirect_to <%= file_name %>_url
+      else
+        redirect_to edit_<%= resource_name %>_path(@<%= resource_name %>)
+      end
+    else
+      render :new, status: :unprocessable_entity
+    end
+  end
+
+<% end -%>
+<% if actions.include?("destroy") -%>
+  def destroy
+    if @<%= resource_name %>.destroy
+      flash[:success] = t("controller.destroyed", text: "#{<%= resource_class %>.model_name.human} #{@<%= resource_name %>.try(:email) || @<%= resource_name %>.try(:name) || @<%= resource_name %>.id}")
+      redirect_to <%= file_name %>_url
+    else
+      flash[:error] = t("controller.destroy_fail", text: "#{<%= resource_class %>.model_name.human} #{@<%= resource_name %>.try(:email) || @<%= resource_name %>.try(:name) || @<%= resource_name %>.id}")
+      render :edit, status: :unprocessable_entity
+    end
+  end
+
+<% end -%>
+  private
+
+    def set_<%= resource_name %>
+      @<%= resource_name %> = <%= resource_class %>.find(params[:id])
+    end
+<% if (actions & %w[create update]).any? -%>
+
+    def update_params
+      params = <%= resource_name %>_params
+      if params[:password].blank?
+        params = params.except(:password)
+        params = params.except(:password_confirmation) if params[:password_confirmation].blank?
+      end
+      params
+    end
+
+    def <%= resource_name %>_params
+      params.require(:<%= resource_name %>).permit(
+        # TODO: list permitted attributes
+      )
+    end
+<% end -%>
+<% else -%>
+<% actions.each_with_index do |action, index| -%>
+  def <%= action %>; end
+<% unless index == actions.length - 1 -%>
+
+<% end -%>
+<% end -%>
+<% end -%>
+end
+<% end -%>

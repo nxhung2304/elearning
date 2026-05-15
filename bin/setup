@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+bundle check || bundle install
+bin/rails db:prepare
+
+if [[ "${1:-}" == "--reset" ]]; then
+  bin/rails db:reset
+fi
+
+bin/rails log:clear tmp:clear
+
+grep -q "tailwindcss-rails" Gemfile && bin/rails tailwindcss:build
+
+if [[ "${1:-}" != "--skip-server" ]]; then
+  exec bin/dev
+fi
