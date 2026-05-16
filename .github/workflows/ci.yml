@@ -81,6 +81,15 @@ jobs:
         with:
           bundler-cache: true
 
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+
+      - name: Install npm packages
+        run: npm ci
+
       - name: Run tests
         env:
           RAILS_ENV: test

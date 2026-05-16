@@ -18,7 +18,7 @@ class UsersController < ApplicationController
     @user = User.new(user_params)
 
     if @user.save
-      flash[:success] = t("controller.created", text: "#{User.model_name.human} #{@user.try(:email) || @user.try(:name) || @user.id}")
+      flash[:success] = t("controller.created", text: email_user_message)
       redirect_to users_url
     else
       render :new, status: :unprocessable_entity
@@ -28,10 +28,8 @@ class UsersController < ApplicationController
   def update
     account_params = update_params
 
-    # authorize! :update, @user, :roles if account_params[:role_ids].present?
-
     if @user.update(account_params)
-      flash[:success] = t("controller.updated", text: "#{User.model_name.human} #{@user.try(:email) || @user.try(:name) || @user.id}")
+      flash[:success] = t("controller.updated", text: email_user_message)
       redirect_to users_url
     else
       render :edit, status: :unprocessable_entity
@@ -40,10 +38,14 @@ class UsersController < ApplicationController
 
   def destroy
     @user.status_deleted!
-    redirect_to users_path, notice: t("controller.destroyed", text: "#{User.model_name.human} #{@user.email}")
+    redirect_to users_path, notice: t("controller.destroyed", text: email_user_message)
   end
 
   private
+
+    def email_user_message
+      User.model_name.human + " " + @user.email
+    end
 
     def set_user
       @user = User.find(params[:id])

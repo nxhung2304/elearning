@@ -36,4 +36,6 @@
 
 # Node dependencies (DaisyUI)
 /node_modules
-/package-lock.json
+
+# Generated assets (built by Tailwind CLI at runtime)
+/app/assets/builds/
