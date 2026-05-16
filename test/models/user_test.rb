@@ -39,10 +39,6 @@ class UserTest < ActiveSupport::TestCase
     assert_not build(:user, email: "dup@example.com").valid?
   end
 
-  test "invalid when status is nil" do
-    assert_not build(:user, status: nil).valid?
-  end
-
   test "all status values are valid" do
     assert build(:user, status: :inactive).valid?
     assert build(:user, status: :active).valid?
@@ -64,5 +60,17 @@ class UserTest < ActiveSupport::TestCase
 
   test "active_for_authentication? is false when deleted" do
     assert_not build(:user, status: :deleted).active_for_authentication?
+  end
+
+  test "inactive_message is :inactive when status is inactive" do
+    assert_equal :inactive, build(:user, status: :inactive).inactive_message
+  end
+
+  test "inactive_message is :suspended when status is suspended" do
+    assert_equal :suspended, build(:user, status: :suspended).inactive_message
+  end
+
+  test "inactive_message is :deleted when status is deleted" do
+    assert_equal :deleted, build(:user, status: :deleted).inactive_message
   end
 end

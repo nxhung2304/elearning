@@ -88,6 +88,7 @@
       <p class="text-sm text-gray-500 mt-1">Sign in to your account</p>
     </div>
 
+    <%# turbo: false — Devise redirect after sign-in breaks with Turbo drive %>
     <%= simple_form_for(resource, as: resource_name, url: session_path(resource_name), html: { data: { turbo: false } }) do |f| %>
       <div class="form-inputs">
         <%= f.input :email,

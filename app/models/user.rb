@@ -31,6 +31,11 @@ class User < ApplicationRecord
   end
 
   def inactive_message
-    status_inactive? ? :inactive : super
+    case
+    when status_inactive?  then :inactive
+    when status_suspended? then :suspended
+    when status_deleted?   then :deleted
+    else super
+    end
   end
 end
