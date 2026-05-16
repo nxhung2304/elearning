@@ -1,0 +1,70 @@
+<% add_breadcrumb "Users" %>
+<section class="mx-auto max-w-6xl px-6 py-8">
+  <div class="mb-6 flex items-center justify-between">
+    <h1 class="text-2xl font-bold text-slate-900">
+      <%= t("activerecord.models.user.other", default: "Users") %>
+    </h1>
+    <%= link_to t("helpers.links.new", model: User.model_name.human, default: "New User"),
+          new_user_path,
+          class: "rounded-lg bg-emerald-600 px-4 py-2 text-sm font-medium text-white hover:bg-emerald-700" %>
+    <%#= link_to t("helpers.links.new", model: User.model_name.human), new_user_path if can?(:create, User) %>
+  </div>
+
+  <%= search_form_for @q, url: users_path, html: { class: "mb-6" } do |f| %>
+    <div class="flex gap-2">
+      <%= f.search_field :name_cont,
+            placeholder: User.human_attribute_name(:name),
+            class: "flex-1 rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-slate-900" %>
+      <%= f.search_field :email_cont,
+            placeholder: User.human_attribute_name(:email),
+            class: "flex-1 rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-slate-900" %>
+      <%= f.select :status_eq,
+            User.statuses.map { |s, v| [User.human_attribute_name("status.#{s}"), v] },
+            { include_blank: User.human_attribute_name(:status), selected: @q.status_eq },
+            class: "flex-1 rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-slate-900" %>
+      <%= f.submit t("helpers.search.submit", default: "Search"),
+            class: "cursor-pointer rounded-lg bg-slate-100 px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-200" %>
+    </div>
+  <% end %>
+
+  <div class="overflow-hidden rounded-xl border border-slate-200">
+    <table class="w-full text-sm">
+      <thead class="bg-slate-50">
+        <tr>
+          <% User.displayable_columns.each do |col| %>
+            <th class="px-4 py-3 text-left font-medium text-slate-600"><%= User.human_attribute_name(col) %></th>
+          <% end %>
+          <th class="px-4 py-3"></th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-slate-200">
+        <% @users.each do |user| %>
+          <tr class="hover:bg-slate-50">
+            <% User.displayable_columns.each do |col| %>
+              <td class="px-4 py-3 text-slate-700">
+                <% if col == "status" %>
+                  <%= render "shared/status_badge", status: user.status %>
+                <% else %>
+                  <%= user.public_send(col) %>
+                <% end %>
+              </td>
+            <% end %>
+            <td class="px-4 py-3 text-right">
+              <%= link_to t("helpers.links.show", default: "Show"),
+                    user_path(user),
+                    class: "rounded-md border border-slate-300 px-4 py-1.5 text-xs font-medium text-slate-600 hover:border-slate-900 hover:text-slate-900 mr-2" %>
+              <%= link_to t("helpers.links.edit", default: "Edit"),
+                    edit_user_path(user),
+                    id: "edit_user_#{user.id}",
+                    class: "rounded-md border border-slate-300 px-4 py-1.5 text-xs font-medium text-slate-600 hover:border-slate-900 hover:text-slate-900" %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="mt-4 flex justify-center">
+    <%= pagy_nav(@pagy) if @pagy.pages > 1 %>
+  </div>
+</section>

@@ -1,1 +1,6 @@
 @import "tailwindcss";
+@plugin "daisyui";
+
+/* Safelist dynamic classes generated in Ruby (e.g. status badges) */
+@source inline("{bg,text}-{emerald,amber,red,slate}-{100,600,700,800}");
+@source inline("border-current");

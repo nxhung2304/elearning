@@ -2,6 +2,7 @@
 set -euo pipefail
 
 bundle check || bundle install
+[ -f package.json ] && npm install
 bin/rails db:prepare
 
 if [[ "${1:-}" == "--reset" ]]; then

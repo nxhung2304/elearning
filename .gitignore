@@ -33,3 +33,7 @@
 
 # Ignore key files for decrypting credentials and more.
 /config/*.key
+
+# Node dependencies (DaisyUI)
+/node_modules
+/package-lock.json

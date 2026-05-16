@@ -1,0 +1,7 @@
+{
+  "name": "elearning",
+  "private": true,
+  "dependencies": {
+    "daisyui": "^5"
+  }
+}

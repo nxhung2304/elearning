@@ -40,6 +40,8 @@ SimpleForm.setup do |config|
     b.use :hint, wrap_with: { class: "label label-text-alt text-base-content/60" }
   end
 
+  config.generate_additional_classes_for = []
+  config.wrapper_mappings = { select: :select, boolean: :check_boxes }
   config.default_wrapper = :default
   config.browser_validations = false
   config.boolean_style = :nested

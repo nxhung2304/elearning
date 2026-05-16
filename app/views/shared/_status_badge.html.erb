@@ -1,0 +1,12 @@
+<%
+  color = case status.to_s
+          when "active"    then "bg-emerald-100 text-emerald-800"
+          when "inactive"  then "bg-slate-100 text-slate-600"
+          when "suspended" then "bg-amber-100 text-amber-700"
+          when "deleted"   then "bg-red-100 text-red-600"
+          else                  "bg-slate-100 text-slate-600"
+          end
+%>
+<span class="inline-flex items-center rounded-full border border-current px-3 py-1 text-xs font-medium <%= color %>">
+  <%= status.to_s.humanize %>
+</span>
