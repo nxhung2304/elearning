@@ -1,6 +1,4 @@
 en:
-  hello: "Hello world"
-
   controller:
     created: "%{text} was successfully created."
     updated: "%{text} was successfully updated."

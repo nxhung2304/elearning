@@ -38,5 +38,6 @@ group :development, :test do
   gem "pry-rails"
   gem "rubocop-rails-omakase", require: false
   gem "selenium-webdriver"
+  gem "shoulda-context"
   gem "shoulda-matchers"
 end

@@ -1,0 +1,15 @@
+en:
+  activerecord:
+    models:
+      user: "User"
+    attributes:
+      user:
+        email: "Email"
+        password: "Password"
+        password_confirmation: "Password Confirmation"
+        status: "Status"
+      user/status:
+        active: "Active"
+        inactive: "Inactive"
+        suspended: "Suspended"
+        deleted: "Deleted"
