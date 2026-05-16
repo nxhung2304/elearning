@@ -1,0 +1,16 @@
+en:
+  shared:
+    sidebar:
+      dashboard: "Dashboard"
+  layouts:
+    application:
+      title: Elearning
+      sign_out: "Sign out"
+
+  users:
+    index:
+      title: "Users"
+    edit:
+      title: "Edit"
+    new:
+      title: "New"

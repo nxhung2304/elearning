@@ -1,4 +1,5 @@
-<% add_breadcrumb "Users" %>
+<% add_breadcrumb t('.title') %>
+
 <section class="mx-auto max-w-6xl px-6 py-8">
   <div class="mb-6 flex items-center justify-between">
     <h1 class="text-2xl font-bold text-slate-900">
@@ -7,21 +8,20 @@
     <%= link_to t("helpers.links.new", model: User.model_name.human, default: "New User"),
           new_user_path,
           class: "rounded-lg bg-emerald-600 px-4 py-2 text-sm font-medium text-white hover:bg-emerald-700" %>
-    <%#= link_to t("helpers.links.new", model: User.model_name.human), new_user_path if can?(:create, User) %>
   </div>
 
   <%= search_form_for @q, url: users_path, html: { class: "mb-6" } do |f| %>
     <div class="flex gap-2">
       <%= f.search_field :name_cont,
             placeholder: User.human_attribute_name(:name),
-            class: "flex-1 rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-slate-900" %>
+            class: "search-field" %>
       <%= f.search_field :email_cont,
             placeholder: User.human_attribute_name(:email),
-            class: "flex-1 rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-slate-900" %>
+            class: "search-field" %>
       <%= f.select :status_eq,
             User.statuses.map { |s, v| [User.human_attribute_name("status.#{s}"), v] },
             { include_blank: User.human_attribute_name(:status), selected: @q.status_eq },
-            class: "flex-1 rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-slate-900" %>
+            class: "search-field" %>
       <%= f.submit t("helpers.search.submit", default: "Search"),
             class: "cursor-pointer rounded-lg bg-slate-100 px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-200" %>
     </div>

@@ -4,3 +4,9 @@
 /* Safelist dynamic classes generated in Ruby (e.g. status badges) */
 @source inline("{bg,text}-{emerald,amber,red,slate}-{100,600,700,800}");
 @source inline("border-current");
+
+@layer components {
+  .search-field {
+    @apply flex-1 rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-slate-900
+  }
+}
