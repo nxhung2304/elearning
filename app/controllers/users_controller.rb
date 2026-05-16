@@ -19,7 +19,7 @@ class UsersController < ApplicationController
 
     if @user.save
       flash[:success] = t("controller.created", text: email_user_message)
-      redirect_to users_url
+      redirect_to @user
     else
       render :new, status: :unprocessable_entity
     end
@@ -30,15 +30,23 @@ class UsersController < ApplicationController
 
     if @user.update(account_params)
       flash[:success] = t("controller.updated", text: email_user_message)
-      redirect_to users_url
+      redirect_to @user
     else
       render :edit, status: :unprocessable_entity
     end
   end
 
   def destroy
+    if @user == current_user
+      redirect_to users_path, alert: t("users.destroy.cannot_delete_self") and return
+    end
+
     @user.status_deleted!
     redirect_to users_path, notice: t("controller.destroyed", text: email_user_message)
+  end
+
+  def me
+    redirect_to user_path(current_user)
   end
 
   private
@@ -49,15 +57,12 @@ class UsersController < ApplicationController
 
     def set_user
       @user = User.find(params[:id])
+    rescue ActiveRecord::RecordNotFound
+      redirect_to users_path, alert: t("errors.not_found")
     end
 
     def update_params
-      params = user_params
-      if params[:password].blank?
-        params = params.except(:password)
-        params = params.except(:password_confirmation) if params[:password_confirmation].blank?
-      end
-      params
+      user_params.reject { |k, v| /password/.match?(k) && v.blank? }
     end
 
     def user_params
