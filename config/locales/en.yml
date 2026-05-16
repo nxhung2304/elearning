@@ -4,6 +4,9 @@ en:
       suspended: "Your account has been suspended. Please contact support."
       deleted: "Your account has been deleted."
 
+  errors:
+    not_found: "Record not found."
+
   controller:
     created: "%{text} was successfully created."
     updated: "%{text} was successfully updated."

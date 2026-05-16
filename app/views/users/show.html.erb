@@ -1,0 +1,26 @@
+<% add_breadcrumb "Users", users_path %>
+<% add_breadcrumb @user.email %>
+
+<section class="mx-auto max-w-3xl px-6 py-8">
+  <div class="mb-6 flex items-center justify-between">
+    <h1 class="text-2xl font-bold text-slate-900"><%= User.model_name.human %></h1>
+    <%= link_to t("helpers.links.back", default: "Back"),
+          users_path,
+          class: "text-sm text-slate-500 hover:text-slate-900" %>
+  </div>
+
+  <dl class="divide-y divide-slate-200 rounded-xl border border-slate-200">
+    <% @user.class.displayable_columns.each do |col| %>
+      <div class="flex px-4 py-3 gap-4">
+        <dt class="w-1/3 font-medium text-slate-600"><%= User.human_attribute_name(col) %></dt>
+        <dd class="text-slate-900"><%= @user.public_send(col) %></dd>
+      </div>
+    <% end %>
+    <% @user.class.timestamp_columns.each do |col| %>
+      <div class="flex px-4 py-3 gap-4">
+        <dt class="w-1/3 font-medium text-slate-600"><%= User.human_attribute_name(col) %></dt>
+        <dd class="text-slate-500 text-sm"><%= @user.public_send(col)&.strftime("%Y-%m-%d %H:%M") %></dd>
+      </div>
+    <% end %>
+  </dl>
+</section>

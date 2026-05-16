@@ -1,0 +1,18 @@
+en:
+  shared:
+    sidebar:
+      dashboard: "Dashboard"
+      sign_out: "Sign out"
+  layouts:
+    application:
+      title: Elearning
+
+  users:
+    index:
+      title: "Users"
+    edit:
+      title: "Edit"
+    new:
+      title: "New"
+    destroy:
+      cannot_delete_self: "You cannot delete your own account."

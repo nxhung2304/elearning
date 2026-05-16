@@ -1,0 +1,22 @@
+<%= simple_form_for user, html: { autocomplete: "off" } do |f| %>
+  <% user.class.displayable_columns.each do |col| %>
+    <% if user.class.defined_enums.key?(col) %>
+      <%= f.input col.to_sym, as: :select, collection: user.class.defined_enums[col].keys, include_blank: false, wrapper: :select,
+            input_html: { class: "bg-white text-slate-900" } %>
+    <% else %>
+      <%= f.input col.to_sym %>
+    <% end %>
+  <% end %>
+
+  <%= f.input :password, required: user.new_record?, hint: (user.persisted? ? "Leave blank to keep current password" : nil), input_html: { autocomplete: "new-password" } %>
+  <%= f.input :password_confirmation, required: user.new_record?, input_html: { autocomplete: "new-password" } %>
+
+  <div class="mt-6 flex items-center gap-3">
+    <%= f.button :submit,
+          t("helpers.submit.#{user.persisted? ? :update : :create}", model: User.model_name.human),
+          class: "rounded-lg #{user.persisted? ? "bg-slate-900 hover:bg-slate-700" : "bg-emerald-600 hover:bg-emerald-700"} px-4 py-2 text-sm font-medium text-white" %>
+    <%= link_to t("helpers.links.cancel", default: "Cancel"),
+          users_path,
+          class: "text-sm text-slate-500 hover:text-slate-900" %>
+  </div>
+<% end %>

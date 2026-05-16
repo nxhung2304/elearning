@@ -1,0 +1,20 @@
+<% add_breadcrumb "Users", users_path %>
+<% add_breadcrumb @user.email, user_path(@user) %>
+<% add_breadcrumb t('.title') %>
+
+<section class="mx-auto max-w-2xl px-6 py-8">
+  <div class="mb-6 flex items-center justify-between">
+    <h1 class="text-2xl font-bold text-slate-900">
+      <%= t("helpers.submit.update", model: User.model_name.human, default: "Edit User") %>
+    </h1>
+    <% if @user != current_user %>
+      <%= button_to t("helpers.links.delete", default: "Delete"),
+            user_path(@user),
+            method: :delete,
+            data: { turbo_confirm: t("helpers.confirm", default: "Are you sure?") },
+            class: "rounded-lg border border-red-200 bg-red-50 px-4 py-2 text-sm font-medium text-red-600 hover:bg-red-100" %>
+    <% end %>
+  </div>
+
+  <%= render "form", user: @user %>
+</section>
