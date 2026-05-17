@@ -39,4 +39,25 @@ FactoryBot.define do
   trait :deleted do
     status { :deleted }
   end
+
+  trait :admin do
+    after(:create) do |user|
+      role = Role.find_or_create_by!(code: "admin") { |r| r.name = "Admin" }
+      user.roles << role
+    end
+  end
+
+  trait :teacher do
+    after(:create) do |user|
+      role = Role.find_or_create_by!(code: "teacher") { |r| r.name = "Teacher" }
+      user.roles << role
+    end
+  end
+
+  trait :student do
+    after(:create) do |user|
+      role = Role.find_or_create_by!(code: "student") { |r| r.name = "Student" }
+      user.roles << role
+    end
+  end
 end
