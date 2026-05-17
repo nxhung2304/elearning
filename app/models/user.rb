@@ -41,4 +41,20 @@ class User < ApplicationRecord
     else super
     end
   end
+
+  def has_role?(role_code)
+    roles.any? { |role| role.code == role_code.to_s }
+  end
+
+  def admin?
+    has_role?(:admin)
+  end
+
+  def teacher?
+    has_role?(:teacher)
+  end
+
+  def student?
+    has_role?(:student)
+  end
 end
