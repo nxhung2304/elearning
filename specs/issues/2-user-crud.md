@@ -1,6 +1,6 @@
 ## **Status:**
 - Review: Approved
-- PR: Todo
+- PR: Merged
 
 ## Metadata
 - **Title:** User CRUD (Controller + Tests)
