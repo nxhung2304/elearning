@@ -11,8 +11,6 @@ gem "pg", "~> 1.1"
 gem "puma", ">= 5.0"
 gem "rails", "~> 8.1.3"
 gem "ransack"
-gem "redis"
-gem "sidekiq"
 gem "simple_form"
 gem "solid_cache"
 gem "solid_cable"
@@ -21,6 +19,7 @@ gem "stimulus-rails"
 gem "tailwindcss-rails"
 gem "turbo-rails"
 gem "tzinfo-data", platforms: %i[ windows jruby ]
+gem "cancancan"
 
 group :development do
   gem "letter_opener_web"
