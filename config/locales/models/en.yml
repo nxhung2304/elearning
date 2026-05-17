@@ -1,15 +1,24 @@
+---
 en:
   activerecord:
     models:
-      user: "User"
+      user: User
+      role: Role
+      user_role: User Role
     attributes:
       user:
-        email: "Email"
-        password: "Password"
-        password_confirmation: "Password Confirmation"
-        status: "Status"
+        email: Email
+        password: Password
+        password_confirmation: Password Confirmation
+        status: Status
       user/status:
-        active: "Active"
-        inactive: "Inactive"
-        suspended: "Suspended"
-        deleted: "Deleted"
+        active: Active
+        inactive: Inactive
+        suspended: Suspended
+        deleted: Deleted
+      role:
+        name: Name
+        code: Code
+      user_role:
+        user_id: User id
+        role_id: Role id
