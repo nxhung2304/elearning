@@ -1,6 +1,6 @@
 ****## **Status:**
 - Review: Approved
-- PR: Todo
+- PR: Merged
 
 ## Metadata
 - **Title:** Model: Role + UserRole — associations, i18n (en)
