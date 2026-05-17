@@ -9,7 +9,7 @@
 #  remember_created_at    :datetime
 #  reset_password_sent_at :datetime
 #  reset_password_token   :string
-#  status                 :integer          default(1), not null
+#  status                 :integer          default("active"), not null
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
 #

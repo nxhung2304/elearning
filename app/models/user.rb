@@ -9,7 +9,7 @@
 #  remember_created_at    :datetime
 #  reset_password_sent_at :datetime
 #  reset_password_token   :string
-#  status                 :integer          default(1), not null
+#  status                 :integer          default("active"), not null
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
 #
@@ -23,6 +23,9 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable, :recoverable, :rememberable, :validatable
 
   enum :status, { inactive: 0, active: 1, suspended: 2, deleted: 3 }, default: :active, prefix: true
+
+  has_many :user_roles, dependent: :destroy
+  has_many :roles, through: :user_roles
 
   validates :status, presence: true
 
