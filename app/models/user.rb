@@ -22,6 +22,8 @@
 class User < ApplicationRecord
   devise :database_authenticatable, :registerable, :recoverable, :rememberable, :validatable
 
+  has_one :profile, dependent: :destroy
+
   enum :status, { inactive: 0, active: 1, suspended: 2, deleted: 3 }, default: :active, prefix: true
 
   has_many :user_roles, dependent: :destroy
