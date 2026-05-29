@@ -5,6 +5,7 @@ en:
       user: User
       role: Role
       user_role: User Role
+      profile: Profile
     attributes:
       user:
         email: Email
@@ -22,3 +23,8 @@ en:
       user_role:
         user_id: User id
         role_id: Role id
+      profile:
+        full_name: Full name
+        bio: Bio
+        phone: Phone
+        discarded_at: Discarded at

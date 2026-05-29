@@ -22,6 +22,10 @@
 require "test_helper"
 
 class UserTest < ActiveSupport::TestCase
+  context "associations" do
+    should have_one(:profile)
+  end
+
   context "validations" do
     should define_enum_for(:status).with_values(inactive: 0, active: 1, suspended: 2, deleted: 3).with_prefix(:status)
   end

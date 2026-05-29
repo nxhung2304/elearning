@@ -1,12 +1,4 @@
-# Story — Implementation Details
-
-> 📎 [[20-Projects/elearning/Roadmap|Roadmap]] · [[20-Projects/elearning/ERD|ERD]] · [[20-Projects/elearning/architecture|Architecture]]
->
-> **Cách dùng**: File này là implementation guide cho Claude Code.
-> Task checkboxes ở đây mirror Roadmap.md — tick ở **cả hai** khi hoàn thành.
-> Roadmap.md là source of truth cho Dashboard progress bar.
-
----
+# Story
 
 # Phase 1 — MVP (Web)
 > 🎯 Deadline: **2026-06-28**
@@ -25,8 +17,7 @@
 - [x] [Model] Role + UserRole — associations, i18n (en) ✅ 2026-05-17
 - [x] Gemfile: thêm cancancan — bỏ sidekiq, redis ✅ 2026-05-17
 - [x] Setup: CanCanCan + Ability class ✅ 2026-05-17
-- [ ] Seeds: admin, teacher, student accounts với đúng role
-- [ ] [Model] EventLog — associations
+- [x] Seeds: admin, teacher, student accounts với đúng role
 - [ ] [Model] Profile — validations, associations, i18n (en)
 - [ ] [CRUD] Profile — Student/Teacher tự edit profile
 
@@ -104,22 +95,6 @@ has_many :roles, through: :user_roles
 - Minitest controller:
   - Happy: access index/new/edit, perform create/update/destroy
   - Edge: 401 unauthorized, missing params, record not found
-
----
-
-### [Model] EventLog
-
-**Columns** (từ ERD):
-- `user_id` — not null, FK
-- `event_type` — string, not null
-- `metadata` — jsonb
-- `created_at`
-- Không có `discarded_at` — audit log không được xóa
-
-**Notes:**
-- Không include Discard::Model
-- Dùng để log actions quan trọng: ban/unban, enroll, payment...
-- Minitest: happy case create với metadata hợp lệ
 
 ---
 
@@ -291,6 +266,7 @@ has_many :courses
 
 ## Week 5-6 | Enrollment + Progress
 
+- [ ] [Model] EventLog — associations
 - [ ] [Model] Enrollment — status enum, associations, business rules, i18n (en)
 - [ ] [CRUD] Enrollment — Student enroll, danh sách khóa đã enroll (Pagy)
 - [ ] [Model] LessonProgress — watched seconds, position, associations, i18n (en)
@@ -299,6 +275,22 @@ has_many :courses
 - [ ] Job: UpdateCourseProgressJob (Solid Queue)
 - [ ] Web: Progress bar trên course page
 - [ ] Minitest: integration tests enrollment flow + progress flow
+
+---
+
+### [Model] EventLog
+
+**Columns** (từ ERD):
+- `user_id` — not null, FK
+- `event_type` — string, not null
+- `metadata` — jsonb
+- `created_at`
+- Không có `discarded_at` — audit log không được xóa
+
+**Notes:**
+- Không include Discard::Model
+- Dùng để log actions quan trọng: ban/unban, enroll, payment...
+- Minitest: happy case create với metadata hợp lệ
 
 ---
 
