@@ -3,7 +3,6 @@
 # Table name: profiles
 #
 #  id           :bigint           not null, primary key
-#  avatar_url   :string
 #  bio          :text
 #  discarded_at :datetime
 #  full_name    :string           not null
@@ -27,6 +26,6 @@ class Profile < ApplicationRecord
 
   belongs_to :user
 
-  validates :user_id, presence: true, uniqueness: true
+  validates :user_id, uniqueness: true
   validates :full_name, presence: true
 end

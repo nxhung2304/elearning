@@ -3,7 +3,6 @@
 # Table name: profiles
 #
 #  id           :bigint           not null, primary key
-#  avatar_url   :string
 #  bio          :text
 #  discarded_at :datetime
 #  full_name    :string           not null
@@ -23,7 +22,6 @@
 FactoryBot.define do
   factory :profile do
     full_name { Faker::Name.name }
-    avatar_url { Faker::Internet.url }
     bio { Faker::Lorem.paragraph }
     phone { Faker::PhoneNumber.phone_number }
     association :user

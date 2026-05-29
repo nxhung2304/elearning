@@ -4,12 +4,13 @@ class CreateProfiles < ActiveRecord::Migration[8.1]
       t.references :user, null: false, foreign_key: true, index: { unique: true }
 
       t.string :full_name, null: false
-      t.string :avatar_url
       t.text :bio
       t.string :phone
       t.datetime :discarded_at
 
       t.timestamps
+
+      t.index :discarded_at
     end
   end
 end

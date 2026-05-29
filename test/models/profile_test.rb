@@ -3,7 +3,6 @@
 # Table name: profiles
 #
 #  id           :bigint           not null, primary key
-#  avatar_url   :string
 #  bio          :text
 #  discarded_at :datetime
 #  full_name    :string           not null

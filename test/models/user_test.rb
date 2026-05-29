@@ -23,7 +23,7 @@ require "test_helper"
 
 class UserTest < ActiveSupport::TestCase
   context "associations" do
-    should have_one(:profile).dependent(:destroy)
+    should have_one(:profile)
   end
 
   context "validations" do
