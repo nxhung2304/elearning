@@ -1,5 +1,5 @@
 <%= simple_form_for user, html: { autocomplete: "off" } do |f| %>
-  <% user.class.displayable_columns.each do |col| %>
+  <% user.class.visible_columns.each do |col| %>
     <% if user.class.defined_enums.key?(col) %>
       <%= f.input col.to_sym, as: :select, collection: user.class.defined_enums[col].keys, include_blank: false, wrapper: :select,
             input_html: { class: "bg-white text-slate-900" } %>

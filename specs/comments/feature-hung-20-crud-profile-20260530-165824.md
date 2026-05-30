@@ -21,7 +21,7 @@ Profile edit/update feature for Student/Teacher is mostly well-structured, but h
 
 - `app/javascript/controllers/image_preview_controller.js:6-8` — `connect()` unconditionally removes the `hidden` class from `previewTarget` whenever the element exists. When no image is attached, the server renders `<img src="" class="...hidden">`. On connect, `hidden` is removed, showing a broken blank image. Remove the `connect()` method entirely — the ERB template already handles initial visibility correctly.
 
-- `app/views/profiles/_form.html.erb:2-8` — The acceptance criteria requires `full_name` to have `required: true` in the form. The generic `displayable_columns` loop renders all fields uniformly with no `required` flag. Add a special case: `f.input :full_name, required: true` (rendered directly or via a condition inside the loop).
+- `app/views/profiles/_form.html.erb:2-8` — The acceptance criteria requires `full_name` to have `required: true` in the form. The generic `visible_columns` loop renders all fields uniformly with no `required` flag. Add a special case: `f.input :full_name, required: true` (rendered directly or via a condition inside the loop).
 
 - `app/views/shared/_image.html.erb:17` — `"No file chosen"` is a hardcoded English string. Add an i18n key (e.g., `helpers.image.no_file_chosen`) and reference it here.
 
@@ -40,7 +40,7 @@ Profile edit/update feature for Student/Teacher is mostly well-structured, but h
 ## Passed
 
 - `app/models/ability.rb` — `can :update, Profile, user_id: user.id` correctly scoped for both teacher and student roles.
-- `app/models/profile.rb` — `displayable_columns` override cleanly excludes `user_id`.
+- `app/models/profile.rb` — `visible_columns` override cleanly excludes `user_id`.
 - `app/models/application_record.rb` — Adding `discarded_at` to `RANSACK_DENYLIST` is correct.
 - `config/routes.rb` — Singular `resource :profile` is the right choice; no `:id` in URL.
 - `app/views/layouts/application.html.erb` — `if current_user.present?` guard on the sidebar is correct.

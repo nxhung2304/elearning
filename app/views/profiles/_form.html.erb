@@ -1,5 +1,5 @@
 <%= simple_form_for profile, url: profile_path, html: { autocomplete: "off" } do |f| %>
-  <% profile.class.displayable_columns.each do |col| %>
+  <% profile.class.visible_columns.each do |col| %>
     <% if profile.class.defined_enums.key?(col) %>
       <%= f.input col.to_sym, as: :select, collection: profile.class.defined_enums[col].keys, include_blank: false, wrapper: :select,
             input_html: { class: "bg-white text-slate-900" } %>

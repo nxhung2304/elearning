@@ -17,7 +17,7 @@ class ApplicationRecord < ActiveRecord::Base
     column_names - RANSACK_DENYLIST
   end
 
-  def self.displayable_columns
+  def self.visible_columns
     column_names - RANSACK_DENYLIST - %w[id]
   end
 

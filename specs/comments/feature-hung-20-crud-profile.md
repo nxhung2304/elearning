@@ -9,7 +9,7 @@ This branch adds `ProfilesController` (edit/update), a profile form partial, a s
 
 ### Critical
 
-- `app/views/profiles/_form.html.erb:2–9` – The partial iterates with `profile.class.displayable_columns` but the local variable `profile` is never passed when rendering (`render "form", profile: @profile` at `edit.html.erb:17` DOES pass it, but `simple_form_for` on line 1 uses `@profile` directly). The inconsistency is latent — the partial mixes the local `profile` (lines 2–4, 16) with the instance var `@profile` (lines 1, 11). When rendered from any other context that does not set `@profile`, line 1 and 11 will raise a `NoMethodError`. Normalize: accept only the local variable, remove the `@profile` reference, and derive the `simple_form_for` model from it.
+- `app/views/profiles/_form.html.erb:2–9` – The partial iterates with `profile.class.visible_columns` but the local variable `profile` is never passed when rendering (`render "form", profile: @profile` at `edit.html.erb:17` DOES pass it, but `simple_form_for` on line 1 uses `@profile` directly). The inconsistency is latent — the partial mixes the local `profile` (lines 2–4, 16) with the instance var `@profile` (lines 1, 11). When rendered from any other context that does not set `@profile`, line 1 and 11 will raise a `NoMethodError`. Normalize: accept only the local variable, remove the `@profile` reference, and derive the `simple_form_for` model from it.
 
 - `app/models/ability.rb:13` – `authorize_resource` in `ProfilesController` maps `edit` → requires `can?(:edit, ...)` (or `:update` covers it only through CanCanCan's aliasing of `[:edit] => :update`). The current ability rules define `can :update, Profile, …` which CanCanCan aliases to cover `:edit`. This works, but the alias is implicit. More critically, the ability block for **student** (line 15) only grants `can :read, User, id: user.id` — students cannot `:read` arbitrary resources. CanCanCan's `authorize_resource` for `edit` checks `:read` by default (not `:update`) on new records. Because `set_profile` returns an unsaved record (`build_profile`) for a first-time visitor, `authorize_resource` will evaluate `can?(:read, @profile)` (the new, unsaved record) for the `edit` action — and a student has no `:read` on Profile at all. This means **a student visiting `/profile/edit` for the first time gets a 403**. Fix: add `can :read, Profile, user_id: user.id` to the student block (and verify teacher block already has `:read, :all`).
 
@@ -48,7 +48,7 @@ This branch adds `ProfilesController` (edit/update), a profile form partial, a s
 - `ProfilesController` uses singular resource correctly; `set_profile` correctly scopes to `current_user` preventing horizontal privilege escalation.
 - `authorize_resource` (not `load_and_authorize_resource`) is correctly chosen to avoid the singular-resource/no-`:id` conflict.
 - `profile_params` correctly whitelists only `full_name`, `phone`, `bio`, `avatar` — no admin-only columns exposed.
-- `Profile#displayable_columns` correctly subtracts `user_id` from the base implementation — prevents leaking association ID in the form.
+- `Profile#visible_columns` correctly subtracts `user_id` from the base implementation — prevents leaking association ID in the form.
 - Flash key `t("controller.updated", ...)` reuses an existing i18n key as required.
 - `redirect_to edit_profile_path` after update is correct for singular resource (no ID in URL).
 - `render :edit, status: :unprocessable_entity` on failure follows Rails 7+ form error convention.
