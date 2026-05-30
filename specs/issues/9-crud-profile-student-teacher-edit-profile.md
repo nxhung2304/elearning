@@ -1,6 +1,6 @@
 ## **Status:**
 - Review: Approved
-- PR: Todo
+- PR: Merged ✅ 2026-05-30
 
 ## Metadata
 - **Title:** [CRUD] Profile — Student/Teacher tự edit profile
@@ -15,31 +15,31 @@ Add `ProfilesController` with `edit` and `update` actions so that Student and Te
 ---
 
 ## Acceptance Criteria
-- [ ] `GET /profile/edit` renders an edit form pre-filled with the current user's profile fields
-- [ ] `PATCH /profile` updates full_name, bio, phone successfully and redirects with a flash notice
-- [ ] Active Storage avatar upload works via the form (optional — no error if blank; replaces existing attachment if one is present)
-- [ ] CanCanCan ability rule `can :update, Profile, user_id: user.id` is defined in `app/abilities/ability.rb` for student and teacher roles
-- [ ] Profile is auto-created (build_profile) if the current user doesn't have one yet
-- [ ] i18n flash messages use existing `controller.updated` key
-- [ ] `full_name` field has `required: true` in the form
-- [ ] Minitest controller: student updates their own profile
-- [ ] Minitest controller: teacher updates their own profile
-- [ ] Minitest controller: `set_profile` always resolves to `current_user`'s profile (never another user's)
-- [ ] Minitest ability: `Ability.new(student).can?(:update, other_profile)` → false
+- [x] `GET /profile/edit` renders an edit form pre-filled with the current user's profile fields
+- [x] `PATCH /profile` updates full_name, bio, phone successfully and redirects with a flash notice
+- [x] Active Storage avatar upload works via the form (optional — no error if blank; replaces existing attachment if one is present)
+- [x] CanCanCan ability rule `can :update, Profile, user_id: user.id` is defined in `app/abilities/ability.rb` for student and teacher roles
+- [x] Profile is auto-created (build_profile) if the current user doesn't have one yet
+- [x] i18n flash messages use existing `controller.updated` key
+- [x] `full_name` field has `required: true` in the form
+- [x] Minitest controller: student updates their own profile
+- [x] Minitest controller: teacher updates their own profile
+- [x] Minitest controller: `set_profile` always resolves to `current_user`'s profile (never another user's)
+- [x] Minitest ability: `Ability.new(student).can?(:update, other_profile)` → false
 
 ---
 
 ## Implementation Checklist
-- [ ] Add singular resource route: `resource :profile, only: %i[edit update]` in `config/routes.rb`
-- [ ] Add CanCanCan ability in `app/abilities/ability.rb`: `can :update, Profile, user_id: user.id` for student and teacher roles
-- [ ] Create `app/controllers/profiles_controller.rb` with `edit` and `update` actions
-- [ ] Add `authorize_resource` (class-level, authorize-only) in the controller — do NOT use `load_and_authorize_resource`
-- [ ] Handle profile auto-creation: use `current_user.profile || current_user.build_profile`
-- [ ] Create `app/views/profiles/edit.html.erb` with a form for full_name, bio, phone, avatar
-- [ ] Create `test/controllers/profiles_controller_test.rb` (happy: student update, teacher update; scope: set_profile always uses current_user)
-- [ ] Add ability tests to existing `test/models/ability_test.rb`: student/teacher cannot update another user's profile
-- [ ] Run `bin/rails test test/controllers/profiles_controller_test.rb test/models/ability_test.rb`
-- [ ] Run `bin/rubocop app/controllers/profiles_controller.rb app/views/profiles/edit.html.erb`
+- [x] Add singular resource route: `resource :profile, only: %i[edit update]` in `config/routes.rb`
+- [x] Add CanCanCan ability in `app/abilities/ability.rb`: `can :update, Profile, user_id: user.id` for student and teacher roles
+- [x] Create `app/controllers/profiles_controller.rb` with `edit` and `update` actions
+- [x] Add `authorize_resource` (class-level, authorize-only) in the controller — do NOT use `load_and_authorize_resource`
+- [x] Handle profile auto-creation: use `current_user.profile || current_user.build_profile`
+- [x] Create `app/views/profiles/edit.html.erb` with a form for full_name, bio, phone, avatar
+- [x] Create `test/controllers/profiles_controller_test.rb` (happy: student update, teacher update; scope: set_profile always uses current_user)
+- [x] Add ability tests to existing `test/models/ability_test.rb`: student/teacher cannot update another user's profile
+- [x] Run `bin/rails test test/controllers/profiles_controller_test.rb test/models/ability_test.rb`
+- [x] Run `bin/rubocop app/controllers/profiles_controller.rb app/views/profiles/edit.html.erb`
 
 ---
 

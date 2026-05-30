@@ -1,6 +1,6 @@
 ## **Status:**
 - Review: Approved
-- PR: Todo
+- PR: Merged ✅ 2026-05-29
 
 ## Metadata
 - **Title:** [Model] Profile — validations, associations, i18n (en)
@@ -23,26 +23,26 @@ Create the `Profile` model with a 1-1 association to `User`. Profiles store disp
 - [x] `avatar_url` column stores a plain string fallback (no Active Storage dependency required by callers)
 - [x] i18n keys added under `en.activerecord.attributes.profile.*` in `config/locales/models/en.yml`
 - [x] Factory `create(:profile)` works without arguments (auto-creates user via association)
-- [ ] Minitest: profile with valid attributes is valid
-- [ ] Minitest: profile without user_id → invalid
-- [ ] Minitest: duplicate profile for same user → invalid
-- [ ] Minitest: `discarded_at` scoping — discarded profile is excluded from `.kept`
+- [x] Minitest: profile with valid attributes is valid
+- [x] Minitest: profile without user_id → invalid
+- [x] Minitest: duplicate profile for same user → invalid
+- [x] Minitest: `discarded_at` scoping — discarded profile is excluded from `.kept`
 
 ---
 
 ## Implementation Checklist
-- [ ] Generate migration: `make gen-model NAME=Profile FIELDS="user_id:references:uniq full_name:string avatar_url:string bio:text phone:string discarded_at:datetime"`
-- [ ] Review and fix migration: add `null: false` on `user_id` and `full_name`, ensure unique index `index_profiles_on_user_id`
-- [ ] Run `bin/rails db:migrate`
-- [ ] Add `include Discard::Model` to `app/models/profile.rb`
-- [ ] Add `belongs_to :user` and `has_one_attached :avatar` to `Profile`
-- [ ] Add `has_one :profile` (with `dependent: :destroy` — hard delete when user is destroyed) to `User`
-- [ ] Add `validates :user_id, uniqueness: true` to `Profile`
-- [ ] Add i18n keys in `config/locales/models/en.yml` under `activerecord.attributes.profile`
-- [ ] Create `test/factories/profiles.rb`
-- [ ] Write `test/models/profile_test.rb`
-- [ ] Run `bin/rails test test/models/profile_test.rb`
-- [ ] Run `bin/rubocop app/models/profile.rb test/models/profile_test.rb test/factories/profiles.rb`
+- [x] Generate migration: `make gen-model NAME=Profile FIELDS="user_id:references:uniq full_name:string avatar_url:string bio:text phone:string discarded_at:datetime"`
+- [x] Review and fix migration: add `null: false` on `user_id` and `full_name`, ensure unique index `index_profiles_on_user_id`
+- [x] Run `bin/rails db:migrate`
+- [x] Add `include Discard::Model` to `app/models/profile.rb`
+- [x] Add `belongs_to :user` and `has_one_attached :avatar` to `Profile`
+- [x] Add `has_one :profile` (with `dependent: :destroy` — hard delete when user is destroyed) to `User`
+- [x] Add `validates :user_id, uniqueness: true` to `Profile`
+- [x] Add i18n keys in `config/locales/models/en.yml` under `activerecord.attributes.profile`
+- [x] Create `test/factories/profiles.rb`
+- [x] Write `test/models/profile_test.rb`
+- [x] Run `bin/rails test test/models/profile_test.rb`
+- [x] Run `bin/rubocop app/models/profile.rb test/models/profile_test.rb test/factories/profiles.rb`
 
 ---
 
