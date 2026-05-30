@@ -14,6 +14,7 @@
 - [x] Setup: Minitest + FactoryBot + shoulda + Capybara config ✅ 2026-05-16
 - [x] [Model] User — status enum (active/inactive/suspended/deleted), associations, i18n (en) ✅ 2026-05-16
 - [x] [CRUD] User — Admin manage users (list, show, ban/unban) + Pagy ✅ 2026-05-16
+- [x] [Fix] User — thêm discarded_at + include Discard::Model ✅ 2026-05-30
 - [x] [Model] Role + UserRole — associations, i18n (en) ✅ 2026-05-17
 - [x] Gemfile: thêm cancancan — bỏ sidekiq, redis ✅ 2026-05-17
 - [x] Setup: CanCanCan + Ability class ✅ 2026-05-17

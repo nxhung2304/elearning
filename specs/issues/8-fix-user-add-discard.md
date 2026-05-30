@@ -1,6 +1,6 @@
 ## **Status:**
 - Review: Approved
-- PR: Todo / Draft / Merged
+- PR: Merged ✅ 2026-05-30
 
 ## Metadata
 - **Title:** [Fix] User — thêm discard
@@ -16,25 +16,25 @@ User model hiện chưa có `discarded_at` column và chưa `include Discard::Mo
 ---
 
 ## Acceptance Criteria
-- [ ] Migration tạo `discarded_at` column trên `users` table
-- [ ] `User` model có `include Discard::Model`
-- [ ] Default scope của Discard tự động filter `.kept` (không cần thêm scope thủ công)
-- [ ] `user.discard` set `discarded_at`, `user.undiscard` clear nó
-- [ ] `User.kept` trả về users chưa bị discard
-- [ ] `User.discarded` trả về users đã bị discard
-- [ ] Annotate comment trong model file được cập nhật
-- [ ] Minitest pass
+- [x] Migration tạo `discarded_at` column trên `users` table
+- [x] `User` model có `include Discard::Model`
+- [x] Default scope của Discard tự động filter `.kept` (không cần thêm scope thủ công)
+- [x] `user.discard` set `discarded_at`, `user.undiscard` clear nó
+- [x] `User.kept` trả về users chưa bị discard
+- [x] `User.discarded` trả về users đã bị discard
+- [x] Annotate comment trong model file được cập nhật
+- [x] Minitest pass
 
 ---
 
 ## Implementation Checklist
-- [ ] Tạo migration `AddDiscardedAtToUsers`
-- [ ] Thêm `include Discard::Model` vào `app/models/user.rb`
-- [ ] Chạy `bin/rails db:migrate`
-- [ ] Chạy `annotaterb` để cập nhật schema comment trong model
-- [ ] Thêm test cases cho discard behavior vào `test/models/user_test.rb`
-- [ ] Chạy `bin/rails test test/models/user_test.rb` — tất cả pass
-- [ ] Chạy `bin/rubocop` — không có warning
+- [x] Tạo migration `AddDiscardedAtToUsers`
+- [x] Thêm `include Discard::Model` vào `app/models/user.rb`
+- [x] Chạy `bin/rails db:migrate`
+- [x] Chạy `annotaterb` để cập nhật schema comment trong model
+- [x] Thêm test cases cho discard behavior vào `test/models/user_test.rb`
+- [x] Chạy `bin/rails test test/models/user_test.rb` — tất cả pass
+- [x] Chạy `bin/rubocop` — không có warning
 
 ---
 
