@@ -19,9 +19,9 @@
 - [x] Gemfile: thêm cancancan — bỏ sidekiq, redis ✅ 2026-05-17
 - [x] Setup: CanCanCan + Ability class ✅ 2026-05-17
 - [x] Seeds: admin, teacher, student accounts với đúng role
-- [ ] [Model] Profile — validations, associations, i18n (en)
-- [ ] [CRUD] Profile — Student/Teacher tự edit profile
-- [ ] [Refactor] ApplicationRecord — rename `displayable_columns` → `visible_columns`, override in Profile to hide `user_id`
+- [x] [Model] Profile — validations, associations, i18n (en) ✅ 2026-05-29
+- [x] [CRUD] Profile — Student/Teacher tự edit profile ✅ 2026-05-30
+- [ ] [Refactor] ApplicationRecord — rename `displayable_columns` → `visible_columns`
 
 ---
 
