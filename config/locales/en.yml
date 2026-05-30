@@ -28,3 +28,6 @@ en:
     submit:
       create: "Create %{model}"
       update: "Update %{model}"
+    image:
+      select: "Select a image"
+      no_file_chosen: "No file chosen"

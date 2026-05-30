@@ -1,0 +1,14 @@
+<% add_breadcrumb "Profile" %>
+<% add_breadcrumb current_user.email %>
+<% add_breadcrumb t('.title') %>
+
+<section class="mx-auto max-w-2xl px-6 py-8">
+  <div class="mb-6 flex items-center justify-between">
+    <h1 class="text-2xl font-bold text-slate-900">
+      <%= t("helpers.submit.update", model: Profile.model_name.human, default: "Edit Profile") %>
+    </h1>
+  </div>
+
+  <%= render "form", profile: @profile %>
+</section>
+

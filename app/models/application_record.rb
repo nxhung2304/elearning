@@ -10,6 +10,7 @@ class ApplicationRecord < ActiveRecord::Base
     unconfirmed_email
     created_at
     updated_at
+    discarded_at
   ].freeze
 
   def self.ransackable_attributes(auth_object = nil)

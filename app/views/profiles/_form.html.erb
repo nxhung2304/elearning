@@ -1,0 +1,20 @@
+<%= simple_form_for profile, url: profile_path, html: { autocomplete: "off" } do |f| %>
+  <% profile.class.displayable_columns.each do |col| %>
+    <% if profile.class.defined_enums.key?(col) %>
+      <%= f.input col.to_sym, as: :select, collection: profile.class.defined_enums[col].keys, include_blank: false, wrapper: :select,
+            input_html: { class: "bg-white text-slate-900" } %>
+    <% elsif col == "full_name" %>
+      <%= f.input col.to_sym, required: true %>
+    <% else %>
+      <%= f.input col.to_sym %>
+    <% end %>
+  <% end %>
+
+  <%= render "shared/image", f: f, image: :avatar, resource: profile %>
+
+  <div class="mt-6 flex items-center gap-3">
+    <%= f.button :submit,
+          t("helpers.submit.update", model: Profile.model_name.human),
+          class: "rounded-lg #{profile.persisted? ? "bg-slate-900 hover:bg-slate-700" : "bg-emerald-600 hover:bg-emerald-700"} px-4 py-2 text-sm font-medium text-white" %>
+  </div>
+<% end %>

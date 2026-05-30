@@ -21,6 +21,7 @@
 - [x] Seeds: admin, teacher, student accounts với đúng role
 - [ ] [Model] Profile — validations, associations, i18n (en)
 - [ ] [CRUD] Profile — Student/Teacher tự edit profile
+- [ ] [Refactor] ApplicationRecord — rename `displayable_columns` → `visible_columns`, override in Profile to hide `user_id`
 
 ---
 
