@@ -61,4 +61,20 @@ class AbilityTest < ActiveSupport::TestCase
 
     assert_not ability.can?(:read, :dashboard)
   end
+
+  test "student cannot update another user's profile" do
+    student = create(:user, :student)
+    other_profile = create(:profile)
+    ability = Ability.new(student)
+
+    assert_not ability.can?(:update, other_profile)
+  end
+
+  test "teacher cannot update another user's profile" do
+    teacher = create(:user, :teacher)
+    other_profile = create(:profile)
+    ability = Ability.new(teacher)
+
+    assert_not ability.can?(:update, other_profile)
+  end
 end

@@ -16,3 +16,6 @@ en:
       title: "New"
     destroy:
       cannot_delete_self: "You cannot delete your own account."
+  profiles:
+    edit:
+      title: "Edit"

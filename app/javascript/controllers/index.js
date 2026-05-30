@@ -1,6 +1,8 @@
 import { application } from "controllers/application"
 import HelloController from "controllers/hello_controller"
+import ImagePreviewController from "controllers/image_preview_controller"
 import SidebarController from "controllers/sidebar_controller"
 
 application.register("hello", HelloController)
+application.register("image-preview", ImagePreviewController)
 application.register("sidebar", SidebarController)
