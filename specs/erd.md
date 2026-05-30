@@ -9,129 +9,156 @@
 
 # Phase 1 — MVP Tables
 
+### users
 ```
-users
-- id
-- email
-- encrypted_password
-- status
+- id                          # bigint, PK
+- email                       # string, not null, uniq, index
+- encrypted_password          # string, not null (Devise managed)
+- status                      # integer enum, not null, default: active
     - active
     - inactive
     - suspended
     - deleted
-- last_sign_in_at             # Devise managed
-- sign_in_count               # Devise managed
-- discarded_at                # soft delete
+- last_sign_in_at             # datetime, nullable (Devise managed)
+- sign_in_count               # integer, not null, default: 0 (Devise managed)
+- discarded_at                # datetime, nullable — soft delete
+```
 
-roles
-- id
-- name
-- code                        # student | teacher | admin
+### roles
+```
+- id                          # bigint, PK
+- name                        # string, not null
+- code                        # string, not null, uniq — student | teacher | admin
+```
 
-user_roles
-- id
-- user_id
-- role_id
+### user_roles
+```
+- id                          # bigint, PK
+- user_id                     # bigint, not null, FK → users
+- role_id                     # bigint, not null, FK → roles
+# uniq index on [user_id, role_id]
+```
 
-profiles
-- id
-- user_id
-- full_name                    # not null
-- avatar_url
-- bio
-- phone
-- discarded_at
+### profiles
+```
+- id                          # bigint, PK
+- user_id                     # bigint, not null, uniq, FK → users
+- full_name                   # string, not null
+- avatar_url                  # string, nullable
+- bio                         # text, nullable
+- phone                       # string, nullable
+- discarded_at                # datetime, nullable — soft delete
+```
 
-course_categories
-- id
-- name
-- slug
-- parent_id                   # nullable — nested category
-- discarded_at
+### course_categories
+```
+- id                          # bigint, PK
+- name                        # string, not null
+- slug                        # string, not null, uniq, index
+- parent_id                   # bigint, nullable, FK → course_categories (self-ref)
+- position                    # integer, not null, default: 0 — sort order within siblings
+- discarded_at                # datetime, nullable — soft delete
+```
 
-courses
-- id
-- teacher_id
-- category_id
-- title
-- slug
-- description
-- thumbnail_url               # ActiveStorage local
-- level                       # beginner | intermediate | advanced
-- language                    # vi | en
-- price
-- total_lessons               # denormalized, updated qua job
-- status
+### courses
+```
+- id                          # bigint, PK
+- teacher_id                  # bigint, not null, FK → users
+- category_id                 # bigint, not null, FK → course_categories
+- title                       # string, not null, uniq, index
+- slug                        # string, not null, uniq, index — auto-generated from title
+- description                 # text, not null
+- thumbnail_url               # string, nullable — ActiveStorage local
+- level                       # integer enum, not null: beginner | intermediate | advanced
+- language                    # integer enum, not null: vi | en
+- price                       # decimal(10,2), not null, default: 0
+- total_lessons               # integer, not null, default: 0 — denormalized, updated qua job
+- status                      # integer enum, not null, default: draft
     - draft
     - published
     - archived
-- published_at
-- discarded_at
+- published_at                # datetime, nullable — set khi status → published
+- discarded_at                # datetime, nullable — soft delete
+```
 
-sections
-- id
-- course_id
-- title
-- position
-- discarded_at
+### sections
+```
+- id                          # bigint, PK
+- course_id                   # bigint, not null, FK → courses
+- title                       # string, not null
+- position                    # integer, not null, default: 0 (acts_as_list)
+- discarded_at                # datetime, nullable — soft delete
+```
 
-lessons
-- id
-- section_id
-- title
-- lesson_type                 # video | text | mixed
-- content
-- video_url                   # ActiveStorage local
-- duration_seconds
-- position
-- is_preview
-- is_published
-- published_at
-- discarded_at
+### lessons
+```
+- id                          # bigint, PK
+- section_id                  # bigint, not null, FK → sections
+- title                       # string, not null
+- lesson_type                 # integer enum, not null — video | text | mixed
+- content                     # text, nullable (required if type = text | mixed)
+- video_url                   # string, nullable — ActiveStorage local (required if type = video | mixed)
+- duration_seconds            # integer, nullable (required if video_url present)
+- position                    # integer, not null, default: 0 (acts_as_list)
+- is_preview                  # boolean, not null, default: false
+- is_published                # boolean, not null, default: false
+- published_at                # datetime, nullable
+- discarded_at                # datetime, nullable — soft delete
+```
 
-lesson_resources
-- id
-- lesson_id
-- file_name
-- file_url                    # ActiveStorage local
-- discarded_at
+### lesson_resources
+```
+- id                          # bigint, PK
+- lesson_id                   # bigint, not null, FK → lessons
+- file_name                   # string, not null
+- file_url                    # string, nullable — ActiveStorage local
+- discarded_at                # datetime, nullable — soft delete
+```
 
-enrollments
-- id
-- user_id
-- course_id
-- status
+### enrollments
+```
+- id                          # bigint, PK
+- user_id                     # bigint, not null, index, FK → users
+- course_id                   # bigint, not null, index, FK → courses
+- status                      # integer enum, not null
     - active
     - completed
     - expired
     - revoked
-- enrolled_at
-- expired_at
-- discarded_at
+- enrolled_at                 # datetime, not null
+- expired_at                  # datetime, nullable
+- discarded_at                # datetime, nullable — soft delete
+# uniq index on [user_id, course_id]
 # payment_id KHÔNG có ở Phase 1 — thêm vào migration Phase 2
+```
 
-lesson_progresses
-- id
-- enrollment_id
-- lesson_id
-- completed
-- completed_at
-- total_watched_seconds
-- current_position_seconds
+### lesson_progresses
+```
+- id                          # bigint, PK
+- enrollment_id               # bigint, not null, FK → enrollments
+- lesson_id                   # bigint, not null, FK → lessons
+- completed                   # boolean, not null, default: false
+- completed_at                # datetime, nullable (required if completed = true)
+- total_watched_seconds       # integer, nullable
+- current_position_seconds    # integer, nullable
+```
 
-course_progresses
-- id
-- enrollment_id
-- progress_percentage
-- completed_lessons_count
-- completed_at
+### course_progresses
+```
+- id                          # bigint, PK
+- enrollment_id               # bigint, not null, uniq, FK → enrollments (1-1)
+- progress_percentage         # decimal, not null, default: 0
+- completed_lessons_count     # integer, not null, default: 0
+- completed_at                # datetime, nullable — set khi progress_percentage = 100
+```
 
-event_logs
-- id
-- user_id
-- event_type
-- metadata
-- created_at
+### event_logs
+```
+- id                          # bigint, PK
+- user_id                     # bigint, not null, FK → users
+- event_type                  # string, not null
+- metadata                    # jsonb, nullable
+- created_at                  # datetime, not null (no updated_at — append-only)
 ```
 
 ---

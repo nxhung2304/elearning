@@ -21,7 +21,7 @@
 - [x] Seeds: admin, teacher, student accounts với đúng role
 - [x] [Model] Profile — validations, associations, i18n (en) ✅ 2026-05-29
 - [x] [CRUD] Profile — Student/Teacher tự edit profile ✅ 2026-05-30
-- [ ] [Refactor] ApplicationRecord — rename `visible_columns` → `visible_columns`
+- [x] [Refactor] ApplicationRecord — rename `visible_columns` → `visible_columns`
 
 ---
 
@@ -78,11 +78,7 @@ has_many :roles, through: :user_roles
 
 ### [Model] User ✅
 
-**Columns:**
-- `status` — not null, default: `active`
-  - enum: `0:active` `1:inactive` `2:suspended` `3:deleted`
-- Devise fields (email, encrypted_password, last_sign_in_at, sign_in_count)
-- `discarded_at` — soft delete
+> Schema: [[20-Projects/elearning/erd#users|ERD → users]]
 
 **Minitest:**
 - Happy case: status present, set all enum values
@@ -102,13 +98,7 @@ has_many :roles, through: :user_roles
 
 ### [Model] Profile + [CRUD] Profile
 
-**Columns:**
-- `user_id` — not null, uniq FK (1-1 với User)
-- `full_name` — string
-- `avatar_url` — string (ActiveStorage)
-- `bio` — text
-- `phone` — string
-- `discarded_at`
+> Schema: [[20-Projects/elearning/erd#profiles|ERD → profiles]]
 
 **Controller:**
 - `Edit` / `Update` — Student/Teacher tự edit profile của mình
@@ -137,11 +127,7 @@ has_many :roles, through: :user_roles
 
 ### [Model] CourseCategory + [CRUD]
 
-**Columns:**
-- `name` — not null
-- `slug` — not null, uniq
-- `parent_id` — nullable FK (self-referential, nested categories)
-- `discarded_at`
+> Schema: [[20-Projects/elearning/erd#course_categories|ERD → course_categories]]
 
 **Associations:**
 ```ruby
@@ -162,20 +148,7 @@ has_many :courses
 
 ### [Model] Course + [CRUD]
 
-**Columns:**
-- `teacher_id` — not null, FK → users
-- `category_id` — FK → course_categories
-- `title` — not null, uniq, index
-- `slug` — not null, uniq, auto-generate từ title
-- `description` — not null
-- `thumbnail_url` — ActiveStorage
-- `level` — enum: `beginner` `intermediate` `advanced`
-- `language` — enum: `vi` `en`
-- `price` — decimal(10,2), not null
-- `total_lessons` — integer, denormalized (update qua job)
-- `status` — enum: `draft` `published` `archived`
-- `published_at`
-- `discarded_at`
+> Schema: [[20-Projects/elearning/erd#courses|ERD → courses]]
 
 **Minitest model:**
 - Happy: present values
@@ -194,11 +167,7 @@ has_many :courses
 
 ### [Model] Section + [CRUD]
 
-**Columns:**
-- `course_id` — not null, FK
-- `title` — not null
-- `position` — integer, default: 0 (dùng `acts_as_list`)
-- `discarded_at`
+> Schema: [[20-Projects/elearning/erd#sections|ERD → sections]]
 
 **Controller (nested dưới Course):**
 - Index, Show, Create, Update, Destroy
@@ -216,18 +185,7 @@ has_many :courses
 
 ### [Model] Lesson + [CRUD]
 
-**Columns:**
-- `section_id` — not null, FK
-- `title` — not null
-- `lesson_type` — enum: `video` `text` `mixed`
-- `content` — text (required nếu type = text/mixed)
-- `video_url` — ActiveStorage (required nếu type = video/mixed)
-- `duration_seconds` — not null nếu video_url present
-- `position` — not null, default: 0 (`acts_as_list`)
-- `is_preview` — boolean, not null, default: false
-- `is_published` — boolean, not null, default: false
-- `published_at`
-- `discarded_at`
+> Schema: [[20-Projects/elearning/erd#lessons|ERD → lessons]]
 
 **Validations:**
 - `content` hoặc `video_url` phải có ít nhất 1
@@ -250,11 +208,7 @@ has_many :courses
 
 ### [Model] LessonResource + [CRUD]
 
-**Columns:**
-- `lesson_id` — not null, FK
-- `file_name` — string, not null
-- `file_url` — ActiveStorage (local)
-- `discarded_at`
+> Schema: [[20-Projects/elearning/erd#lesson_resources|ERD → lesson_resources]]
 
 **Controller:**
 - Teacher upload file đính kèm vào lesson
@@ -282,12 +236,7 @@ has_many :courses
 
 ### [Model] EventLog
 
-**Columns** (từ ERD):
-- `user_id` — not null, FK
-- `event_type` — string, not null
-- `metadata` — jsonb
-- `created_at`
-- Không có `discarded_at` — audit log không được xóa
+> Schema: [[20-Projects/elearning/erd#event_logs|ERD → event_logs]]
 
 **Notes:**
 - Không include Discard::Model
@@ -298,14 +247,7 @@ has_many :courses
 
 ### [Model] Enrollment + [CRUD]
 
-**Columns:**
-- `user_id` — not null, index, FK
-- `course_id` — not null, index, FK
-- `status` — enum: `active` `completed` `expired` `revoked`
-- `enrolled_at` — not null
-- `expired_at` — nullable
-- `discarded_at`
-- *(payment_id thêm ở Phase 2)*
+> Schema: [[20-Projects/elearning/erd#enrollments|ERD → enrollments]]
 
 **Business rules:**
 - Không enroll duplicate (uniq index trên [user_id, course_id])
@@ -330,13 +272,7 @@ has_many :courses
 
 ### [Model] LessonProgress + [CRUD]
 
-**Columns:**
-- `enrollment_id` — not null, FK
-- `lesson_id` — not null, FK
-- `completed` — boolean, not null, default: false
-- `completed_at` — required nếu `completed = true`
-- `total_watched_seconds` — integer (≤ lesson.duration_seconds)
-- `current_position_seconds` — integer (≤ lesson.duration_seconds)
+> Schema: [[20-Projects/elearning/erd#lesson_progresses|ERD → lesson_progresses]]
 
 **Minitest model:**
 - Happy: update watched seconds, mark complete
@@ -353,11 +289,7 @@ has_many :courses
 
 ### [Model] CourseProgress
 
-**Columns:**
-- `enrollment_id` — not null, uniq FK (1-1 với Enrollment)
-- `progress_percentage` — decimal, default: 0
-- `completed_lessons_count` — integer, default: 0
-- `completed_at` — set khi progress_percentage = 100
+> Schema: [[20-Projects/elearning/erd#course_progresses|ERD → course_progresses]]
 
 **Notes:**
 - Không update trực tiếp — chỉ update qua `UpdateCourseProgressJob`
