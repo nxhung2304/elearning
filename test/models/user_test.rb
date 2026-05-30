@@ -3,6 +3,7 @@
 # Table name: users
 #
 #  id                     :bigint           not null, primary key
+#  discarded_at           :datetime
 #  email                  :string           default(""), not null
 #  encrypted_password     :string           default(""), not null
 #  name                   :string
@@ -15,6 +16,7 @@
 #
 # Indexes
 #
+#  index_users_on_discarded_at          (discarded_at)
 #  index_users_on_email                 (email) UNIQUE
 #  index_users_on_reset_password_token  (reset_password_token) UNIQUE
 #  index_users_on_status                (status)
@@ -76,5 +78,37 @@ class UserTest < ActiveSupport::TestCase
 
   test "inactive_message is :deleted when status is deleted" do
     assert_equal :deleted, build(:user, status: :deleted).inactive_message
+  end
+
+  context "discard" do
+    setup do
+      @user = create(:user)
+    end
+
+    should "after discard a user: set discarded_at" do
+      @user.discard
+
+      assert @user.discarded_at
+    end
+
+    should "after undiscard: clear discarded_at" do
+      @user.discard
+      @user.undiscard
+
+      assert_nil @user.discarded_at
+      assert User.kept.include?(@user)
+    end
+
+    should "after discard a user: ignore user from kept method" do
+      @user.discard
+
+      assert User.kept.exclude?(@user)
+    end
+
+    should "after discarded a User: include user in discarded" do
+      @user.discard
+
+      assert User.discarded.include?(@user)
+    end
   end
 end
