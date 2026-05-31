@@ -112,7 +112,7 @@ has_many :roles, through: :user_roles
 
 ## Week 3-4 | Courses + Sections + Lessons
 
-- [ ] [Model] CourseCategory — ancestry (nested), friendly_id (slug), i18n (en)
+- [x] [Model] CourseCategory — ancestry (nested), friendly_id (slug), i18n (en) ✅ 2026-05-31
 - [ ] [CRUD] CourseCategory — Admin CRUD, Pagy
 - [ ] [Model] Course — enums (draft/published/archived), level, language, associations, i18n (en)
 - [ ] [CRUD] Course — Teacher CRUD + search (title, category, level) + Pagy; Student browse

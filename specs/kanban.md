@@ -6,9 +6,10 @@ kanban-plugin: board
 
 ## 📋 Todo
 
-- [ ] **[W3-4]** [[20-Projects/elearning/issues/10-model-course-category|[Model] CourseCategory]] [#22](https://github.com/nxhung2304/elearning/issues/22) — ancestry (nested), friendly_id (slug), i18n (en)
+
 
 ## 🔄 In Progress
+
 
 
 ## ✅ Done
@@ -17,6 +18,7 @@ kanban-plugin: board
 - [x] **[W1-2]** [[20-Projects/elearning/issues/8-fix-user-add-discard|[Fix] User — Discard::Model]] [#18](https://github.com/nxhung2304/elearning/issues/18) — thêm discarded_at, include Discard::Model ✅ 2026-05-30
 - [x] **[W1-2]** [[20-Projects/elearning/issues/7-model-profile|[Model] Profile]] [#16](https://github.com/nxhung2304/elearning/issues/16) — validations, associations, i18n (en) ✅ 2026-05-29
 - [x] **[W1-2]** Setup: Rails project, PostgreSQL, Solid Queue + Solid Cache + Solid Cable ✅ 2026-05-16
+- [x] **[W3-4]** [[20-Projects/elearning/issues/10-model-course-category|[Model] CourseCategory]] [#22](https://github.com/nxhung2304/elearning/issues/22) — ancestry (nested), friendly_id (slug), i18n (en) ✅ 2026-05-31
 - [x] **[W1-2]** Setup: Devise (session-based), Views Login/Register/Logout ✅ 2026-05-16
 - [x] **[W1-2]** Setup: Flash messages + error handling ✅ 2026-05-16
 - [x] **[W1-2]** Setup: Discard gem convention ✅ 2026-05-17
