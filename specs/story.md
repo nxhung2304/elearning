@@ -112,7 +112,7 @@ has_many :roles, through: :user_roles
 
 ## Week 3-4 | Courses + Sections + Lessons
 
-- [ ] [Model] CourseCategory — parent_id (nested), associations, i18n (en)
+- [ ] [Model] CourseCategory — ancestry (nested), friendly_id (slug), i18n (en)
 - [ ] [CRUD] CourseCategory — Admin CRUD, Pagy
 - [ ] [Model] Course — enums (draft/published/archived), level, language, associations, i18n (en)
 - [ ] [CRUD] Course — Teacher CRUD + search (title, category, level) + Pagy; Student browse
@@ -128,27 +128,40 @@ has_many :roles, through: :user_roles
 ### [Model] CourseCategory + [CRUD]
 
 > Schema: [[20-Projects/elearning/erd#course_categories|ERD → course_categories]]
+> Spec: [[20-Projects/elearning/issues/10-model-course-category]]
+
+**Gems:** `ancestry` (self-referential tree via string path), `friendly_id` (auto-slug, locked after create)
 
 **Associations:**
 ```ruby
-belongs_to :parent, class_name: 'CourseCategory', optional: true
-has_many :children, class_name: 'CourseCategory', foreign_key: :parent_id
-has_many :courses
+# ancestry gem manages tree — no manual belongs_to/has_many for parent/children
+has_ancestry
+# has_many :courses  # add when Course model is created
 ```
+
+**Key decisions:**
+- `ancestry` replaces `parent_id` FK — stores tree as `"1/2/3"` string; `.descendants` in one query, no N+1
+- `friendly_id` handles slug uniqueness suffix (`-2`, `-3`, ...); slug locked after creation
+- `before_discard` blocks if any descendant has kept courses; `after_discard` cascades to children recursively *(add `before_discard` guard when Course model is created)*
+- No `after_undiscard` cascade — children stay discarded after parent restored
 
 **Controller (Admin only):**
 - CRUD đầy đủ + Pagy
 - Ransack search by name
 
 **Minitest:**
-- Happy: create category, create sub-category (parent_id present)
-- Edge: parent_id không tồn tại → invalid
+- Happy: create top-level category; create sub-category with valid parent
+- Edge: name blank → invalid; discarded parent → invalid; slug auto-generated and unique; discard blocked when has active courses
 
 ---
 
 ### [Model] Course + [CRUD]
 
 > Schema: [[20-Projects/elearning/erd#courses|ERD → courses]]
+
+> ⚠️ **When Course model is created, also update `CourseCategory`:**
+> - Add `has_many :courses` association
+> - Add `before_discard :ensure_subtree_has_no_active_courses` guard (see [[20-Projects/elearning/issues/10-model-course-category]] for implementation)
 
 **Minitest model:**
 - Happy: present values

@@ -6,7 +6,7 @@ kanban-plugin: board
 
 ## 📋 Todo
 
-
+- [ ] **[W3-4]** [[20-Projects/elearning/issues/10-model-course-category|[Model] CourseCategory]] [#22](https://github.com/nxhung2304/elearning/issues/22) — ancestry (nested), friendly_id (slug), i18n (en)
 
 ## 🔄 In Progress
 

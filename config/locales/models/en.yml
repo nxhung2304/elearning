@@ -6,6 +6,7 @@ en:
       role: Role
       user_role: User Role
       profile: Profile
+      course_category: Course category
     attributes:
       user:
         email: Email
@@ -27,4 +28,10 @@ en:
         full_name: Full name
         bio: Bio
         phone: Phone
+        discarded_at: Discarded at
+      course_category:
+        name: Name
+        slug: Slug
+        ancestry: Ancestry
+        position: Position
         discarded_at: Discarded at

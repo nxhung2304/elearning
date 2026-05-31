@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_05_30_061000) do
+ActiveRecord::Schema[8.1].define(version: 2026_05_31_073121) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -42,6 +42,30 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_30_061000) do
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
+  create_table "course_categories", force: :cascade do |t|
+    t.string "ancestry", collation: "C"
+    t.datetime "created_at", null: false
+    t.datetime "discarded_at"
+    t.string "name", null: false
+    t.integer "position", default: 0, null: false
+    t.string "slug", null: false
+    t.datetime "updated_at", null: false
+    t.index ["ancestry"], name: "index_course_categories_on_ancestry"
+    t.index ["discarded_at"], name: "index_course_categories_on_discarded_at"
+    t.index ["slug"], name: "index_course_categories_on_slug", unique: true
+  end
+
+  create_table "friendly_id_slugs", force: :cascade do |t|
+    t.datetime "created_at"
+    t.string "scope"
+    t.string "slug", null: false
+    t.integer "sluggable_id", null: false
+    t.string "sluggable_type", limit: 50
+    t.index ["slug", "sluggable_type", "scope"], name: "index_friendly_id_slugs_on_slug_and_sluggable_type_and_scope", unique: true
+    t.index ["slug", "sluggable_type"], name: "index_friendly_id_slugs_on_slug_and_sluggable_type"
+    t.index ["sluggable_type", "sluggable_id"], name: "index_friendly_id_slugs_on_sluggable_type_and_sluggable_id"
+  end
+
   create_table "profiles", force: :cascade do |t|
     t.text "bio"
     t.datetime "created_at", null: false
@@ -50,6 +74,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_30_061000) do
     t.string "phone"
     t.datetime "updated_at", null: false
     t.bigint "user_id", null: false
+    t.index ["discarded_at"], name: "index_profiles_on_discarded_at"
     t.index ["user_id"], name: "index_profiles_on_user_id", unique: true
   end
 
