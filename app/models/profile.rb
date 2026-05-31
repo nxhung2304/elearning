@@ -13,7 +13,8 @@
 #
 # Indexes
 #
-#  index_profiles_on_user_id  (user_id) UNIQUE
+#  index_profiles_on_discarded_at  (discarded_at)
+#  index_profiles_on_user_id       (user_id) UNIQUE
 #
 # Foreign Keys
 #

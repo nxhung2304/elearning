@@ -20,6 +20,8 @@ gem "tailwindcss-rails"
 gem "turbo-rails"
 gem "tzinfo-data", platforms: %i[ windows jruby ]
 gem "cancancan"
+gem "ancestry"
+gem "friendly_id", "~> 5.5.0"
 
 group :development do
   gem "letter_opener_web"
