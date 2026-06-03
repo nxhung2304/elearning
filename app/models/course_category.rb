@@ -21,7 +21,7 @@ class CourseCategory < ApplicationRecord
   include Discard::Model
   extend FriendlyId
 
-  friendly_id :name, use: :slugged
+  friendly_id :name, use: %i[slugged finders]
   has_ancestry
 
   # validations
@@ -34,6 +34,10 @@ class CourseCategory < ApplicationRecord
   # callbacks
   before_validation :clean_name, if: -> { name.present? }
   after_discard :discard_children
+
+  def self.visible_columns
+    super - %w[ancestry position slug]
+  end
 
   def should_generate_new_friendly_id?
     slug.blank?

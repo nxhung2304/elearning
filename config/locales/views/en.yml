@@ -19,3 +19,10 @@ en:
   profiles:
     edit:
       title: "Edit"
+  course_categories:
+    index:
+      title: "Course Categories"
+    edit:
+      title: "Edit"
+    new:
+      title: "New"

@@ -8,4 +8,5 @@ Rails.application.routes.draw do
 
   root "home#index"
   resource :profile, only: %i[edit update]
+  resources :course_categories
 end

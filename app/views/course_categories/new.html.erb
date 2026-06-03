@@ -1,0 +1,10 @@
+<% add_breadcrumb CourseCategory.model_name.human, course_categories_path %>
+<% add_breadcrumb t('.title') %>
+
+<section class="mx-auto max-w-2xl px-6 py-8">
+  <h1 class="mb-6 text-2xl font-bold text-slate-900">
+    <%= t("helpers.submit.create", model: CourseCategory.model_name.human, default: "New Course Category") %>
+  </h1>
+
+  <%= render "form", course_category: @course_category %>
+</section>
