@@ -32,6 +32,7 @@ class User < ApplicationRecord
 
   has_many :user_roles, dependent: :destroy
   has_many :roles, through: :user_roles
+  has_many :courses, foreign_key: "teacher_id", dependent: :restrict_with_error
 
   validates :status, presence: true
 

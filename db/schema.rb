@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_05_31_073121) do
+ActiveRecord::Schema[8.1].define(version: 2026_06_03_075418) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -53,6 +53,28 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_31_073121) do
     t.index ["ancestry"], name: "index_course_categories_on_ancestry"
     t.index ["discarded_at"], name: "index_course_categories_on_discarded_at"
     t.index ["slug"], name: "index_course_categories_on_slug", unique: true
+  end
+
+  create_table "courses", force: :cascade do |t|
+    t.bigint "category_id", null: false
+    t.datetime "created_at", null: false
+    t.text "description", null: false
+    t.datetime "discarded_at"
+    t.integer "language", null: false
+    t.integer "level", null: false
+    t.decimal "price", precision: 10, scale: 2, default: "0.0", null: false
+    t.datetime "published_at"
+    t.string "slug", null: false
+    t.integer "status", default: 0, null: false
+    t.bigint "teacher_id", null: false
+    t.string "title", null: false
+    t.integer "total_lessons", default: 0, null: false
+    t.datetime "updated_at", null: false
+    t.index ["category_id"], name: "index_courses_on_category_id"
+    t.index ["discarded_at"], name: "index_courses_on_discarded_at"
+    t.index ["slug"], name: "index_courses_on_slug", unique: true
+    t.index ["teacher_id"], name: "index_courses_on_teacher_id"
+    t.index ["title"], name: "index_courses_on_title", unique: true
   end
 
   create_table "friendly_id_slugs", force: :cascade do |t|
@@ -111,6 +133,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_31_073121) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "courses", "course_categories", column: "category_id"
+  add_foreign_key "courses", "users", column: "teacher_id"
   add_foreign_key "profiles", "users"
   add_foreign_key "user_roles", "roles"
   add_foreign_key "user_roles", "users"

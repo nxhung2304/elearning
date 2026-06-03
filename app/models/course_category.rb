@@ -24,6 +24,9 @@ class CourseCategory < ApplicationRecord
   friendly_id :name, use: %i[slugged finders]
   has_ancestry
 
+  # associations
+  has_many :courses, foreign_key: "category_id", dependent: :restrict_with_error
+
   # validations
   validates :name, presence: true
   validates :position, presence: true, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
@@ -33,6 +36,7 @@ class CourseCategory < ApplicationRecord
 
   # callbacks
   before_validation :clean_name, if: -> { name.present? }
+  before_discard :ensure_subtree_has_no_active_courses
   after_discard :discard_children
 
   def self.visible_columns
@@ -55,5 +59,13 @@ class CourseCategory < ApplicationRecord
 
   def clean_name
     self.name = name.strip
+  end
+
+  def ensure_subtree_has_no_active_courses
+    has_active = courses.kept.exists? || descendants.kept.joins(:courses).merge(Course.kept).exists?
+    return unless has_active
+
+    errors.add(:base, :has_active_courses)
+    throw(:abort)
   end
 end
