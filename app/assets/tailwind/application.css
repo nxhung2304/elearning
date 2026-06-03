@@ -5,6 +5,57 @@
 @source inline("{bg,text}-{emerald,amber,red,slate}-{100,600,700,800}");
 @source inline("border-current");
 
+/* TomSelect: override DaisyUI select styles on the wrapper */
+.ts-wrapper,
+.ts-wrapper.select,
+.ts-wrapper.select-bordered {
+  padding: 0;
+  height: auto;
+  min-height: 0;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+}
+.ts-control {
+  background: #fff;
+  border: 1px solid #d1d5db;
+  border-radius: 0.375rem;
+  padding: 0.5rem 0.875rem;
+  font-size: 0.875rem;
+  min-height: 2.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  cursor: text;
+  color: #0f172a;
+}
+.ts-wrapper.focus .ts-control {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 2px #bfdbfe;
+  outline: none;
+}
+.ts-dropdown {
+  background: #fff;
+  border: 1px solid #d1d5db;
+  border-radius: 0.375rem;
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+  z-index: 50;
+}
+.ts-dropdown .option {
+  padding: 0.5rem 0.875rem;
+  cursor: pointer;
+  color: #0f172a;
+}
+.ts-dropdown .option.active {
+  background: #f1f5f9;
+  color: #0f172a;
+}
+.ts-dropdown .option.selected {
+  font-weight: 500;
+}
+
 @layer components {
   .search-field {
     @apply flex-1 rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-slate-900
