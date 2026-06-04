@@ -7,6 +7,7 @@ en:
       user_role: User Role
       profile: Profile
       course_category: Course category
+      course: Course
     attributes:
       user:
         email: Email
@@ -35,3 +36,24 @@ en:
         ancestry: Ancestry
         position: Position
         discarded_at: Discarded at
+      course:
+        title: Title
+        slug: Slug
+        description: Description
+        level: Level
+        language: Language
+        price: Price
+        total_lessons: Total lessons
+        status: Status
+        published_at: Published at
+        discarded_at: Discarded at
+        category_id: Category
+        teacher_id: Teacher
+  errors:
+    models:
+      course:
+        attributes:
+          published_at:
+            status_must_published: can only be set when status is published
+      course_category:
+        has_active_courses: cannot be discarded while it has active courses

@@ -78,7 +78,7 @@ has_many :roles, through: :user_roles
 
 ### [Model] User ✅
 
-> Schema: [[20-Projects/elearning/erd#users|ERD → users]]
+> Schema: [[erd#users|ERD → users]]
 
 **Minitest:**
 - Happy case: status present, set all enum values
@@ -98,7 +98,7 @@ has_many :roles, through: :user_roles
 
 ### [Model] Profile + [CRUD] Profile
 
-> Schema: [[20-Projects/elearning/erd#profiles|ERD → profiles]]
+> Schema: [[erd#profiles|ERD → profiles]]
 
 **Controller:**
 - `Edit` / `Update` — Student/Teacher tự edit profile của mình
@@ -113,7 +113,7 @@ has_many :roles, through: :user_roles
 ## Week 3-4 | Courses + Sections + Lessons
 
 - [x] [Model] CourseCategory — ancestry (nested), friendly_id (slug), i18n (en) ✅ 2026-05-31
-- [ ] [CRUD] CourseCategory — Admin CRUD, Pagy
+- [x] [CRUD] CourseCategory — Admin CRUD, Pagy ✅ 2026-06-03
 - [ ] [Model] Course — enums (draft/published/archived), level, language, associations, i18n (en)
 - [ ] [CRUD] Course — Teacher CRUD + search (title, category, level) + Pagy; Student browse
 - [ ] [Model] Section — position, associations, i18n (en)
@@ -127,8 +127,8 @@ has_many :roles, through: :user_roles
 
 ### [Model] CourseCategory + [CRUD]
 
-> Schema: [[20-Projects/elearning/erd#course_categories|ERD → course_categories]]
-> Spec: [[20-Projects/elearning/issues/10-model-course-category]]
+> Schema: [[erd#course_categories|ERD → course_categories]]
+> Spec: [[20-Projects/personal/elearning/issues/10-model-course-category]]
 
 **Gems:** `ancestry` (self-referential tree via string path), `friendly_id` (auto-slug, locked after create)
 
@@ -157,11 +157,11 @@ has_ancestry
 
 ### [Model] Course + [CRUD]
 
-> Schema: [[20-Projects/elearning/erd#courses|ERD → courses]]
+> Schema: [[erd#courses|ERD → courses]]
 
 > ⚠️ **When Course model is created, also update `CourseCategory`:**
 > - Add `has_many :courses` association
-> - Add `before_discard :ensure_subtree_has_no_active_courses` guard (see [[20-Projects/elearning/issues/10-model-course-category]] for implementation)
+> - Add `before_discard :ensure_subtree_has_no_active_courses` guard (see [[20-Projects/personal/elearning/issues/10-model-course-category]] for implementation)
 
 **Minitest model:**
 - Happy: present values
@@ -180,7 +180,7 @@ has_ancestry
 
 ### [Model] Section + [CRUD]
 
-> Schema: [[20-Projects/elearning/erd#sections|ERD → sections]]
+> Schema: [[erd#sections|ERD → sections]]
 
 **Controller (nested dưới Course):**
 - Index, Show, Create, Update, Destroy
@@ -198,7 +198,7 @@ has_ancestry
 
 ### [Model] Lesson + [CRUD]
 
-> Schema: [[20-Projects/elearning/erd#lessons|ERD → lessons]]
+> Schema: [[erd#lessons|ERD → lessons]]
 
 **Validations:**
 - `content` hoặc `video_url` phải có ít nhất 1
@@ -221,7 +221,7 @@ has_ancestry
 
 ### [Model] LessonResource + [CRUD]
 
-> Schema: [[20-Projects/elearning/erd#lesson_resources|ERD → lesson_resources]]
+> Schema: [[erd#lesson_resources|ERD → lesson_resources]]
 
 **Controller:**
 - Teacher upload file đính kèm vào lesson
@@ -249,7 +249,7 @@ has_ancestry
 
 ### [Model] EventLog
 
-> Schema: [[20-Projects/elearning/erd#event_logs|ERD → event_logs]]
+> Schema: [[erd#event_logs|ERD → event_logs]]
 
 **Notes:**
 - Không include Discard::Model
@@ -260,7 +260,7 @@ has_ancestry
 
 ### [Model] Enrollment + [CRUD]
 
-> Schema: [[20-Projects/elearning/erd#enrollments|ERD → enrollments]]
+> Schema: [[erd#enrollments|ERD → enrollments]]
 
 **Business rules:**
 - Không enroll duplicate (uniq index trên [user_id, course_id])
@@ -285,7 +285,7 @@ has_ancestry
 
 ### [Model] LessonProgress + [CRUD]
 
-> Schema: [[20-Projects/elearning/erd#lesson_progresses|ERD → lesson_progresses]]
+> Schema: [[erd#lesson_progresses|ERD → lesson_progresses]]
 
 **Minitest model:**
 - Happy: update watched seconds, mark complete
@@ -302,7 +302,7 @@ has_ancestry
 
 ### [Model] CourseProgress
 
-> Schema: [[20-Projects/elearning/erd#course_progresses|ERD → course_progresses]]
+> Schema: [[erd#course_progresses|ERD → course_progresses]]
 
 **Notes:**
 - Không update trực tiếp — chỉ update qua `UpdateCourseProgressJob`

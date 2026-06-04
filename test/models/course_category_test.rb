@@ -24,6 +24,10 @@ class CourseCategoryTest < ActiveSupport::TestCase
     assert build(:course_category).valid?
   end
 
+  context :associations do
+    should have_many(:courses).dependent(:restrict_with_error)
+  end
+
   context "validations" do
     subject { build(:course_category) }
 
