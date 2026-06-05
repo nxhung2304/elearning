@@ -17,8 +17,27 @@ class ApplicationRecord < ActiveRecord::Base
     column_names - RANSACK_DENYLIST
   end
 
-  def self.visible_columns
+  def self.ransackable_associations(auth_object = nil)
+    reflect_on_all_associations.map { |a| a.name.to_s }
+  end
+
+  def self.form_columns
     column_names - RANSACK_DENYLIST - %w[id]
+  end
+
+  def self.visible_columns
+    form_columns.map do |col|
+      if col.end_with?("_id")
+        assoc_name = col.delete_suffix("_id").to_sym
+        reflect_on_association(assoc_name) ? assoc_name.to_s : col
+      else
+        col
+      end
+    end
+  end
+
+  def self.index_columns
+    visible_columns
   end
 
   def self.timestamp_columns

@@ -9,4 +9,11 @@ Rails.application.routes.draw do
   root "home#index"
   resource :profile, only: %i[edit update]
   resources :course_categories
+  resources :courses do
+    member do
+      patch "publish"
+      patch "unpublish"
+      patch "archive"
+    end
+  end
 end

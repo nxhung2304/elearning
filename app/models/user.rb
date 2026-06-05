@@ -36,6 +36,10 @@ class User < ApplicationRecord
 
   validates :status, presence: true
 
+  scope :teachers, -> {
+    joins(:roles).where(roles: { code: Role::TEACHER })
+  }
+
   def active_for_authentication?
     super && status_active?
   end
@@ -48,6 +52,8 @@ class User < ApplicationRecord
     else super
     end
   end
+
+  def to_s = name.presence || email
 
   def has_role?(role_code)
     roles.any? { |role| role.code == role_code.to_s }

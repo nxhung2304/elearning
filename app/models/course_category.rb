@@ -43,6 +43,8 @@ class CourseCategory < ApplicationRecord
     super - %w[ancestry position slug]
   end
 
+  def to_s = name
+
   def should_generate_new_friendly_id?
     slug.blank?
   end

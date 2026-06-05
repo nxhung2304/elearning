@@ -115,7 +115,7 @@ has_many :roles, through: :user_roles
 - [x] [Model] CourseCategory — ancestry (nested), friendly_id (slug), i18n (en) ✅ 2026-05-31
 - [x] [CRUD] CourseCategory — Admin CRUD, Pagy ✅ 2026-06-03
 - [ ] [Model] Course — enums (draft/published/archived), level, language, associations, i18n (en)
-- [ ] [CRUD] Course — Teacher CRUD + search (title, category, level) + Pagy; Student browse
+- [x] [CRUD] Course — Teacher CRUD + search (title, category, level) + Pagy; Student browse ✅ 2026-06-13
 - [ ] [Model] Section — position, associations, i18n (en)
 - [ ] [CRUD] Section — Teacher CRUD (nested dưới Course)
 - [ ] [Model] Lesson — lesson_type enum (video/text/mixed), is_published, associations, i18n (en)
