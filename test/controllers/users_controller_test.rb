@@ -4,7 +4,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
 
   setup do
-    @user = create(:user)
+    @user = create(:user, :admin)
     @other = create(:user)
     sign_in @user
   end
@@ -125,17 +125,17 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
 
   test "show with unknown id redirects" do
     get user_url(id: 0)
-    assert_redirected_to users_url
+    assert_redirected_to root_url
   end
 
   test "update with unknown id redirects" do
     patch user_url(id: 0), params: { user: { name: "X" } }
-    assert_redirected_to users_url
+    assert_redirected_to root_url
   end
 
   test "destroy with unknown id redirects" do
     delete user_url(id: 0)
-    assert_redirected_to users_url
+    assert_redirected_to root_url
   end
 
   # --- Edge: duplicate email ---

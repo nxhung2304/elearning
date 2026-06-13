@@ -23,19 +23,20 @@ class CourseCategory < ApplicationRecord
 
   friendly_id :name, use: %i[slugged finders]
   has_ancestry
+  positioned
 
   # associations
   has_many :courses, foreign_key: "category_id", dependent: :restrict_with_error
 
   # validations
   validates :name, presence: true
-  validates :position, presence: true, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
   validates :slug, presence: true
 
   validate :parent_must_be_kept, if: -> { parent.present? }
 
   # callbacks
   before_validation :clean_name, if: -> { name.present? }
+
   before_discard :ensure_subtree_has_no_active_courses
   after_discard :discard_children
 

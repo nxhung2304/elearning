@@ -8,6 +8,7 @@ en:
       profile: Profile
       course_category: Course category
       course: Course
+      section: Section
     attributes:
       user:
         email: Email
@@ -49,6 +50,10 @@ en:
         discarded_at: Discarded at
         category_id: Category
         teacher_id: Teacher
+      section:
+        title: Title
+        position: Position
+        discarded_at: Discarded at
   errors:
     models:
       course:

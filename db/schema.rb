@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_06_03_075418) do
+ActiveRecord::Schema[8.1].define(version: 2026_06_13_084224) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -108,6 +108,19 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_03_075418) do
     t.index ["code"], name: "index_roles_on_code", unique: true
   end
 
+  create_table "sections", force: :cascade do |t|
+    t.bigint "course_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "discarded_at"
+    t.boolean "discarded_by_course", default: false, null: false
+    t.integer "position", default: 0, null: false
+    t.string "title", null: false
+    t.datetime "updated_at", null: false
+    t.index ["course_id", "position"], name: "index_sections_on_course_id_and_position"
+    t.index ["course_id"], name: "index_sections_on_course_id"
+    t.index ["discarded_at"], name: "index_sections_on_discarded_at"
+  end
+
   create_table "user_roles", force: :cascade do |t|
     t.bigint "role_id", null: false
     t.bigint "user_id", null: false
@@ -136,6 +149,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_03_075418) do
   add_foreign_key "courses", "course_categories", column: "category_id"
   add_foreign_key "courses", "users", column: "teacher_id"
   add_foreign_key "profiles", "users"
+  add_foreign_key "sections", "courses"
   add_foreign_key "user_roles", "roles"
   add_foreign_key "user_roles", "users"
 end

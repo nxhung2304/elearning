@@ -32,8 +32,6 @@ class CourseCategoryTest < ActiveSupport::TestCase
     subject { build(:course_category) }
 
     should validate_presence_of(:name)
-
-    should validate_numericality_of(:position).only_integer.is_greater_than_or_equal_to(0)
   end
 
   context "slug" do

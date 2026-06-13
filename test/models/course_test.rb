@@ -41,6 +41,7 @@ class CourseTest < ActiveSupport::TestCase
   context :associations do
     should belong_to(:category).class_name("CourseCategory").with_foreign_key("category_id")
     should belong_to(:teacher).class_name("User").with_foreign_key("teacher_id")
+    should have_many(:sections).dependent(:restrict_with_error)
   end
 
   context "validations" do
@@ -71,5 +72,27 @@ class CourseTest < ActiveSupport::TestCase
     course.reload
 
     assert_not course.published_at
+  end
+
+  context "discarded a course" do
+    setup do
+      @course = create(:course)
+      @section = create(:section, course: @course)
+    end
+
+    should "discarded sections" do
+      @course.discard
+
+      assert @course.reload.discarded?
+      assert @section.reload.discarded?
+    end
+
+    should "restore sections when undiscarded" do
+      @course.discard
+      @course.undiscard
+
+      assert @course.undiscarded?
+      assert @section.undiscarded?
+    end
   end
 end
