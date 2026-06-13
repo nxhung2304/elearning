@@ -1,0 +1,16 @@
+<% add_breadcrumb "Courses", courses_path %>
+<% add_breadcrumb @course.title, course_path(@course) %>
+<% add_breadcrumb t('.title') %>
+
+<section class="mx-auto max-w-2xl px-6 py-8">
+  <div class="mb-6 flex items-center justify-between">
+    <h1 class="text-2xl font-bold text-slate-900">
+      <%= t("helpers.submit.update", model: Course.model_name.human, default: "Edit Course") %>
+    </h1>
+    <% if can?(:destroy, @course) %>
+      <%= link_to t("helpers.links.delete", default: "Delete"), course_path(@course), method: :delete, data: { confirm: t("helpers.confirmations.delete", model: Course.model_name.human) }, class: "text-sm text-red-600 hover:text-red-900" %>
+    <% end %>
+  </div>
+
+  <%= render "form", course: @course %>
+</section>

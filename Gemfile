@@ -26,6 +26,7 @@ gem "friendly_id", "~> 5.5.0"
 group :development do
   gem "letter_opener_web"
   gem "overcommit"
+  gem "solargraph"
 end
 
 group :development, :test do

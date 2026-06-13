@@ -13,7 +13,10 @@
 #  index_roles_on_code  (code) UNIQUE
 #
 class Role < ApplicationRecord
-  CODES = %w[admin teacher student].freeze
+  ADMIN = "admin".freeze
+  TEACHER = "teacher".freeze
+  STUDENT = "student".freeze
+  CODES = [ ADMIN, TEACHER, STUDENT ].freeze
 
   has_many :user_roles, dependent: :destroy
   has_many :users, through: :user_roles

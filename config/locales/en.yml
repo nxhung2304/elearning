@@ -12,6 +12,9 @@ en:
     updated: "%{text} was successfully updated."
     destroyed: "%{text} was successfully destroyed."
     destroy_fail: "Could not destroy %{text}."
+    published: "%{text} was successfully published."
+    drafted: "%{text} was successfully moved to draft."
+    archived: "%{text} was successfully archived."
 
   helpers:
     confirm: "Are you sure?"

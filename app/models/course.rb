@@ -60,6 +60,24 @@ class Course < ApplicationRecord
     slug.blank?
   end
 
+  def self.visible_columns = super - %w[slug published_at]
+
+  def self.form_columns = super - %w[slug published_at teacher_id]
+
+  def self.index_columns = %w[title category teacher status price]
+
+  def publish
+    update status: :published
+  end
+
+  def unpublish
+    update status: :draft, published_at: nil
+  end
+
+  def archive
+    update status: :archived
+  end
+
   private
 
     def set_published_at
