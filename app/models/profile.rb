@@ -30,7 +30,7 @@ class Profile < ApplicationRecord
   validates :user_id, uniqueness: true
   validates :full_name, presence: true
 
-  def self.visible_columns
-    super - %w[user_id]
-  end
+  def self.visible_columns = super - %w[user_id]
+  def self.form_columns    = super
+  def self.index_columns   = super
 end

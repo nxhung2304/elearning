@@ -1,6 +1,6 @@
 require "test_helper"
-require "pry-rails"
 
+<% actions = (respond_to?(:actions) ? send(:actions) : nil) || %w[index show new edit create update destroy] -%>
 <% is_resource = file_name == file_name.pluralize || (actions & %w[create update destroy]).any? -%>
 <% resource_name  = file_name.singularize -%>
 <% resource_class = class_name.demodulize.singularize -%>

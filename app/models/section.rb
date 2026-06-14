@@ -34,4 +34,8 @@ class Section < ApplicationRecord
 
   # scopes
   scope :need_restore, -> { discarded.where(discarded_by_course: true) }
+
+  def self.visible_columns = super - %w[discarded_by_course]
+  def self.form_columns    = super - %w[discarded_by_course position]
+  def self.index_columns   = %w[title position]
 end

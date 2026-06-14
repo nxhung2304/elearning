@@ -17,6 +17,12 @@ en:
       section:
         one: Section
         other: Sections
+      lesson:
+        one: Lesson
+        other: Lessons
+      test_widget:
+        one: Testwidget
+        other: Testwidgets
     attributes:
       user:
         email: Email
@@ -62,6 +68,12 @@ en:
         title: Title
         position: Position
         discarded_at: Discarded at
+      lesson:
+        title: Title
+        position: Position
+        course_id: Course
+      test_widget:
+        title: Title
   errors:
     models:
       course:

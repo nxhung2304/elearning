@@ -59,6 +59,8 @@ class Course < ApplicationRecord
   before_discard :discard_all_sections
   before_undiscard :restore_sections
 
+  def to_s = title
+
   def should_generate_new_friendly_id?
     slug.blank?
   end

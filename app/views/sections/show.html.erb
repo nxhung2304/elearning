@@ -1,0 +1,45 @@
+<% add_breadcrumb @course.title, course_path(@course) %>
+<% add_breadcrumb t("sections.index.title"), course_sections_path(@course) %>
+<% add_breadcrumb @section.title %>
+
+<section class="mx-auto max-w-3xl px-6 py-8">
+  <div class="mb-6 flex items-center justify-between">
+    <h1 class="text-2xl font-bold text-slate-900"><%= @section.title %></h1>
+    <%= link_to t("helpers.links.back", default: "Back"),
+          course_sections_path(@course),
+          class: "text-sm text-slate-500 hover:text-slate-900" %>
+  </div>
+
+  <dl class="divide-y divide-slate-200 rounded-xl border border-slate-200">
+    <div class="flex px-4 py-3 gap-4">
+      <dt class="w-1/3 font-medium text-slate-600"><%= Section.human_attribute_name(:course) %></dt>
+      <dd class="text-slate-900"><%= link_to @course.title, course_path(@course), class: "text-emerald-600 hover:underline" %></dd>
+    </div>
+    <div class="flex px-4 py-3 gap-4">
+      <dt class="w-1/3 font-medium text-slate-600"><%= Section.human_attribute_name(:position) %></dt>
+      <dd class="text-slate-900"><%= @section.position %></dd>
+    </div>
+    <div class="flex px-4 py-3 gap-4">
+      <dt class="w-1/3 font-medium text-slate-600"><%= Section.human_attribute_name(:created_at) %></dt>
+      <dd class="text-slate-500 text-sm"><%= @section.created_at&.strftime("%Y-%m-%d %H:%M") %></dd>
+    </div>
+    <div class="flex px-4 py-3 gap-4">
+      <dt class="w-1/3 font-medium text-slate-600"><%= Section.human_attribute_name(:updated_at) %></dt>
+      <dd class="text-slate-500 text-sm"><%= @section.updated_at&.strftime("%Y-%m-%d %H:%M") %></dd>
+    </div>
+  </dl>
+
+  <div class="mt-6 flex items-center gap-3">
+    <% if can?(:update, @section) %>
+      <%= link_to t("helpers.links.edit", default: "Edit"),
+            edit_course_section_path(@course, @section),
+            class: "rounded-lg border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 hover:border-slate-900" %>
+    <% end %>
+    <% if can?(:destroy, @section) %>
+      <%= link_to t("helpers.links.delete", default: "Delete"),
+            course_section_path(@course, @section),
+            data: { turbo_method: :delete, turbo_confirm: t("helpers.confirmations.delete", model: Section.model_name.human) },
+            class: "text-sm text-red-600 hover:text-red-900" %>
+    <% end %>
+  </div>
+</section>

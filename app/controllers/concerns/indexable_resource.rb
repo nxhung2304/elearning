@@ -15,6 +15,8 @@ module IndexableResource
 
     @pagy, records = pagy(scope)
 
+    records = records.kept if records.respond_to?(:kept)
+
     instance_variable_set("@#{controller_name}", records)
   end
 

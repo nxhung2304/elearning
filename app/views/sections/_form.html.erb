@@ -1,0 +1,12 @@
+<%= simple_form_for [@course, section], html: { autocomplete: "off" } do |f| %>
+  <%= f.input :title %>
+
+  <div class="mt-6 flex items-center gap-3">
+    <%= f.button :submit,
+          t("helpers.submit.#{section.persisted? ? :update : :create}", model: Section.model_name.human),
+          class: "rounded-lg #{section.persisted? ? "bg-slate-900 hover:bg-slate-700" : "bg-emerald-600 hover:bg-emerald-700"} px-4 py-2 text-sm font-medium text-white" %>
+    <%= link_to t("helpers.links.cancel", default: "Cancel"),
+          course_sections_path(@course),
+          class: "text-sm text-slate-500 hover:text-slate-900" %>
+  </div>
+<% end %>

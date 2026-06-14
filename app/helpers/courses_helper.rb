@@ -6,10 +6,10 @@ module CoursesHelper
     link_to text, link, class: "text-sm text-slate-500 hover:text-slate-900", data: { turbo_method: :patch }
   end
 
-  def display_course_columns(course)
-    display_columns_by_type(Course.index_columns, course, {
+  def course_column_links
+    {
       "category" => { path: ->(cat)  { course_category_path(cat) }, label: :name },
       "teacher"  => { path: ->(user) { user_path(user) },           label: :email }
-    })
+    }
   end
 end

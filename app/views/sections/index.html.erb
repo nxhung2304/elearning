@@ -1,31 +1,20 @@
+<% add_breadcrumb @course.title, course_path(@course) %>
 <% add_breadcrumb t('.title') %>
 
 <section class="mx-auto max-w-6xl px-6 py-8">
   <div class="mb-6 flex items-center justify-between">
     <h1 class="text-2xl font-bold text-slate-900">
-      <%= title_for(@courses) %>
+      <%= title_for(@sections) %>
     </h1>
-    <%= link_to t("helpers.links.new", model: Course.model_name.human, default: "New Course"),
-          new_course_path,
+    <%= link_to t("helpers.links.new", model: Section.model_name.human, default: "New Section"),
+          new_course_section_path(@course),
           class: "rounded-lg bg-emerald-600 px-4 py-2 text-sm font-medium text-white hover:bg-emerald-700" %>
   </div>
 
-  <%= search_form_for @q, url: courses_path, html: { class: "mb-6" } do |f| %>
+  <%= search_form_for @q, url: course_sections_path(@course), html: { class: "mb-6" } do |f| %>
     <div class="flex gap-2">
-      <%= f.select :teacher_id_eq,
-            @teacher_collection,
-            { include_blank: Course.human_attribute_name(:teacher), selected: @q.teacher_id_eq },
-            class: "search-field" %>
-      <%= f.select :category_id_eq,
-            @category_collection,
-            { include_blank: Course.human_attribute_name(:category), selected: @q.category_id_eq },
-            class: "search-field" %>
       <%= f.search_field :title_cont,
-            placeholder: Course.human_attribute_name(:title),
-            class: "search-field" %>
-      <%= f.select :status_eq,
-            Course.statuses.map { |s, v| [Course.human_attribute_name("status.#{s}"), v] },
-            { include_blank: Course.human_attribute_name(:status), selected: @q.status_eq },
+            placeholder: Section.human_attribute_name(:title),
             class: "search-field" %>
       <%= f.submit t("helpers.search.submit", default: "Search"),
             class: "cursor-pointer rounded-lg bg-slate-100 px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-200" %>
@@ -36,23 +25,30 @@
     <table class="w-full text-sm">
       <thead class="bg-slate-50">
         <tr>
-          <% Course.index_columns.each do |col| %>
-            <th class="px-4 py-3 text-left font-bold text-slate-600"><%= Course.human_attribute_name(col) %></th>
+          <% Section.index_columns.each do |col| %>
+            <th class="px-4 py-3 text-left font-bold text-slate-600"><%= Section.human_attribute_name(col) %></th>
           <% end %>
+          <th class="px-4 py-3"></th>
         </tr>
       </thead>
       <tbody class="divide-y divide-slate-200">
-        <% @courses.each do |course| %>
+        <% @sections.each do |section| %>
           <tr class="hover:bg-slate-50">
-            <% display_resource_columns(course) %>
+            <% display_resource_columns(section) %>
             <td class="px-4 py-3 text-right">
               <%= link_to t("helpers.links.show", default: "Show"),
-                    course_path(course),
+                    course_section_path(@course, section),
                     class: "rounded-md border border-slate-300 px-4 py-1.5 text-xs font-medium text-slate-600 hover:border-slate-900 hover:text-slate-900 mr-2" %>
-              <% if can?(:update, course) %>
+              <% if can?(:update, section) %>
                 <%= link_to t("helpers.links.edit", default: "Edit"),
-                      edit_course_path(course),
+                      edit_course_section_path(@course, section),
                       class: "rounded-md border border-slate-300 px-4 py-1.5 text-xs font-medium text-slate-600 hover:border-slate-900 hover:text-slate-900 mr-2" %>
+              <% end %>
+              <% if can?(:destroy, section) %>
+                <%= link_to t("helpers.links.delete", default: "Delete"),
+                      course_section_path(@course, section),
+                      data: { turbo_method: :delete, turbo_confirm: t("helpers.confirmations.delete", model: Section.model_name.human) },
+                      class: "rounded-md border border-red-200 px-4 py-1.5 text-xs font-medium text-red-600 hover:border-red-600 hover:text-red-900" %>
               <% end %>
             </td>
           </tr>

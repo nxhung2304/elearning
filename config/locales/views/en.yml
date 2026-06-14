@@ -33,3 +33,10 @@ en:
       title: "Edit"
     new:
       title: "New"
+  sections:
+    index:
+      title: "Sections"
+    edit:
+      title: "Edit"
+    new:
+      title: "New"
