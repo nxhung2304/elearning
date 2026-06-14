@@ -41,4 +41,8 @@ module ApplicationHelper
       "bg-gray-100 text-gray-800"
     end
   end
+
+  def index_title_for(model_class)
+    model_class.model_name.human(count: :many)
+  end
 end
