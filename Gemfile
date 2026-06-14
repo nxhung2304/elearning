@@ -22,6 +22,7 @@ gem "tzinfo-data", platforms: %i[ windows jruby ]
 gem "cancancan"
 gem "ancestry"
 gem "friendly_id", "~> 5.5.0"
+gem "positioning"
 
 group :development do
   gem "letter_opener_web"

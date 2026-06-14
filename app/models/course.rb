@@ -39,6 +39,7 @@ class Course < ApplicationRecord
 
   belongs_to :category, class_name: "CourseCategory", foreign_key: "category_id"
   belongs_to :teacher, class_name: "User", foreign_key: "teacher_id"
+  has_many :sections, dependent: :restrict_with_error
 
   enum :level, { beginner: 0, intermediate: 1, advanced: 2 }, validate: true
   enum :language, { english: 0, vietnamese: 1 }, validate: true
@@ -55,6 +56,8 @@ class Course < ApplicationRecord
   validate :published_at_requires_published_status
 
   before_validation :set_published_at
+  before_discard :discard_all_sections
+  before_undiscard :restore_sections
 
   def should_generate_new_friendly_id?
     slug.blank?
@@ -88,5 +91,17 @@ class Course < ApplicationRecord
 
     def published_at_requires_published_status
       errors.add(:published_at, :status_must_published) if !published? && published_at.present?
+    end
+
+    def discard_all_sections
+      sections.kept.each do |section|
+        section.discard
+        section.update! discarded_by_course: true
+      end
+    end
+
+    def restore_sections
+      sections.need_restore.undiscard_all
+      sections.update_all discarded_by_course: false
     end
 end

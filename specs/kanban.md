@@ -6,7 +6,6 @@ kanban-plugin: board
 
 ## 📋 Todo
 
-- [ ] **[W3-4]** [Model] Section — position, associations, i18n (en)
 - [ ] **[W3-4]** [CRUD] Section — Teacher CRUD (nested dưới Course)
 - [ ] **[W3-4]** [Model] Lesson — lesson_type enum (video/text/mixed), is_published, associations, i18n (en)
 - [ ] **[W3-4]** [CRUD] Lesson — Teacher CRUD (nested dưới Section) + ActiveStorage upload video
@@ -19,6 +18,7 @@ kanban-plugin: board
 
 ## ✅ Done
 
+- [x] **[W3-4]** [[20-Projects/personal/elearning/issues/14-add-section-model|[Model] Section]] [#30](https://github.com/nxhung2304/elearning/issues/30) — positioning gem, soft delete, cascade discard from Course ✅ 2026-06-13
 - [x] **[W3-4]** [[20-Projects/personal/elearning/issues/13-crud-course-teacher-crud-search-pagy-student-browse|[CRUD] Course]] [#28](https://github.com/nxhung2304/elearning/issues/28) — Teacher CRUD + search (title, category, level) + Pagy; Student browse ✅ 2026-06-13
 - [x] **[W3-4]** [[20-Projects/personal/elearning/issues/12-model-course|[Model] Course]] [#26](https://github.com/nxhung2304/elearning/issues/26) — enums (draft/published/archived), level, language, associations, i18n (en) ✅ 2026-06-03
 - [x] **[W1-2]** [[9-crud-profile-student-teacher-edit-profile|[CRUD] Profile]] [#20](https://github.com/nxhung2304/elearning/issues/20) — Student/Teacher tự edit profile ✅ 2026-05-30

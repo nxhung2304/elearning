@@ -42,7 +42,11 @@ FactoryBot.define do
     price { rand(1.0..100.0).round(2) }
     total_lessons { rand(1..100) }
     status { :draft }
-    discarded_at { Time.current }
+    discarded_at { nil }
+
+    trait :discarded do
+      discarded_at { Time.current }
+    end
 
     trait :published do
       status { :published }

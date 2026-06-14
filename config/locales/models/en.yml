@@ -2,12 +2,21 @@
 en:
   activerecord:
     models:
-      user: User
+      user:
+        one: User
+        other: Users
       role: Role
       user_role: User Role
       profile: Profile
-      course_category: Course category
-      course: Course
+      course_category:
+        one: Course Category
+        other: Course Categories
+      course:
+        one: Course
+        other: Courses
+      section:
+        one: Section
+        other: Sections
     attributes:
       user:
         email: Email
@@ -49,6 +58,10 @@ en:
         discarded_at: Discarded at
         category_id: Category
         teacher_id: Teacher
+      section:
+        title: Title
+        position: Position
+        discarded_at: Discarded at
   errors:
     models:
       course:

@@ -3,7 +3,7 @@
 <section class="mx-auto max-w-6xl px-6 py-8">
   <div class="mb-6 flex items-center justify-between">
     <h1 class="text-2xl font-bold text-slate-900">
-      <%= t("activerecord.models.course.other", default: "Courses") %>
+      <%= index_title_for(Course) %>
     </h1>
     <%= link_to t("helpers.links.new", model: Course.model_name.human, default: "New Course"),
           new_course_path,
