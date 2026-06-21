@@ -13,12 +13,8 @@ class <%= class_name %> < ApplicationRecord
   has_secure_password
 <% end -%>
 
-  def self.ransackable_attributes(auth_object = nil)
-    attribute_names + _ransackers.keys
-  end
-
-  def self.ransackable_associations(auth_object = nil)
-    reflect_on_all_associations.map { |a| a.name.to_s }
-  end
+  def self.visible_columns = super
+  def self.form_columns    = super
+  def self.index_columns   = super
 end
 <% end -%>

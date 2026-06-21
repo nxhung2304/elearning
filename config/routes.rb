@@ -15,5 +15,7 @@ Rails.application.routes.draw do
       patch "unpublish"
       patch "archive"
     end
+
+    resources :sections
   end
 end

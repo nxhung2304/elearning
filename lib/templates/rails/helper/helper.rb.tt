@@ -1,0 +1,10 @@
+module <%= class_name %>Helper
+  # Uncomment and fill in path helpers for each belongs_to association
+  # to render linked labels in display_resource_columns.
+  #
+  # def <%= file_name %>_column_links
+  #   {
+  #     "association" => { path: ->(record) { association_path(record) }, label: :name }
+  #   }
+  # end
+end

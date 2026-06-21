@@ -1,0 +1,11 @@
+<% add_breadcrumb t("courses.show.title"), course_path(@course) %>
+<% add_breadcrumb t("sections.index.title"), course_sections_path(@course) %>
+<% add_breadcrumb t('.title') %>
+
+<section class="mx-auto max-w-2xl px-6 py-8">
+  <h1 class="mb-6 text-2xl font-bold text-slate-900">
+    <%= t("helpers.submit.create", model: Section.model_name.human, default: "New Section") %>
+  </h1>
+
+  <%= render "form", section: @section %>
+</section>

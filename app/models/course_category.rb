@@ -40,9 +40,9 @@ class CourseCategory < ApplicationRecord
   before_discard :ensure_subtree_has_no_active_courses
   after_discard :discard_children
 
-  def self.visible_columns
-    super - %w[ancestry position slug]
-  end
+  def self.visible_columns = super - %w[ancestry position slug]
+  def self.form_columns    = super
+  def self.index_columns   = super
 
   def to_s = name
 

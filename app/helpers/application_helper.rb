@@ -25,8 +25,16 @@ module ApplicationHelper
         next
       end
 
-      concat content_tag(:td, resource.public_send(col), class: "px-4 py-3")
+      value = resource.public_send(col)
+      display = value.is_a?(ActiveRecord::Base) ? infer_record_label(value) : value
+      concat content_tag(:td, display, class: "px-4 py-3")
     end
+  end
+
+  def display_resource_columns(resource, with_links: true)
+    method_name = :"#{resource.model_name.singular}_column_links"
+    links = with_links && respond_to?(method_name) ? public_send(method_name) : {}
+    display_columns_by_type(resource.class.index_columns, resource, links)
   end
 
   def status_badge_color(status)
@@ -42,7 +50,18 @@ module ApplicationHelper
     end
   end
 
-  def index_title_for(model_class)
-    model_class.model_name.human(count: :many)
+  def title_for(resource)
+    if resource.respond_to?(:to_ary)
+      resource.model.model_name.human(count: 2)
+    else
+      resource.class.model_name.human(count: 1)
+    end
   end
+
+  private
+
+    def infer_record_label(record)
+      %i[name title email].find { |m| record.respond_to?(m) }
+                          &.then { |m| record.public_send(m) } || record.to_s
+    end
 end
