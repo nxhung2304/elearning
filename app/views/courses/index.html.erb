@@ -36,15 +36,22 @@
     <table class="w-full text-sm">
       <thead class="bg-slate-50">
         <tr>
-          <% Course.index_columns.each do |col| %>
-            <th class="px-4 py-3 text-left font-bold text-slate-600"><%= Course.human_attribute_name(col) %></th>
-          <% end %>
+          <th class="px-4 py-3 text-left font-bold text-slate-600"><%= Course.human_attribute_name(:title) %></th>
+          <th class="px-4 py-3 text-left font-bold text-slate-600"><%= Course.human_attribute_name(:category) %></th>
+          <th class="px-4 py-3 text-left font-bold text-slate-600"><%= Course.human_attribute_name(:teacher) %></th>
+          <th class="px-4 py-3 text-left font-bold text-slate-600"><%= Course.human_attribute_name(:status) %></th>
+          <th class="px-4 py-3 text-left font-bold text-slate-600"><%= Course.human_attribute_name(:price) %></th>
+          <th class="px-4 py-3"></th>
         </tr>
       </thead>
       <tbody class="divide-y divide-slate-200">
         <% @courses.each do |course| %>
           <tr class="hover:bg-slate-50">
-            <% display_resource_columns(course) %>
+            <td class="px-4 py-3 text-slate-700"><%= course.title %></td>
+            <td class="px-4 py-3 text-slate-700"><%= course.category %></td>
+            <td class="px-4 py-3 text-slate-700"><%= course.teacher.name %></td>
+            <td class="px-4 py-3"><%= render "shared/status_badge", status: course.status %></td>
+            <td class="px-4 py-3 text-slate-700"><%= course.price %></td>
             <td class="px-4 py-3 text-right">
               <%= link_to t("helpers.links.show", default: "Show"),
                     course_path(course),

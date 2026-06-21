@@ -1,12 +1,5 @@
 <%= simple_form_for course_category, html: { autocomplete: "off" } do |f| %>
-  <% course_category.class.visible_columns.each do |col| %>
-    <% if course_category.class.defined_enums.key?(col) %>
-      <%= f.input col.to_sym, as: :select, collection: course_category.class.defined_enums[col].keys, include_blank: false, wrapper: :select,
-            input_html: { data: { controller: "select" } } %>
-    <% else %>
-      <%= f.input col.to_sym %>
-    <% end %>
-  <% end %>
+  <%= f.input :name %>
 
   <%= f.input :parent_id,
               as: :select,

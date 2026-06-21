@@ -1,14 +1,7 @@
 <%= simple_form_for profile, url: profile_path, html: { autocomplete: "off" } do |f| %>
-  <% profile.class.visible_columns.each do |col| %>
-    <% if profile.class.defined_enums.key?(col) %>
-      <%= f.input col.to_sym, as: :select, collection: profile.class.defined_enums[col].keys, include_blank: false, wrapper: :select,
-            input_html: { class: "bg-white text-slate-900" } %>
-    <% elsif col == "full_name" %>
-      <%= f.input col.to_sym, required: true %>
-    <% else %>
-      <%= f.input col.to_sym %>
-    <% end %>
-  <% end %>
+  <%= f.input :full_name, required: true %>
+  <%= f.input :bio %>
+  <%= f.input :phone %>
 
   <%= render "shared/image", f: f, image: :avatar, resource: profile %>
 

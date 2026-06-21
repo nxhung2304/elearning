@@ -1,12 +1,8 @@
 <%= simple_form_for user, html: { autocomplete: "off" } do |f| %>
-  <% user.class.visible_columns.each do |col| %>
-    <% if user.class.defined_enums.key?(col) %>
-      <%= f.input col.to_sym, as: :select, collection: user.class.defined_enums[col].keys, include_blank: false, wrapper: :select,
-            input_html: { class: "bg-white text-slate-900" } %>
-    <% else %>
-      <%= f.input col.to_sym %>
-    <% end %>
-  <% end %>
+  <%= f.input :email %>
+  <%= f.input :name %>
+  <%= f.input :status, as: :select, collection: User.statuses.keys, include_blank: false, wrapper: :select,
+        input_html: { class: "bg-white text-slate-900" } %>
 
   <%= f.input :password, required: user.new_record?, hint: (user.persisted? ? "Leave blank to keep current password" : nil), input_html: { autocomplete: "new-password" } %>
   <%= f.input :password_confirmation, required: user.new_record?, input_html: { autocomplete: "new-password" } %>

@@ -31,24 +31,18 @@
     <table class="w-full text-sm">
       <thead class="bg-slate-50">
         <tr>
-          <% User.visible_columns.each do |col| %>
-            <th class="px-4 py-3 text-left font-medium text-slate-600"><%= User.human_attribute_name(col) %></th>
-          <% end %>
+          <th class="px-4 py-3 text-left font-medium text-slate-600"><%= User.human_attribute_name(:email) %></th>
+          <th class="px-4 py-3 text-left font-medium text-slate-600"><%= User.human_attribute_name(:name) %></th>
+          <th class="px-4 py-3 text-left font-medium text-slate-600"><%= User.human_attribute_name(:status) %></th>
           <th class="px-4 py-3"></th>
         </tr>
       </thead>
       <tbody class="divide-y divide-slate-200">
         <% @users.each do |user| %>
           <tr class="hover:bg-slate-50">
-            <% User.visible_columns.each do |col| %>
-              <td class="px-4 py-3 text-slate-700">
-                <% if col == "status" %>
-                  <%= render "shared/status_badge", status: user.status %>
-                <% else %>
-                  <%= user.public_send(col) %>
-                <% end %>
-              </td>
-            <% end %>
+            <td class="px-4 py-3 text-slate-700"><%= user.email %></td>
+            <td class="px-4 py-3 text-slate-700"><%= user.name %></td>
+            <td class="px-4 py-3"><%= render "shared/status_badge", status: user.status %></td>
             <td class="px-4 py-3 text-right">
               <%= link_to t("helpers.links.show", default: "Show"),
                     user_path(user),

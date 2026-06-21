@@ -25,16 +25,16 @@
     <table class="w-full text-sm">
       <thead class="bg-slate-50">
         <tr>
-          <% Section.index_columns.each do |col| %>
-            <th class="px-4 py-3 text-left font-bold text-slate-600"><%= Section.human_attribute_name(col) %></th>
-          <% end %>
+          <th class="px-4 py-3 text-left font-bold text-slate-600"><%= Section.human_attribute_name(:title) %></th>
+          <th class="px-4 py-3 text-left font-bold text-slate-600"><%= Section.human_attribute_name(:position) %></th>
           <th class="px-4 py-3"></th>
         </tr>
       </thead>
       <tbody class="divide-y divide-slate-200">
         <% @sections.each do |section| %>
           <tr class="hover:bg-slate-50">
-            <% display_resource_columns(section) %>
+            <td class="px-4 py-3 text-slate-700"><%= section.title %></td>
+            <td class="px-4 py-3 text-slate-700"><%= section.position %></td>
             <td class="px-4 py-3 text-right">
               <%= link_to t("helpers.links.show", default: "Show"),
                     course_section_path(@course, section),
