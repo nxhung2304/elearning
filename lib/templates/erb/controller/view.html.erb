@@ -1,5 +1,7 @@
 <% resource_name  = file_name.singularize -%>
 <% resource_class = class_name.demodulize.singularize -%>
+<% plain_attrs = attributes.reject(&:reference?) -%>
+<% ref_attrs   = attributes.select(&:reference?) -%>
 <% if @action == "index" -%>
 <section class="mx-auto max-w-6xl px-6 py-8">
   <div class="mb-6 flex items-center justify-between">
@@ -26,18 +28,24 @@
     <table class="w-full text-sm">
       <thead class="bg-slate-50">
         <tr>
-          <%% <%= resource_class %>.column_names.each do |col| %>
-            <th class="px-4 py-3 text-left font-medium text-slate-600"><%%= <%= resource_class %>.human_attribute_name(col) %></th>
-          <%% end %>
+<% plain_attrs.each do |attr| -%>
+          <th class="px-4 py-3 text-left font-medium text-slate-600"><%%= <%= resource_class %>.human_attribute_name(:<%= attr.name %>) %></th>
+<% end -%>
+<% ref_attrs.each do |attr| -%>
+          <th class="px-4 py-3 text-left font-medium text-slate-600"><%%= <%= resource_class %>.human_attribute_name(:<%= attr.name %>) %></th>
+<% end -%>
           <th class="px-4 py-3"></th>
         </tr>
       </thead>
       <tbody class="divide-y divide-slate-200">
         <%% @<%= file_name %>.each do |<%= resource_name %>| %>
           <tr class="hover:bg-slate-50">
-            <%% <%= resource_class %>.column_names.each do |col| %>
-              <td class="px-4 py-3 text-slate-700"><%%= <%= resource_name %>.public_send(col) %></td>
-            <%% end %>
+<% plain_attrs.each do |attr| -%>
+            <td class="px-4 py-3 text-slate-700"><%%= <%= resource_name %>.<%= attr.name %> %></td>
+<% end -%>
+<% ref_attrs.each do |attr| -%>
+            <td class="px-4 py-3 text-slate-700"><%%= <%= resource_name %>.<%= attr.name %> %></td>
+<% end -%>
             <td class="px-4 py-3 text-right">
               <%%= link_to t("helpers.links.show", default: "Show"),
                     <%= resource_name %>_path(<%= resource_name %>),
@@ -66,12 +74,26 @@
   </div>
 
   <dl class="divide-y divide-slate-200 rounded-xl border border-slate-200">
-    <%% @<%= resource_name %>.class.column_names.each do |col| %>
-      <div class="flex px-4 py-3 gap-4">
-        <dt class="w-1/3 font-medium text-slate-600"><%%= <%= resource_class %>.human_attribute_name(col) %></dt>
-        <dd class="text-slate-900"><%%= @<%= resource_name %>.public_send(col) %></dd>
-      </div>
-    <%% end %>
+<% plain_attrs.each do |attr| -%>
+    <div class="flex px-4 py-3 gap-4">
+      <dt class="w-1/3 font-medium text-slate-600"><%%= <%= resource_class %>.human_attribute_name(:<%= attr.name %>) %></dt>
+      <dd class="text-slate-900"><%%= @<%= resource_name %>.<%= attr.name %> %></dd>
+    </div>
+<% end -%>
+<% ref_attrs.each do |attr| -%>
+    <div class="flex px-4 py-3 gap-4">
+      <dt class="w-1/3 font-medium text-slate-600"><%%= <%= resource_class %>.human_attribute_name(:<%= attr.name %>) %></dt>
+      <dd class="text-slate-900"><%%= @<%= resource_name %>.<%= attr.name %> %></dd>
+    </div>
+<% end -%>
+    <div class="flex px-4 py-3 gap-4">
+      <dt class="w-1/3 font-medium text-slate-600"><%%= <%= resource_class %>.human_attribute_name(:created_at) %></dt>
+      <dd class="text-slate-500 text-sm"><%%= @<%= resource_name %>.created_at&.strftime("%Y-%m-%d %H:%M") %></dd>
+    </div>
+    <div class="flex px-4 py-3 gap-4">
+      <dt class="w-1/3 font-medium text-slate-600"><%%= <%= resource_class %>.human_attribute_name(:updated_at) %></dt>
+      <dd class="text-slate-500 text-sm"><%%= @<%= resource_name %>.updated_at&.strftime("%Y-%m-%d %H:%M") %></dd>
+    </div>
   </dl>
 </section>
 <% elsif @action == "new" -%>
@@ -81,9 +103,12 @@
   </h1>
 
   <%%= simple_form_for @<%= resource_name %> do |f| %>
-    <%% <%= resource_class %>.column_names.reject { |c| %w[id created_at updated_at].include?(c) }.each do |col| %>
-      <%%= f.input col.to_sym %>
-    <%% end %>
+<% plain_attrs.each do |attr| -%>
+    <%%= f.input :<%= attr.name %> %>
+<% end -%>
+<% ref_attrs.each do |attr| -%>
+    <%%= f.input :<%= attr.name %>_id, as: :select, collection: [] %>
+<% end -%>
 
     <div class="mt-6 flex items-center gap-3">
       <%%= f.button :submit,
@@ -110,9 +135,12 @@
   </div>
 
   <%%= simple_form_for @<%= resource_name %> do |f| %>
-    <%% @<%= resource_name %>.class.column_names.reject { |c| %w[id created_at updated_at].include?(c) }.each do |col| %>
-      <%%= f.input col.to_sym %>
-    <%% end %>
+<% plain_attrs.each do |attr| -%>
+    <%%= f.input :<%= attr.name %> %>
+<% end -%>
+<% ref_attrs.each do |attr| -%>
+    <%%= f.input :<%= attr.name %>_id, as: :select, collection: [] %>
+<% end -%>
 
     <div class="mt-6 flex items-center gap-3">
       <%%= f.button :submit,

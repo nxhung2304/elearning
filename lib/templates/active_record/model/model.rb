@@ -12,9 +12,5 @@ class <%= class_name %> < ApplicationRecord
 <% if attributes.any?(&:password_digest?) -%>
   has_secure_password
 <% end -%>
-
-  def self.visible_columns = super
-  def self.form_columns    = super
-  def self.index_columns   = super
 end
 <% end -%>
