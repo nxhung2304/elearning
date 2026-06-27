@@ -35,4 +35,16 @@ class SectionTest < ActiveSupport::TestCase
   context "associations" do
     should belong_to(:course)
   end
+
+  context "before_discard" do
+    should "discard sections.kept" do
+      section = create(:section)
+      lesson = create(:lesson, section: section)
+
+      section.discard
+
+      assert section.reload.discarded?
+      assert lesson.reload.discarded?
+    end
+  end
 end
