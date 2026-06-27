@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_06_13_084224) do
+ActiveRecord::Schema[8.1].define(version: 2026_06_21_094146) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -88,6 +88,24 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_13_084224) do
     t.index ["sluggable_type", "sluggable_id"], name: "index_friendly_id_slugs_on_sluggable_type_and_sluggable_id"
   end
 
+  create_table "lessons", force: :cascade do |t|
+    t.text "content"
+    t.datetime "created_at", null: false
+    t.datetime "discarded_at"
+    t.integer "duration_seconds"
+    t.boolean "is_preview", default: false, null: false
+    t.boolean "is_published", default: false, null: false
+    t.integer "lesson_type", null: false
+    t.integer "position", null: false
+    t.datetime "published_at"
+    t.bigint "section_id", null: false
+    t.string "title", null: false
+    t.datetime "updated_at", null: false
+    t.string "video_url"
+    t.index ["discarded_at"], name: "index_lessons_on_discarded_at"
+    t.index ["section_id"], name: "index_lessons_on_section_id"
+  end
+
   create_table "profiles", force: :cascade do |t|
     t.text "bio"
     t.datetime "created_at", null: false
@@ -148,6 +166,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_13_084224) do
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "courses", "course_categories", column: "category_id"
   add_foreign_key "courses", "users", column: "teacher_id"
+  add_foreign_key "lessons", "sections"
   add_foreign_key "profiles", "users"
   add_foreign_key "sections", "courses"
   add_foreign_key "user_roles", "roles"

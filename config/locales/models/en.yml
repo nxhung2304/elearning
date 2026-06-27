@@ -72,8 +72,18 @@ en:
         title: Title
         position: Position
         course_id: Course
-      test_widget:
-        title: Title
+        lesson_type: Lesson type
+        content: Content
+        video_url: Video url
+        duration_seconds: Duration seconds
+        is_preview: Is preview
+        is_published: Is published
+        published_at: Published at
+        discarded_at: Discarded at
+      lesson/lesson_type:
+        text: Text
+        video: Video
+        mixed: Mixed
   errors:
     models:
       course:
