@@ -14,6 +14,7 @@ class Ability
       can :manage, Course, teacher_id: user.id
       can :update, Profile, user_id: user.id
       can :manage, Section, course: { teacher_id: user.id }, discarded_at: nil
+      can :manage, Lesson, section: { course:  { teacher_id: user.id } }
     elsif user.student?
       can :read, User, id: user.id, discarded_at: nil
       can :update, Profile, user_id: user.id

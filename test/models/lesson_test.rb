@@ -12,7 +12,6 @@
 #  position         :integer          not null
 #  published_at     :datetime
 #  title            :string           not null
-#  video_url        :string
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
 #  section_id       :bigint           not null
@@ -41,29 +40,6 @@ class LessonTest < ActiveSupport::TestCase
     should validate_presence_of(:title)
     should validate_inclusion_of(:is_preview).in_array([ true, false ])
     should validate_inclusion_of(:is_published).in_array([ true, false ])
-  end
-
-  context "video_url" do
-    should "can be nil when lesson_type is text" do
-      lesson_text = create(:lesson, :text)
-      lesson_text.video_url = nil
-
-      assert lesson_text.save
-      assert lesson_text.valid?
-      assert_nil lesson_text.video_url
-    end
-
-    should "cannot nil when lesson_type is video" do
-      lesson_video = create(:lesson, :video)
-
-      assert lesson_video.video_url
-    end
-
-    should "cannot nil when lesson_type is mixed" do
-      lesson_video = create(:lesson, :mixed)
-
-      assert lesson_video.video_url
-    end
   end
 
   context "duration_seconds" do
