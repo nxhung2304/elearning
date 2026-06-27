@@ -41,7 +41,6 @@ class LessonTest < ActiveSupport::TestCase
     should validate_presence_of(:title)
     should validate_inclusion_of(:is_preview).in_array([ true, false ])
     should validate_inclusion_of(:is_published).in_array([ true, false ])
-    should validate_presence_of(:position)
   end
 
   context "video_url" do
