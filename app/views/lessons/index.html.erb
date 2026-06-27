@@ -1,0 +1,52 @@
+<% add_breadcrumb @course.title, course_path(@course) %>
+<% add_breadcrumb @section.title, course_section_path(@course, @section) %>
+<% add_breadcrumb t("activerecord.models.lesson.other", default: "Lessons") %>
+
+<section class="mx-auto max-w-6xl px-6 py-8">
+  <div class="mb-6 flex items-center justify-between">
+    <h1 class="text-2xl font-bold text-slate-900">
+      <%= t("activerecord.models.lesson.other", default: "Lessons") %>
+    </h1>
+    <% if can?(:create, Lesson) %>
+      <%= link_to t("helpers.links.new", model: Lesson.model_name.human, default: "New Lesson"),
+           new_course_section_lesson_path(@course, @section),
+            class: "rounded-lg bg-slate-900 px-4 py-2 text-sm font-medium text-white hover:bg-slate-700" %>
+    <% end %>
+  </div>
+
+  <%= search_form_for @q, url: course_section_lessons_path(@course, @section), html: { class: "mb-6" } do |f| %>
+    <div class="flex gap-2">
+      <%= f.search_field :title_cont,
+            placeholder: Lesson.human_attribute_name(:title),
+            class: "flex-1 rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-slate-900" %>
+      <%= f.select :lesson_type_eq,
+            Lesson.lesson_types.map { |key, val| [key.humanize, val] },
+            { include_blank: Lesson.human_attribute_name(:lesson_type) },
+            class: "flex-1 rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-slate-900" %>
+      <%= f.submit t("helpers.search.submit", default: "Search"),
+            class: "rounded-lg bg-slate-100 px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-200" %>
+    </div>
+  <% end %>
+
+  <div class="overflow-hidden rounded-xl border border-slate-200">
+    <table class="w-full text-sm">
+      <thead class="bg-slate-50">
+        <tr>
+          <th class="px-4 py-3 text-left font-bold text-slate-600"><%= Lesson.human_attribute_name(:position) %></th>
+          <th class="px-4 py-3 text-left font-bold text-slate-600"><%= Lesson.human_attribute_name(:title) %></th>
+          <th class="px-4 py-3 text-left font-bold text-slate-600"><%= Lesson.human_attribute_name(:lesson_type) %></th>
+          <th class="px-4 py-3 text-left font-bold text-slate-600"><%= Lesson.human_attribute_name(:duration_seconds) %></th>
+          <th class="px-4 py-3 text-left font-bold text-slate-600"><%= Lesson.human_attribute_name(:is_published) %></th>
+          <th class="px-4 py-3"></th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-slate-200">
+        <%= render partial: "lesson", collection: @lessons, locals: { section: @section, course: @course } %>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="mt-4 flex justify-center">
+    <%= pagy_nav(@pagy) if @pagy.pages > 1 %>
+  </div>
+</section>

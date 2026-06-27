@@ -39,10 +39,10 @@ class Lesson < ApplicationRecord
   validates :title, presence: true
   validates :is_preview, inclusion: { in: [ true, false ] }
   validates :is_published, inclusion: { in: [ true, false ] }
-  validates :video, attached: true, if: -> { video? || mixed? }
   validates :duration_seconds, presence: true, if: -> { video? || mixed? }
   validates :duration_seconds, absence: true, if: :text?
   validates :content, presence: true, if: -> { text? || mixed? }
+  validates :video, attached: true, content_type: VideoUploadable::ACCEPTED_VIDEO_TYPES, if: -> { video? || mixed? }, size: { less_than_or_equal_to: VideoUploadable::MAX_VIDEO_SIZE }
 
   before_validation :set_is_preview
   before_validation :set_is_published

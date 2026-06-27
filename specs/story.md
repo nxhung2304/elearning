@@ -114,11 +114,12 @@ has_many :roles, through: :user_roles
 
 - [x] [Model] CourseCategory — ancestry (nested), friendly_id (slug), i18n (en) ✅ 2026-05-31
 - [x] [CRUD] CourseCategory — Admin CRUD, Pagy ✅ 2026-06-03
-- [ ] [Model] Course — enums (draft/published/archived), level, language, associations, i18n (en)
+- [x] [Model] Course — enums (draft/published/archived), level, language, associations, i18n (en) ✅ 2026-06-21
 - [x] [CRUD] Course — Teacher CRUD + search (title, category, level) + Pagy; Student browse ✅ 2026-06-13
-- [x] [Model] Section — position, associations, i18n (en) ✅ 2026-06-13
-- [ ] [CRUD] Section — Teacher CRUD (nested dưới Course)
-- [ ] [Model] Lesson — lesson_type enum (video/text/mixed), is_published, associations, i18n (en)
+- [x] [Model] Section — position, associations, i18n (en) ✅ 2026-06-**13**
+- [x] [CRUD] Section — Teacher CRUD (nested dưới Course)
+- [x] [Refactor] Use manual columns in views instead of auto columns helper
+- [x] [Model] Lesson — lesson_type enum (video/text/mixed), is_published, associations, i18n (en)
 - [ ] [CRUD] Lesson — Teacher CRUD (nested dưới Section) + ActiveStorage upload video
 - [ ] [Model] LessonResource — associations, i18n (en)
 - [ ] [CRUD] LessonResource — Teacher upload/delete file đính kèm
@@ -345,6 +346,7 @@ has_ancestry
 
 ## Week 10-13 | Quizzes + Reviews
 
+- [ ] Setup: ViewComponent gem — add `view_component` to Gemfile; create `app/components/`; use for QuizQuestion, QuizOption (reused in teacher CRUD + student attempt), NotificationBell (Phase 3)
 - [ ] [Model] Quiz — passing_score, associations, i18n (en)
 - [ ] [Model] QuizQuestion — question_type enum, position, associations, i18n (en)
 - [ ] [Model] QuizOption — correct flag, associations, i18n (en)
