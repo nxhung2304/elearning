@@ -39,7 +39,6 @@ class Lesson < ApplicationRecord
   validates :title, presence: true
   validates :is_preview, inclusion: { in: [ true, false ] }
   validates :is_published, inclusion: { in: [ true, false ] }
-  validates :video, attached: true, if: -> { video? || mixed? }
   validates :duration_seconds, presence: true, if: -> { video? || mixed? }
   validates :duration_seconds, absence: true, if: :text?
   validates :content, presence: true, if: -> { text? || mixed? }

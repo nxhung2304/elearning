@@ -1,0 +1,34 @@
+<%= simple_form_for [@course, @section, lesson], html: { autocomplete: "off" } do |f| %>
+  <%= f.input :title %>
+  <%= f.input :lesson_type, as: :select,
+        collection: Lesson.lesson_types.keys,
+        include_blank: false,
+        wrapper: :select,
+        input_html: { class: "bg-white text-slate-900" } %>
+  <%= f.input :content, as: :text, input_html: { rows: 6 } %>
+  <%= f.input :duration_seconds, hint: "In seconds. Required for video/mixed lessons." %>
+  <div data-controller="video-preview">
+    <%= f.input :video, as: :file, label: Lesson.human_attribute_name(:video), data: { 
+            video_preview_target: "input", 
+            action: "change->video-preview#show" 
+          } %>
+    <video data-video-preview-target="preview" controls width="320" style="display:none;">
+      Your browser does not support the video tag.
+    </video>
+    <% if lesson.video.attached? %>
+      <video controls width="320">
+        <source src="<%= url_for(lesson.video) %>" type="<%= lesson.video.content_type %>">
+      </video>
+    <% end %>
+  </div>
+  <%= f.input :is_preview, as: :boolean %>
+  <%= f.input :is_published, as: :boolean %>
+  <div class="mt-6 flex items-center gap-3">
+    <%= f.button :submit,
+            t("helpers.submit.#{lesson.persisted? ? :update : :create}", model: Lesson.model_name.human),
+            class: "rounded-lg #{lesson.persisted? ? "bg-slate-900 hover:bg-slate-700" : "bg-emerald-600 hover:bg-emerald-700"} px-4 py-2 text-sm font-medium text-white" %>
+    <%= link_to t("helpers.links.cancel", default: "Cancel"),
+            course_section_path(@course, @section),
+            class: "text-sm text-slate-500 hover:text-slate-900" %>
+  </div>
+<% end %>

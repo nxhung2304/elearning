@@ -1,7 +1,7 @@
 <% resource_name  = file_name.singularize -%>
 <% resource_class = class_name.demodulize.singularize -%>
-<% plain_attrs = attributes.reject(&:reference?) -%>
-<% ref_attrs   = attributes.select(&:reference?) -%>
+<% plain_attrs = defined?(attributes) ? attributes.reject(&:reference?) : [] -%>
+<% ref_attrs   = defined?(attributes) ? attributes.select(&:reference?) : [] -%>
 <% if @action == "index" -%>
 <section class="mx-auto max-w-6xl px-6 py-8">
   <div class="mb-6 flex items-center justify-between">

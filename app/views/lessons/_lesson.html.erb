@@ -1,0 +1,29 @@
+<%# locals: (lesson:, section:, course:) %>
+<tr class="hover:bg-slate-50">
+  <td class="px-4 py-3 text-slate-500"><%= lesson.position %></td>
+  <td class="px-4 py-3 font-medium text-slate-900"><%= lesson.title %></td>
+  <td class="px-4 py-3">
+    <span class="rounded-full px-2 py-0.5 text-xs font-medium
+      <%= lesson.video? ? 'bg-blue-100 text-blue-700' :
+          lesson.text?  ? 'bg-amber-100 text-amber-700' :
+                          'bg-purple-100 text-purple-700' %>">
+      <%= lesson.lesson_type %>
+    </span>
+  </td>
+  <td class="px-4 py-3 text-slate-500">
+    <%= lesson.duration_seconds ? "#{lesson.duration_seconds / 60}m" : "—" %>
+  </td>
+  <td class="px-4 py-3">
+    <%= render "shared/status_badge", status: lesson.is_published ? "published" : "draft" %>
+  </td>
+  <td class="px-4 py-3 text-right">
+    <%= link_to t("helpers.links.show", default: "Show"),
+          course_section_lesson_path(course, section, lesson),
+          class: "rounded-md border border-slate-300 px-4 py-1.5 text-xs font-medium text-slate-600 hover:border-slate-900 hover:text-slate-900 mr-2" %>
+    <% if can?(:update, lesson) %>
+      <%= link_to t("helpers.links.edit", default: "Edit"),
+            edit_course_section_lesson_path(course, section, lesson),
+            class: "rounded-md border border-slate-300 px-4 py-1.5 text-xs font-medium text-slate-600 hover:border-slate-900 hover:text-slate-900 mr-2" %>
+    <% end %>
+  </td>
+</tr>

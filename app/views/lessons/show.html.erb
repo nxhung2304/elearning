@@ -1,0 +1,55 @@
+<% add_breadcrumb @course.title, course_path(@course) %>
+<% add_breadcrumb @section.title, course_section_path(@course, @section) %>
+<% add_breadcrumb @lesson.title %>
+
+<section class="mx-auto max-w-3xl px-6 py-8">
+  <div class="mb-6 flex items-center justify-between">
+    <h1 class="text-2xl font-bold text-slate-900"><%= Lesson.model_name.human %></h1>
+    <%= link_to t("helpers.links.back", default: "Back"),
+          course_section_lessons_path,
+          class: "text-sm text-slate-500 hover:text-slate-900" %>
+  </div>
+
+  <dl class="divide-y divide-slate-200 rounded-xl border border-slate-200">
+    <div class="flex px-4 py-3 gap-4">
+      <dt class="w-1/3 font-medium text-slate-600"><%= Lesson.human_attribute_name(:title) %></dt>
+      <dd class="text-slate-900 text-sm font-semibold"><%= @lesson.title %></dd>
+    </div>
+    <div class="flex px-4 py-3 gap-4">
+      <dt class="w-1/3 font-medium text-slate-600"><%= Lesson.human_attribute_name(:lesson_type) %></dt>
+      <dd class="text-slate-500 text-sm"><%= @lesson.lesson_type %></dd>
+    </div>
+    <div class="flex px-4 py-3 gap-4">
+      <dt class="w-1/3 font-medium text-slate-600"><%= Lesson.human_attribute_name(:position) %></dt>
+      <dd class="text-slate-500 text-sm"><%= @lesson.position %></dd>
+    </div>
+    <div class="flex px-4 py-3 gap-4">
+      <dt class="w-1/3 font-medium text-slate-600"><%= Lesson.human_attribute_name(:duration_seconds) %></dt>
+      <dd class="text-slate-500 text-sm"><%= @lesson.duration_seconds %></dd>
+    </div>
+    <div class="flex px-4 py-3 gap-4">
+      <dt class="w-1/3 font-medium text-slate-600"><%= Lesson.human_attribute_name(:content) %></dt>
+      <dd class="text-slate-500 text-sm whitespace-pre-wrap"><%= @lesson.content %></dd>
+    </div>
+    <div class="flex px-4 py-3 gap-4">
+      <dt class="w-1/3 font-medium text-slate-600"><%= Lesson.human_attribute_name(:is_preview) %></dt>
+      <dd class="text-slate-500 text-sm"><%= @lesson.is_preview ? t("shared.yes") : t("shared.no") %></dd>
+    </div>
+    <div class="flex px-4 py-3 gap-4">
+      <dt class="w-1/3 font-medium text-slate-600"><%= Lesson.human_attribute_name(:is_published) %></dt>
+      <dd class="text-slate-500 text-sm"><%= @lesson.is_published ? t("shared.yes") : t("shared.no") %></dd>
+    </div>
+    <div class="flex px-4 py-3 gap-4">
+      <dt class="w-1/3 font-medium text-slate-600"><%= Lesson.human_attribute_name(:published_at) %></dt>
+      <dd class="text-slate-500 text-sm"><%= l(@lesson.published_at) if @lesson.published_at.present? %></dd>
+    </div>
+    <div class="flex px-4 py-3 gap-4">
+      <dt class="w-1/3 font-medium text-slate-600"><%= Lesson.human_attribute_name(:created_at) %></dt>
+      <dd class="text-slate-500 text-sm"><%= l(@lesson.created_at) %></dd>
+    </div>
+    <div class="flex px-4 py-3 gap-4">
+      <dt class="w-1/3 font-medium text-slate-600"><%= Lesson.human_attribute_name(:updated_at) %></dt>
+      <dd class="text-slate-500 text-sm"><%= l(@lesson.updated_at) %></dd>
+    </div>
+  </dl>
+</section>
