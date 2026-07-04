@@ -19,6 +19,6 @@ export default class extends Controller {
   #display(src) {
     this.playerTarget.src = src
     this.playerTarget.load()
-    this.playerTarget.style.display = "block"
+    this.playerTarget.classList.remove("hidden")
   }
 }

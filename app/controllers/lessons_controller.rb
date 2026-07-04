@@ -24,16 +24,16 @@ class LessonsController < ApplicationController
   def update
     if @lesson.update(lesson_params)
       flash[:success] = t("controller.updated", text: lesson_message)
-      redirect_to course_section_lessons_url
+      redirect_to course_section_lessons_url(@course, @section)
     else
       render :edit, status: :unprocessable_entity
     end
   end
 
   def destroy
-    if @lesson.destroy
+    if @lesson.discard
       flash[:success] = t("controller.destroyed", text: lesson_message)
-      redirect_to course_section_lessons_url
+      redirect_to course_section_lessons_url(@course, @section)
     else
       flash[:error] = t("controller.destroy_fail", text: lesson_message)
       render :edit, status: :unprocessable_entity
@@ -41,7 +41,7 @@ class LessonsController < ApplicationController
   end
 
   def includes_associations
-    [ { course: :section } ]
+    [ { section: :course } ]
   end
 
   private

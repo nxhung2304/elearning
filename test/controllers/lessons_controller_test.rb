@@ -78,7 +78,7 @@ class LessonsControllerTest < ActionDispatch::IntegrationTest
 
   test "admin: destroy deletes lesson and redirects to index" do
     sign_in @admin
-    assert_difference "Lesson.count", -1 do
+    assert_difference "Lesson.kept.count", -1 do
       delete course_section_lesson_path(@course, @section, @lesson)
     end
     assert_redirected_to course_section_lessons_path(@course, @section)
@@ -137,7 +137,7 @@ class LessonsControllerTest < ActionDispatch::IntegrationTest
 
   test "teacher: destroy own lesson redirects to index" do
     sign_in @teacher
-    assert_difference "Lesson.count", -1 do
+    assert_difference "Lesson.kept.count", -1 do
       delete course_section_lesson_path(@course, @section, @lesson)
     end
     assert_redirected_to course_section_lessons_path(@course, @section)
