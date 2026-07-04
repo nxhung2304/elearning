@@ -120,7 +120,7 @@ has_many :roles, through: :user_roles
 - [x] [CRUD] Section — Teacher CRUD (nested dưới Course)
 - [x] [Refactor] Use manual columns in views instead of auto columns helper
 - [x] [Model] Lesson — lesson_type enum (video/text/mixed), is_published, associations, i18n (en)
-- [ ] [CRUD] Lesson — Teacher CRUD (nested dưới Section) + ActiveStorage upload video
+- [x] [CRUD] Lesson — Teacher CRUD (nested dưới Section) + ActiveStorage upload video
 - [ ] [Model] LessonResource — associations, i18n (en)
 - [ ] [CRUD] LessonResource — Teacher upload/delete file đính kèm
 

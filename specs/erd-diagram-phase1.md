@@ -8,34 +8,34 @@ tags:
 
 # ERD Diagram — Phase 1
 
-> 📎 [[20-Projects/elearning/erd|ERD Text]] · [[20-Projects/elearning/story|Story]] · [[20-Projects/elearning/erd-diagram-phase2|Phase 2 →]]
+> 📎 [[erd|ERD Text]] · [[20-Projects/personal/elearning/story|Story]] · [[20-Projects/elearning/erd-diagram-phase2|Phase 2 →]]
 
 ```mermaid
 erDiagram
     users {
-        bigint id PK
-        string email
-        integer status
+        bigint id
+        string email "NOT NULL"
+        integer status "NOT NULL · def:active | active·inactive·suspended·deleted"
         datetime last_sign_in_at
-        integer sign_in_count
+        integer sign_in_count "NOT NULL · def:0"
         datetime discarded_at
     }
 
     roles {
-        bigint id PK
-        string name
-        string code
+        bigint id
+        string name "NOT NULL"
+        string code "NOT NULL"
     }
 
     user_roles {
-        bigint id PK
-        bigint user_id FK
-        bigint role_id FK
+        bigint id
+        bigint user_id "NOT NULL"
+        bigint role_id "NOT NULL"
     }
 
     profiles {
-        bigint id PK
-        bigint user_id FK
+        bigint id
+        bigint user_id "NOT NULL"
         string full_name
         string avatar_url
         text bio
@@ -44,96 +44,95 @@ erDiagram
     }
 
     course_categories {
-        bigint id PK
-        string name
-        string slug
-        bigint parent_id FK
+        bigint id
+        string name "NOT NULL"
+        string slug "NOT NULL"
+        string ancestry
         integer position
         datetime discarded_at
     }
 
     courses {
-        bigint id PK
-        bigint teacher_id FK
-        bigint category_id FK
-        string title
-        string slug
-        text description
-        string thumbnail_url
-        integer level
-        integer language
-        decimal price
-        integer total_lessons
-        integer status
+        bigint id
+        bigint teacher_id "NOT NULL"
+        bigint category_id "NOT NULL"
+        string title "NOT NULL"
+        string slug "NOT NULL"
+        text description "NOT NULL"
+        integer level "NOT NULL | beginner·intermediate·advanced"
+        integer language "NOT NULL | vi·en"
+        decimal price "NOT NULL · def:0"
+        integer total_lessons "NOT NULL · def:0"
+        integer status "NOT NULL · def:draft | draft·published·archived"
         datetime published_at
         datetime discarded_at
     }
 
     sections {
-        bigint id PK
-        bigint course_id FK
-        string title
-        integer position
+        bigint id
+        bigint course_id "NOT NULL"
+        string title "NOT NULL"
+        integer position "NOT NULL"
         datetime discarded_at
     }
 
     lessons {
-        bigint id PK
-        bigint section_id FK
-        string title
-        integer lesson_type
+        bigint id
+        bigint section_id "NOT NULL"
+        string title "NOT NULL"
+        integer lesson_type "NOT NULL | video·text·mixed"
         text content
         string video_url
         integer duration_seconds
-        integer position
-        boolean is_preview
-        boolean is_published
+        integer position "NOT NULL"
+        boolean is_preview "NOT NULL · def:false"
+        boolean is_published "NOT NULL · def:false"
         datetime published_at
         datetime discarded_at
     }
 
     lesson_resources {
-        bigint id PK
-        bigint lesson_id FK
-        string file_name
-        string file_url
+        bigint id
+        bigint lesson_id "NOT NULL"
+        string file_name "NOT NULL"
+        string file_url "NOT NULL"
         datetime discarded_at
     }
 
     enrollments {
-        bigint id PK
-        bigint user_id FK
-        bigint course_id FK
-        integer status
-        datetime enrolled_at
+        bigint id
+        bigint user_id "NOT NULL"
+        bigint course_id "NOT NULL"
+        integer status "NOT NULL · def:0"
+        datetime enrolled_at "NOT NULL"
         datetime expired_at
         datetime discarded_at
     }
 
     lesson_progresses {
-        bigint id PK
-        bigint enrollment_id FK
-        bigint lesson_id FK
-        boolean completed
+        bigint id
+        bigint enrollment_id "NOT NULL"
+        bigint lesson_id "NOT NULL"
+        boolean completed "NOT NULL · def:false"
         datetime completed_at
-        integer total_watched_seconds
-        integer current_position_seconds
+        integer total_watched_seconds "NOT NULL · def:0"
+        integer current_position_seconds "NOT NULL · def:0"
     }
 
     course_progresses {
-        bigint id PK
-        bigint enrollment_id FK
-        decimal progress_percentage
-        integer completed_lessons_count
+        bigint id
+        bigint enrollment_id "NOT NULL"
+        decimal progress_percentage "NOT NULL · def:0"
+        integer completed_lessons_count "NOT NULL · def:0"
         datetime completed_at
     }
 
     event_logs {
-        bigint id PK
-        bigint user_id FK
-        string event_type
+        bigint id
+        bigint user_id
+        string event_type "NOT NULL"
         jsonb metadata
-        datetime created_at
+        datetime created_at "NOT NULL"
     }
 
     users ||--|{ user_roles : "has"

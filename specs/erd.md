@@ -1,6 +1,6 @@
 # ERD
 
-> 📎 [[20-Projects/elearning/Roadmap|Roadmap]] · [[20-Projects/elearning/story|Story]] · [[20-Projects/elearning/architecture|Architecture]]
+> 📎 [[20-Projects/elearning/Roadmap|Roadmap]] · [[20-Projects/personal/elearning/story|Story]] · [[architecture|Architecture]]
 
 > **Soft delete convention**: Tất cả model chính có `discarded_at :datetime` (Discard gem)
 > Default scope là `.kept` — query tự động bỏ qua records đã discard
@@ -68,7 +68,7 @@
 - title                       # string, not null, uniq, index
 - slug                        # string, not null, uniq, index — auto-generated from title
 - description                 # text, not null
-- thumbnail_url               # string, nullable — ActiveStorage local
+- thumbnail_url               # — ActiveStorage local
 - level                       # integer enum, not null: beginner | intermediate | advanced
 - language                    # integer enum, not null: vi | en
 - price                       # decimal(10,2), not null, default: 0

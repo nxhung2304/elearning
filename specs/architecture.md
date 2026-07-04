@@ -1,6 +1,6 @@
 # Architecture
 
-> 📎 [[20-Projects/elearning/Roadmap|Roadmap]] · [[20-Projects/elearning/ERD|ERD]] · [[20-Projects/elearning/story|Story]]
+> 📎 [[20-Projects/elearning/Roadmap|Roadmap]] · [[erd|erd]] · [[20-Projects/personal/elearning/story|Story]]
 
 ## Approach
 
