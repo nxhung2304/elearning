@@ -20,9 +20,9 @@ en:
       lesson:
         one: Lesson
         other: Lessons
-      test_widget:
-        one: Testwidget
-        other: Testwidgets
+      lesson_resource:
+        one: Lesson Resource
+        other: Lesson Resources
     attributes:
       user:
         email: Email
@@ -84,6 +84,11 @@ en:
         text: Text
         video: Video
         mixed: Mixed
+      lesson_resource:
+        lesson_id: Lesson
+        discarded_by_lesson: Discarded by lesson
+        file_name: File name
+        discarded_at: Discarded at
   errors:
     models:
       course:
