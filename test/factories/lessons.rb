@@ -28,9 +28,9 @@
 FactoryBot.define do
   factory :lesson do
     title { Faker::Lorem.sentence(word_count: 3) }
-    lesson_type { 0 }
+    lesson_type { :text }
     content { Faker::Lorem.paragraph }
-    duration_seconds { rand(1..100) }
+    duration_seconds { nil }
     is_preview { true }
     is_published { true }
     published_at { nil }
@@ -39,17 +39,34 @@ FactoryBot.define do
 
     trait :text do
       lesson_type { :text }
+      content { Faker::Lorem.paragraph }
       duration_seconds { nil }
     end
 
     trait :video do
       lesson_type { :video }
+      content { nil }
+      duration_seconds { rand(1..100) }
+      after(:build) do |lesson|
+        lesson.video.attach(
+          io: StringIO.new("fake video content"),
+          filename: "sample.mp4",
+          content_type: "video/mp4"
+        )
+      end
     end
 
     trait :mixed do
       lesson_type { :mixed }
       content { Faker::Lorem.paragraph }
       duration_seconds { rand(1..100) }
+      after(:build) do |lesson|
+        lesson.video.attach(
+          io: StringIO.new("fake video content"),
+          filename: "sample.mp4",
+          content_type: "video/mp4"
+        )
+      end
     end
   end
 end

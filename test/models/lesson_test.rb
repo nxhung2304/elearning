@@ -30,6 +30,7 @@ require "test_helper"
 class LessonTest < ActiveSupport::TestCase
   context "associations" do
     should belong_to(:section)
+    should have_many(:lesson_resources).dependent(:restrict_with_error)
   end
 
   test "valid factory" do
@@ -85,6 +86,33 @@ class LessonTest < ActiveSupport::TestCase
       lesson_mixed = create(:lesson, :mixed)
 
       assert_not_empty lesson_mixed.content
+    end
+  end
+
+  context "before_discard" do
+    should "discard lesson_resources.kept" do
+      lesson = create(:lesson)
+      lesson_resource = create(:lesson_resource, lesson: lesson)
+
+      lesson.discard
+
+      assert lesson.reload.discarded?
+      assert lesson_resource.reload.discarded?
+    end
+  end
+
+  context "before_undiscard" do
+    should "restore lesson_resources.need_restore" do
+      lesson = create(:lesson)
+      lesson_resource = create(:lesson_resource, lesson: lesson)
+
+      lesson.discard
+      assert lesson_resource.reload.discarded?
+
+      lesson.undiscard
+
+      assert_not lesson.reload.discarded?
+      assert_not lesson_resource.reload.discarded?
     end
   end
 end

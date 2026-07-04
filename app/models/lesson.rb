@@ -31,6 +31,7 @@ class Lesson < ApplicationRecord
   has_one_attached :video
 
   belongs_to :section
+  has_many :lesson_resources, dependent: :restrict_with_error
 
   positioned on: :section
 
@@ -46,6 +47,8 @@ class Lesson < ApplicationRecord
 
   before_validation :set_is_preview
   before_validation :set_is_published
+  before_discard :discard_lesson_resources
+  before_undiscard :restore_lesson_resources
 
   private
 
@@ -55,5 +58,17 @@ class Lesson < ApplicationRecord
 
   def set_is_published
     self.is_published = false if is_published.nil?
+  end
+
+  def discard_lesson_resources
+    lesson_resources.kept.each do |lesson_resource|
+      lesson_resource.discard!
+      lesson_resource.update! discarded_by_lesson: true
+    end
+  end
+
+  def restore_lesson_resources
+    lesson_resources.need_restore.undiscard_all
+    lesson_resources.update_all discarded_by_lesson: false
   end
 end
