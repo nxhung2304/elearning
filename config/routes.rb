@@ -16,6 +16,8 @@ Rails.application.routes.draw do
       patch "archive"
     end
 
-    resources :sections
+    resources :sections do
+      resources :lessons
+    end
   end
 end

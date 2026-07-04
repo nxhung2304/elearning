@@ -12,7 +12,6 @@
 #  position         :integer          not null
 #  published_at     :datetime
 #  title            :string           not null
-#  video_url        :string
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
 #  section_id       :bigint           not null
@@ -31,7 +30,6 @@ FactoryBot.define do
     title { Faker::Lorem.sentence(word_count: 3) }
     lesson_type { 0 }
     content { Faker::Lorem.paragraph }
-    video_url { Faker::Internet.url }
     duration_seconds { rand(1..100) }
     is_preview { true }
     is_published { true }
@@ -41,7 +39,6 @@ FactoryBot.define do
 
     trait :text do
       lesson_type { :text }
-      video_url { nil }
       duration_seconds { nil }
     end
 
@@ -52,7 +49,6 @@ FactoryBot.define do
     trait :mixed do
       lesson_type { :mixed }
       content { Faker::Lorem.paragraph }
-      video_url { Faker::Internet.url }
       duration_seconds { rand(1..100) }
     end
   end

@@ -1,0 +1,17 @@
+<div data-controller="video-preview"
+     data-video-preview-url-value="<%= field.attached? && field.blob.persisted? ? url_for(field) : "" %>">
+  <%= f.input video, as: :file, label: t("helpers.video.select"),
+        input_html: {
+          accept: local_assigns.fetch(:accept, VideoUploadable::ACCEPTED_VIDEO_TYPES.join(",")),
+          class: "hidden",
+          data: { video_preview_target: "input", action: "change->video-preview#show" }
+        } %>
+  <label for="<%= [f.object_name, video].join("_") %>"
+         class="cursor-pointer inline-flex items-center gap-2 px-4 py-2 rounded-md border border-gray-300 bg-white text-sm text-gray-700 hover:bg-gray-50 transition">
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.723v6.554a1 1 0 01-1.447.894L15 14M3 8a2 2 0 012-2h8a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V8z" />
+    </svg>
+    <span class="w-64 text-ellipsis overflow-x-clip whitespace-nowrap" data-video-preview-target="label"><%= field.attached? ? field.filename : t("helpers.video.choose") %></span>
+  </label>
+  <video data-video-preview-target="player" controls class="rounded-lg mt-3 hidden"></video>
+</div>

@@ -74,7 +74,7 @@ en:
         course_id: Course
         lesson_type: Lesson type
         content: Content
-        video_url: Video url
+        video: Video
         duration_seconds: Duration seconds
         is_preview: Is preview
         is_published: Is published

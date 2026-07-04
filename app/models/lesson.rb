@@ -12,7 +12,6 @@
 #  position         :integer          not null
 #  published_at     :datetime
 #  title            :string           not null
-#  video_url        :string
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
 #  section_id       :bigint           not null
@@ -29,6 +28,8 @@
 class Lesson < ApplicationRecord
   include Discard::Model
 
+  has_one_attached :video
+
   belongs_to :section
 
   positioned on: :section
@@ -38,11 +39,10 @@ class Lesson < ApplicationRecord
   validates :title, presence: true
   validates :is_preview, inclusion: { in: [ true, false ] }
   validates :is_published, inclusion: { in: [ true, false ] }
-  validates :video_url, presence: true, if: -> { video? || mixed? }
-  validates :video_url, absence: true, if: :text?
   validates :duration_seconds, presence: true, if: -> { video? || mixed? }
   validates :duration_seconds, absence: true, if: :text?
   validates :content, presence: true, if: -> { text? || mixed? }
+  validates :video, attached: true, content_type: VideoUploadable::ACCEPTED_VIDEO_TYPES, if: -> { video? || mixed? }, size: { less_than_or_equal_to: VideoUploadable::MAX_VIDEO_SIZE }
 
   before_validation :set_is_preview
   before_validation :set_is_published

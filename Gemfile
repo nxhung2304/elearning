@@ -23,6 +23,8 @@ gem "cancancan"
 gem "ancestry"
 gem "friendly_id", "~> 5.5.0"
 gem "positioning"
+gem "active_storage_validations"
+gem "ruby-vips", ">= 2.1.0"
 
 group :development do
   gem "letter_opener_web"
