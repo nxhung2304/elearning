@@ -110,8 +110,8 @@
 ```
 - id                          # bigint, PK
 - lesson_id                   # bigint, not null, FK → lessons
-- file_name                   # string, not null
-- file_url                    # string, nullable — ActiveStorage local
+- file_name                   # string, not null — display name shown to user
+- # file attachment via has_one_attached :file (ActiveStorage)
 - discarded_at                # datetime, nullable — soft delete
 ```
 
