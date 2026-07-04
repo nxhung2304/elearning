@@ -41,7 +41,7 @@ class LessonsController < ApplicationController
   end
 
   def includes_associations
-    [ { course: :section} ]
+    [ { course: :section } ]
   end
 
   private
