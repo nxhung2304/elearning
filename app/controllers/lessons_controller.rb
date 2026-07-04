@@ -40,6 +40,10 @@ class LessonsController < ApplicationController
     end
   end
 
+  def includes_associations
+    [ { course: :section} ]
+  end
+
   private
 
     def lesson_params
