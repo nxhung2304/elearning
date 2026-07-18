@@ -5,7 +5,7 @@
 #  id                  :bigint           not null, primary key
 #  discarded_at        :datetime
 #  discarded_by_lesson :boolean          default(FALSE), not null
-#  file_name           :string           not null
+#  file_name           :string
 #  created_at          :datetime         not null
 #  updated_at          :datetime         not null
 #  lesson_id           :bigint           not null
@@ -30,10 +30,22 @@ class LessonResource < ApplicationRecord
   belongs_to :lesson
 
   # validations
-  validates :file_name, presence: true
   validates :file, attached: true, size: { less_than_or_equal_to: MAX_FILE_SIZE_MB.megabytes }
   validates :discarded_by_lesson, inclusion: { in: [ true, false ] }
 
   # scopes
   scope :need_restore, -> { discarded.where(discarded_by_lesson: true) }
+
+  # callbacks
+  before_validation :set_file_name, if: -> { file.attached? && file_name.blank? }
+
+  private
+
+  def set_file_name
+    return if file.blank?
+    return if file.blob.blank?
+    return if file.blob.filename.blank?
+
+    self.file_name = file.blob.filename
+  end
 end

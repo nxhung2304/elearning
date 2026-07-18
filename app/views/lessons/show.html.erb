@@ -71,11 +71,10 @@
       </ul>
     </div>
   <% end %>
-
   <div class="mt-6">
     <h2 class="mb-3 text-base font-semibold text-slate-900">Upload attachment</h2>
     <%= form_with url: course_section_lesson_lesson_resources_path(@course, @section, @lesson),
-          multipart: true, class: "flex items-end gap-3" do |f| %>
+          multipart: true, class: "flex items-end gap-3", data: { controller: "file-upload" } do |f| %>
       <div class="flex-1">
         <%= label_tag :file_name, "Display name", class: "mb-1 block text-xs text-slate-500" %>
         <%= text_field_tag :file_name, nil, placeholder: "e.g. Lecture slides",
@@ -83,10 +82,9 @@
       </div>
       <div class="flex-1">
         <%= label_tag :file, "File", class: "mb-1 block text-xs text-slate-500" %>
-        <%= file_field_tag :file, class: "w-full text-sm text-slate-500" %>
+        <%= file_field_tag :file, class: "w-full text-sm text-slate-500" , data: { file_upload_target: "input", action: "change->file-upload#toggle"  } %>
       </div>
-      <%= submit_tag "Upload",
-            class: "rounded-lg bg-emerald-600 px-4 py-2 text-sm font-medium text-white hover:bg-emerald-700 cursor-pointer" %>
+      <%= submit_tag "Upload", class: "rounded-lg bg-emerald-600 px-4 py-2 text-sm font-medium text-white hover:bg-emerald-700 cursor-pointer hidden", data: { file_upload_target: "button" } %>
     <% end %>
   </div>
 </section>

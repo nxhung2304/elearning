@@ -5,7 +5,7 @@
 #  id                  :bigint           not null, primary key
 #  discarded_at        :datetime
 #  discarded_by_lesson :boolean          default(FALSE), not null
-#  file_name           :string           not null
+#  file_name           :string
 #  created_at          :datetime         not null
 #  updated_at          :datetime         not null
 #  lesson_id           :bigint           not null
