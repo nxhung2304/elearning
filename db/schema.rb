@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_07_04_083817) do
+ActiveRecord::Schema[8.1].define(version: 2026_07_18_081509) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -75,6 +75,18 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_04_083817) do
     t.index ["slug"], name: "index_courses_on_slug", unique: true
     t.index ["teacher_id"], name: "index_courses_on_teacher_id"
     t.index ["title"], name: "index_courses_on_title", unique: true
+  end
+
+  create_table "event_logs", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "event_type", null: false
+    t.jsonb "metadata"
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["event_type", "created_at"], name: "index_event_logs_on_event_type_and_created_at"
+    t.index ["event_type"], name: "index_event_logs_on_event_type"
+    t.index ["user_id", "event_type"], name: "index_event_logs_on_user_id_and_event_type"
+    t.index ["user_id"], name: "index_event_logs_on_user_id"
   end
 
   create_table "friendly_id_slugs", force: :cascade do |t|
@@ -297,6 +309,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_04_083817) do
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "courses", "course_categories", column: "category_id"
   add_foreign_key "courses", "users", column: "teacher_id"
+  add_foreign_key "event_logs", "users"
   add_foreign_key "lesson_resources", "lessons"
   add_foreign_key "lessons", "sections"
   add_foreign_key "profiles", "users"
