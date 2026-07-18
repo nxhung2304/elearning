@@ -3,7 +3,7 @@ class CreateLessonResources < ActiveRecord::Migration[8.1]
     create_table :lesson_resources do |t|
       t.references :lesson, null: false, foreign_key: true
 
-      t.string :file_name, null: false
+      t.string :file_name
       t.datetime :discarded_at
       t.boolean :discarded_by_lesson, default: false, null: false
 

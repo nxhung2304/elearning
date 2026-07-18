@@ -92,7 +92,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_04_083817) do
     t.datetime "created_at", null: false
     t.datetime "discarded_at"
     t.boolean "discarded_by_lesson", default: false, null: false
-    t.string "file_name", null: false
+    t.string "file_name"
     t.bigint "lesson_id", null: false
     t.datetime "updated_at", null: false
     t.index ["discarded_at"], name: "index_lesson_resources_on_discarded_at"

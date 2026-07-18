@@ -8,7 +8,9 @@ class LessonsController < ApplicationController
 
   def index; end
 
-  def show; end
+  def show
+    @lesson_resources = @lesson.lesson_resources.kept
+  end
 
   def new; end
 

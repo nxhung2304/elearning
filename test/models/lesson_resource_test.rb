@@ -5,7 +5,7 @@
 #  id                  :bigint           not null, primary key
 #  discarded_at        :datetime
 #  discarded_by_lesson :boolean          default(FALSE), not null
-#  file_name           :string           not null
+#  file_name           :string
 #  created_at          :datetime         not null
 #  updated_at          :datetime         not null
 #  lesson_id           :bigint           not null
@@ -27,11 +27,29 @@ class LessonResourceTest < ActiveSupport::TestCase
   end
 
   context "validations" do
-    should validate_presence_of(:file_name)
     should validate_inclusion_of(:discarded_by_lesson).in_array([ true, false ])
   end
 
   context "associations" do
     should belong_to(:lesson)
+  end
+
+  context "set file_name" do
+    should "set file_name base on file blob when file_name is blank" do
+      lesson_resource = create(:lesson_resource, file_name: nil)
+      expected_filename = lesson_resource.file.blob.filename
+      actual_filename = lesson_resource.file_name
+
+      assert actual_filename
+      assert_equal expected_filename, actual_filename
+    end
+
+    should "not set file_name base on file blob when file_name is present" do
+      lesson_resource = create(:lesson_resource, file_name: "foo.pdf")
+      actual_filename = lesson_resource.file_name
+
+      assert_equal actual_filename, "foo.pdf"
+      assert_not_equal lesson_resource.file.blob.filename, actual_filename
+    end
   end
 end

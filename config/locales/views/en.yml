@@ -40,3 +40,12 @@ en:
       title: "Edit"
     new:
       title: "New"
+  lessons:
+    show:
+      attachments: "Attachments"
+      upload_attachment: "Upload attachment"
+      display_name: "Display name"
+      display_name_placeholder: "e.g. Lecture slides"
+      file: "File"
+      upload: "Upload"
+      confirm_delete_attachment: "Delete this attachment?"

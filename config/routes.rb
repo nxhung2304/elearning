@@ -17,7 +17,9 @@ Rails.application.routes.draw do
     end
 
     resources :sections do
-      resources :lessons
+      resources :lessons do
+        resources :lesson_resources, only: %i[create destroy]
+      end
     end
   end
 end
