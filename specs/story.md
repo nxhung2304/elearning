@@ -43,7 +43,7 @@
 
 ## Week 5-6 | Enrollment + Progress
 
-- [ ] [Model] EventLog — associations [ERD → event_logs](ERD.md#event_logs)
+- [x] [Model] EventLog — associations [ERD → event_logs](ERD.md#event_logs)
 - [ ] [Model] Enrollment — status enum, associations, business rules, i18n (en) [ERD → enrollments](ERD.md#enrollments)
 - [ ] [CRUD] Enrollment — Student enroll, danh sách khóa đã enroll (Pagy)
 - [ ] [Model] LessonProgress — watched seconds, position, associations, i18n (en) [ERD → lesson_progresses](ERD.md#lesson_progresses)
