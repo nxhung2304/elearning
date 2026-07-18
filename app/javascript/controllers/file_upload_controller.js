@@ -8,6 +8,12 @@ export default class extends Controller {
   }
 
   toggle() {
-    this.buttonTarget.classList.toggle("hidden", !this.inputTarget.files.length)
+    const hasFile = this.inputTarget.files.length > 0
+    this.buttonTargets.forEach((button) => button.classList.toggle("hidden", !hasFile))
+  }
+
+  clear() {
+    this.inputTarget.value = ""
+    this.toggle()
   }
 }

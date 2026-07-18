@@ -27,6 +27,7 @@ en:
       back: "Back"
       cancel: "Cancel"
       delete: "Delete"
+      download: "Download"
     video:
       select: "Video"
       choose: "Choose video..."

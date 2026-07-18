@@ -11,7 +11,7 @@
           course_category_path(@course_category),
           method: :delete,
           data: { turbo_confirm: t("helpers.confirm", default: "Are you sure?") },
-          class: "rounded-lg border border-red-200 bg-red-50 px-4 py-2 text-sm font-medium text-red-600 hover:bg-red-100" %>
+          class: button_classes(:danger) %>
   </div>
 
   <%= render "form", course_category: @course_category %>

@@ -52,19 +52,19 @@
   </dl>
   <% if @lesson_resources.any? %>
     <div class="mt-8">
-      <h2 class="mb-3 text-base font-semibold text-slate-900">Attachments</h2>
+      <h2 class="mb-3 text-base font-semibold text-slate-900"><%= t(".attachments") %></h2>
       <ul class="divide-y divide-slate-200 rounded-xl border border-slate-200">
         <% @lesson_resources.each do |resource| %>
           <li class="flex items-center justify-between px-4 py-3">
             <span class="text-sm text-slate-900"><%= resource.file_name %></span>
             <div class="flex items-center gap-3">
-              <%= link_to "Download", rails_blob_path(resource.file, disposition: "attachment"),
-                    class: "text-sm text-emerald-600 hover:underline" %>
-              <%= button_to "Delete",
+              <%= link_to t("helpers.links.download"), rails_blob_path(resource.file, disposition: "attachment"),
+                    class: button_classes(:primary) %>
+              <%= button_to t("helpers.links.delete"),
                     course_section_lesson_lesson_resource_path(@course, @section, @lesson, resource),
                     method: :delete,
-                    data: { turbo_confirm: "Delete this attachment?" },
-                    class: "text-sm text-red-500 hover:underline bg-transparent border-0 cursor-pointer p-0" %>
+                    data: { turbo_confirm: t(".confirm_delete_attachment") },
+                    class: "#{button_classes(:danger)} cursor-pointer" %>
             </div>
           </li>
         <% end %>
@@ -72,19 +72,26 @@
     </div>
   <% end %>
   <div class="mt-6">
-    <h2 class="mb-3 text-base font-semibold text-slate-900">Upload attachment</h2>
+    <h2 class="mb-3 text-base font-semibold text-slate-900"><%= t(".upload_attachment") %></h2>
     <%= form_with url: course_section_lesson_lesson_resources_path(@course, @section, @lesson),
           multipart: true, class: "flex items-end gap-3", data: { controller: "file-upload" } do |f| %>
       <div class="flex-1">
-        <%= label_tag :file_name, "Display name", class: "mb-1 block text-xs text-slate-500" %>
-        <%= text_field_tag :file_name, nil, placeholder: "e.g. Lecture slides",
+        <%= label_tag :file_name, t(".display_name"), class: "mb-1 block text-xs text-slate-500" %>
+        <%= text_field_tag :file_name, nil, placeholder: t(".display_name_placeholder"),
               class: "w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500" %>
       </div>
       <div class="flex-1">
-        <%= label_tag :file, "File", class: "mb-1 block text-xs text-slate-500" %>
-        <%= file_field_tag :file, class: "w-full text-sm text-slate-500" , data: { file_upload_target: "input", action: "change->file-upload#toggle"  } %>
+        <%= label_tag :file, t(".file"), class: "mb-1 flex items-center gap-1 text-xs text-slate-500" do %>
+          <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 10-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13" />
+          </svg>
+          <%= t(".file") %>
+        <% end %>
+        <%= file_field_tag :file, class: "w-full rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-500 focus:outline-none focus:ring-2 focus:ring-emerald-500 cursor-pointer", data: { file_upload_target: "input", action: "change->file-upload#toggle" } %>
       </div>
-      <%= submit_tag "Upload", class: "rounded-lg bg-emerald-600 px-4 py-2 text-sm font-medium text-white hover:bg-emerald-700 cursor-pointer hidden", data: { file_upload_target: "button" } %>
+      <%= button_tag t("helpers.links.cancel"), type: "button", class: "#{button_classes(:danger)} cursor-pointer hidden",
+            data: { file_upload_target: "button", action: "click->file-upload#clear" } %>
+      <%= submit_tag t(".upload"), class: "rounded-lg bg-emerald-600 px-4 py-2 text-sm font-medium text-white hover:bg-emerald-700 cursor-pointer hidden", data: { file_upload_target: "button" } %>
     <% end %>
   </div>
 </section>
