@@ -42,6 +42,7 @@ class CourseTest < ActiveSupport::TestCase
     should belong_to(:category).class_name("CourseCategory").with_foreign_key("category_id")
     should belong_to(:teacher).class_name("User").with_foreign_key("teacher_id")
     should have_many(:sections).dependent(:restrict_with_error)
+    should have_many(:enrollments).dependent(:restrict_with_error)
   end
 
   context "validations" do
@@ -93,6 +94,23 @@ class CourseTest < ActiveSupport::TestCase
 
       assert @course.undiscarded?
       assert @section.undiscarded?
+    end
+
+    should "discarded enrollments" do
+      @enrollment = create(:enrollment, course: @course)
+      @course.discard
+
+      assert @course.reload.discarded?
+      assert @enrollment.reload.discarded?
+    end
+
+    should "restore enrollments when undiscarded" do
+      @enrollment = create(:enrollment, course: @course)
+      @course.discard
+      @course.undiscard
+
+      assert @course.undiscarded?
+      assert @enrollment.undiscarded?
     end
   end
 end
