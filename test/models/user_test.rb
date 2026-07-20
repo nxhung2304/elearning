@@ -27,6 +27,7 @@ class UserTest < ActiveSupport::TestCase
   context "associations" do
     should have_one(:profile)
     should have_many(:courses).dependent(:restrict_with_error)
+    should have_many(:enrollments).dependent(:restrict_with_error)
   end
 
   context "validations" do

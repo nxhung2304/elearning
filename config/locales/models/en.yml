@@ -26,6 +26,9 @@ en:
       event_log:
         one: Eventlog
         other: Eventlogs
+      enrollment:
+        one: Enrollment
+        other: Enrollments
     attributes:
       user:
         email: Email
@@ -95,6 +98,16 @@ en:
       event_log:
         event_type: Event type
         metadata: Metadata
+      enrollment:
+        status: Status
+        enrolled_at: Enrolled at
+        expired_at: Expired at
+        discarded_at: Discarded at
+      enrollment/status:
+        active: Active
+        expired: Expired
+        cancelled: Cancelled
+        revoked: Revoked
     errors:
       models:
         course:

@@ -40,6 +40,7 @@ class Course < ApplicationRecord
   belongs_to :category, class_name: "CourseCategory", foreign_key: "category_id"
   belongs_to :teacher, class_name: "User", foreign_key: "teacher_id"
   has_many :sections, dependent: :restrict_with_error
+  has_many :enrollments, dependent: :restrict_with_error
 
   enum :level, { beginner: 0, intermediate: 1, advanced: 2 }, validate: true
   enum :language, { english: 0, vietnamese: 1 }, validate: true
@@ -57,7 +58,9 @@ class Course < ApplicationRecord
 
   before_validation :set_published_at
   before_discard :discard_all_sections
+  before_discard :discard_enrollments
   before_undiscard :restore_sections
+  before_undiscard :restore_enrollments
 
   def to_s = title
 
@@ -99,5 +102,17 @@ class Course < ApplicationRecord
     def restore_sections
       sections.need_restore.undiscard_all
       sections.update_all discarded_by_course: false
+    end
+
+    def discard_enrollments
+      enrollments.kept.each do |enrollment|
+        enrollment.discard
+        enrollment.update! discarded_by_course: true
+      end
+    end
+
+    def restore_enrollments
+      enrollments.need_restore.undiscard_all
+      enrollments.update_all discarded_by_course: false
     end
 end
