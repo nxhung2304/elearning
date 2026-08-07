@@ -1,0 +1,12 @@
+<% if current_user.student? %>
+  <% if enrollment.present? %>
+    <%= button_to t(".cancel"), course_enrollment_path(course, enrollment),
+          method: :delete,
+          class: button_classes(:danger_outlined),
+          form: { data: { turbo_confirm: t(".cancel_confirm") } } %>
+  <% else %>
+    <%= button_to t(".enroll"), course_enrollments_path(course),
+          method: :post,
+          class: button_classes(:primary) %>
+  <% end %>
+<% end %>

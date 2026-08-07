@@ -19,9 +19,13 @@ class Ability
     elsif user.student?
       can :read, User, id: user.id, discarded_at: nil
       can :update, Profile, user_id: user.id
-      # TODO: change to enrollment course
       can :read, Course, status: :published
       can :read, Section, discarded_at: nil
+      can %i[read create destroy], Enrollment, user_id: user.id
+
+      # Preview lessons in any published course (trailer / marketing)
+      can :read, Lesson, is_published: true, is_preview: true,
+        section: { course: { status: :published } }
     end
 
     can :read, :dashboard

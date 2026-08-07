@@ -40,4 +40,19 @@ class Enrollment < ApplicationRecord
   validates :discarded_by_course, inclusion: { in: [ true, false ] }
 
   scope :need_restore, -> { discarded.where(discarded_by_course: true) }
+  scope :active, -> { kept.where(status: :active) }
+
+  # callbacks
+  before_validation :set_enrolled_at, on: :create
+
+  def activate
+    self.status = :active
+    self.enrolled_at = Time.current
+  end
+
+  private
+
+  def set_enrolled_at
+    self.enrolled_at = Time.current if enrolled_at.blank? && active?
+  end
 end

@@ -44,6 +44,16 @@ module ApplicationHelper
     end
   end
 
+  def tab_link_to(label, path, active:)
+    base = "-mb-px border-b-2 px-4 py-2.5 text-sm font-medium transition-colors"
+    state = if active
+      "border-emerald-600 text-emerald-600"
+    else
+      "border-transparent text-slate-500 hover:border-slate-300 hover:text-slate-900"
+    end
+    link_to label, path, class: "#{base} #{state}"
+  end
+
   def title_for(resource)
     if resource.respond_to?(:to_ary)
       resource.model.model_name.human(count: 2)

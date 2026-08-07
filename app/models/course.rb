@@ -46,6 +46,7 @@ class Course < ApplicationRecord
   enum :language, { english: 0, vietnamese: 1 }, validate: true
   enum :status, { draft: 0, published: 1, archived: 2 }, validate: true
 
+  # validations
   validates :title, presence: true
   validates :description, presence: true
   validates :price, presence: true, numericality: { greater_than_or_equal_to: 0 }
@@ -53,16 +54,17 @@ class Course < ApplicationRecord
   validates :status, presence: true
   validates :level, presence: true
   validates :language, presence: true
-
   validate :published_at_requires_published_status
 
+  # scopes
+  scope :enrolled_by, ->(user) { kept.where(id: user.enrollments.active.select(:course_id)) }
+
+  # callbacks
   before_validation :set_published_at
   before_discard :discard_all_sections
   before_discard :discard_enrollments
   before_undiscard :restore_sections
   before_undiscard :restore_enrollments
-
-  def to_s = title
 
   def should_generate_new_friendly_id?
     slug.blank?
@@ -78,6 +80,10 @@ class Course < ApplicationRecord
 
   def archive
     update status: :archived
+  end
+
+  def active_enrollment_for(user)
+    enrollments.active.find_by(user: user)
   end
 
   private
