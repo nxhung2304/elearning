@@ -26,6 +26,11 @@ class Ability
       # Preview lessons in any published course (trailer / marketing)
       can :read, Lesson, is_published: true, is_preview: true,
         section: { course: { status: :published } }
+
+      # Published lessons in courses the student is actively enrolled in
+      enrolled_course_ids = user.enrollments.active.pluck(:course_id)
+      can :read, Lesson, is_published: true,
+        section: { course: { id: enrolled_course_ids } }
     end
 
     can :read, :dashboard

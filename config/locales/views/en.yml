@@ -34,6 +34,23 @@ en:
       title: "Edit"
     new:
       title: "New"
+    show:
+      free: "Free"
+      manage_sections: "Manage sections"
+    curriculum:
+      title: "Curriculum"
+      lessons_count:
+        zero: "No lessons"
+        one: "%{count} lesson"
+        other: "%{count} lessons"
+      empty_section: "No lessons yet."
+      empty_teacher: "Add your first section to start building the curriculum."
+      empty_student: "Content is being updated. Check back soon."
+      new_section: "New section"
+      edit_section: "Edit section"
+      delete_section: "Delete section"
+      add_lesson: "Add lesson"
+      delete_section_confirm: "Delete this section and its lessons?"
   sections:
     index:
       title: "Sections"
@@ -53,7 +70,16 @@ en:
   lessons:
     table:
       empty: "No lessons available yet."
+    row:
+      preview: "Preview"
+      draft: "Draft"
+      locked: "Locked"
+      edit: "Edit lesson"
+      delete: "Delete lesson"
+      delete_confirm: "Delete this lesson?"
     show:
+      content: "Content"
+      back_to_curriculum: "Back to curriculum"
       attachments: "Attachments"
       upload_attachment: "Upload attachment"
       display_name: "Display name"
