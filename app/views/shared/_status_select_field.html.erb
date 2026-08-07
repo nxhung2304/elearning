@@ -1,0 +1,5 @@
+<%= f.select :status_eq,
+      model.statuses.map { |s, v| [model.human_attribute_name("status.#{s}"), v] },
+      { include_blank: model.human_attribute_name(:status), selected: @q.status_eq },
+      class: "search-field" %>
+

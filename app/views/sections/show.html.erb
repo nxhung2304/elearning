@@ -1,7 +1,6 @@
 <% add_breadcrumb @course.title, course_path(@course) %>
 <% add_breadcrumb t("sections.index.title"), course_sections_path(@course) %>
 <% add_breadcrumb @section.title %>
-
 <section class="mx-auto max-w-3xl px-6 py-8">
   <div class="mb-6 flex items-center justify-between">
     <h1 class="text-2xl font-bold text-slate-900"><%= @section.title %></h1>
@@ -9,7 +8,6 @@
           course_sections_path(@course),
           class: "text-sm text-slate-500 hover:text-slate-900" %>
   </div>
-
   <dl class="divide-y divide-slate-200 rounded-xl border border-slate-200">
     <div class="flex px-4 py-3 gap-4">
       <dt class="w-1/3 font-medium text-slate-600"><%= Section.human_attribute_name(:course) %></dt>
@@ -28,7 +26,6 @@
       <dd class="text-slate-500 text-sm"><%= @section.updated_at&.strftime("%Y-%m-%d %H:%M") %></dd>
     </div>
   </dl>
-
   <div class="mt-6 flex items-center gap-3">
     <% if can?(:update, @section) %>
       <%= link_to t("helpers.links.edit", default: "Edit"),
@@ -51,22 +48,6 @@
               class: "rounded-md bg-emerald-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-emerald-700" %>
       <% end %>
     </div>
-    <table class="w-full text-sm">
-      <thead class="bg-slate-50">
-        <tr>
-          <th class="px-4 py-3 text-left font-bold text-slate-600"><%= Lesson.human_attribute_name(:position) %></th>
-          <th class="px-4 py-3 text-left font-bold text-slate-600"><%= Lesson.human_attribute_name(:title) %></th>
-          <th class="px-4 py-3 text-left font-bold text-slate-600"><%= Lesson.human_attribute_name(:lesson_type) %></th>
-          <th class="px-4 py-3 text-left font-bold text-slate-600"><%= Lesson.human_attribute_name(:duration_seconds) %></th>
-          <th class="px-4 py-3 text-left font-bold text-slate-600"><%= Lesson.human_attribute_name(:is_published) %></th>
-          <th class="px-4 py-3"></th>
-        </tr>
-      </thead>
-      <tbody class="divide-y divide-slate-200">
-        <%= render partial: "lessons/lesson",
-              collection: @section.lessons.kept.order(:position),
-              locals: { section: @section, course: @course } %>
-      </tbody>
-    </table>
+    <%= render "lessons/table", lessons: @lessons, section: @section, course: @course %>
   </div>
 </section>

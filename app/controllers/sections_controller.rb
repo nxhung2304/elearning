@@ -7,7 +7,9 @@ class SectionsController < ApplicationController
 
   def index; end
 
-  def show; end
+  def show
+    @lessons = @section.lessons.accessible_by(current_ability).kept.order(:position)
+  end
 
   def new; end
 

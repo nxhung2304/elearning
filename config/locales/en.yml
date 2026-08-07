@@ -11,10 +11,16 @@ en:
     created: "%{text} was successfully created."
     updated: "%{text} was successfully updated."
     destroyed: "%{text} was successfully destroyed."
+    create_fail: "Could not create %{text}."
     destroy_fail: "Could not destroy %{text}."
     published: "%{text} was successfully published."
     drafted: "%{text} was successfully moved to draft."
     archived: "%{text} was successfully archived."
+    revoked: "%{text} was successfully revoked."
+
+  enrollments:
+    flash:
+      not_enrolled: "You are not enrolled in this course."
 
   helpers:
     confirm: "Are you sure?"

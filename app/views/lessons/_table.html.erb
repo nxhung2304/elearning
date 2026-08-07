@@ -1,0 +1,24 @@
+<table class="w-full text-sm">
+  <thead class="bg-slate-50">
+    <tr>
+      <th class="px-4 py-3 text-left font-bold text-slate-600"><%= Lesson.human_attribute_name(:position) %></th>
+      <th class="px-4 py-3 text-left font-bold text-slate-600"><%= Lesson.human_attribute_name(:title) %></th>
+      <th class="px-4 py-3 text-left font-bold text-slate-600"><%= Lesson.human_attribute_name(:lesson_type) %></th>
+      <th class="px-4 py-3 text-left font-bold text-slate-600"><%= Lesson.human_attribute_name(:duration_seconds) %></th>
+      <th class="px-4 py-3 text-left font-bold text-slate-600"><%= Lesson.human_attribute_name(:is_published) %></th>
+      <th class="px-4 py-3"></th>
+    </tr>
+  </thead>
+  <tbody class="divide-y divide-slate-200">
+    <%= render partial: "lessons/lesson",
+          collection: lessons,
+          locals: { section: section, course: course } %>
+    <% if lessons.empty? %>
+      <tr>
+        <td colspan="6" class="px-4 py-8 text-center text-slate-400">
+          <%= t("lessons.table.empty") %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

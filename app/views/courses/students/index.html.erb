@@ -1,0 +1,42 @@
+<% add_breadcrumb "Courses", courses_path %>
+<% add_breadcrumb @course.title, course_path(@course) %>
+<% add_breadcrumb t(".title", default: "Students") %>
+
+<section class="mx-auto max-w-3xl px-6 py-8">
+  <h1 class="mb-6 text-2xl font-bold text-slate-900"><%= @course.title %></h1>
+  <%= render "courses/tabs", course: @course %>
+
+  <div class="overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-slate-900/5">
+    <table class="w-full text-sm">
+      <thead class="bg-slate-50">
+        <tr>
+          <th class="px-4 py-3 text-left font-bold text-slate-600"><%= User.human_attribute_name(:name) %></th>
+          <th class="px-4 py-3 text-left font-bold text-slate-600"><%= User.human_attribute_name(:email) %></th>
+          <th class="px-4 py-3 text-left font-bold text-slate-600"><%= Enrollment.human_attribute_name(:enrolled_at) %></th>
+          <th class="px-4 py-3 text-left font-bold text-slate-600"><%= Enrollment.human_attribute_name(:status) %></th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-slate-200">
+        <% @enrollments.each do |enrollment| %>
+          <tr class="hover:bg-slate-50">
+            <td class="px-4 py-3 text-slate-900"><%= enrollment.user.name %></td>
+            <td class="px-4 py-3 text-slate-500"><%= enrollment.user.email %></td>
+            <td class="px-4 py-3 text-slate-500"><%= enrollment.enrolled_at&.strftime("%Y-%m-%d") %></td>
+            <td class="px-4 py-3"><%= render "shared/status_badge", status: enrollment.status %></td>
+          </tr>
+        <% end %>
+        <% if @enrollments.empty? %>
+          <tr>
+            <td colspan="4" class="px-4 py-8 text-center text-slate-400">
+              <%= t(".empty", default: "No students enrolled yet.") %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="mt-4">
+    <%= pagy_nav(@pagy) if @pagy.pages > 1 %>
+  </div>
+</section>

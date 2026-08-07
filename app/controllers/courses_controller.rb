@@ -9,7 +9,9 @@ class CoursesController < ApplicationController
 
   def index; end
 
-  def show; end
+  def show
+    @enrollment = @course.active_enrollment_for(current_user)
+  end
 
   def new; end
 
@@ -86,9 +88,10 @@ class CoursesController < ApplicationController
     end
 
     def set_category_collection
-      @category_collection = CourseCategory.kept.accessible_by(current_ability).pluck(:name, :id)
+      @category_collection = CourseCategory.kept.pluck(:name, :id)
     end
+
     def set_teacher_collection
-      @teacher_collection = User.kept.accessible_by(current_ability).teachers.pluck(:name, :id)
+      @teacher_collection = User.teachers.kept.pluck(:name, :id)
     end
 end

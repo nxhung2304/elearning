@@ -21,5 +21,12 @@ Rails.application.routes.draw do
         resources :lesson_resources, only: %i[create destroy]
       end
     end
+
+    resources :enrollments, only: %i[create destroy]
+    resources :students, only: %i[index], module: :courses
+  end
+
+  namespace :my do
+    resources :courses, only: %i[index]
   end
 end

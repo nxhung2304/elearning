@@ -2,6 +2,7 @@ en:
   shared:
     sidebar:
       dashboard: "Dashboard"
+      my_courses: "My Courses"
       sign_out: "Sign out"
   layouts:
     application:
@@ -40,7 +41,18 @@ en:
       title: "Edit"
     new:
       title: "New"
+  my:
+    courses:
+      index:
+        title: "My Courses"
+  enrollments:
+    actions:
+      enroll: "Enroll now"
+      cancel: "Cancel enrollment"
+      cancel_confirm: "Cancel your enrollment?"
   lessons:
+    table:
+      empty: "No lessons available yet."
     show:
       attachments: "Attachments"
       upload_attachment: "Upload attachment"

@@ -1,0 +1,49 @@
+<% add_breadcrumb t('.title') %>
+
+<section class="mx-auto max-w-6xl px-6 py-8">
+  <div class="mb-6 flex items-center justify-between">
+    <h1 class="text-2xl font-bold text-slate-900">
+      <%= title_for(@my_courses) %>
+    </h1>
+  </div>
+
+  <%= search_form_for @q, url: my_courses_path, html: { class: "mb-6" } do |f| %>
+    <div class="flex gap-2">
+      <%= f.select :course_id_eq,
+            @courses_for_select,
+            { include_blank: Enrollment.human_attribute_name(:course_id), selected: @q.course_id_eq },
+            class: "search-field" %>
+      <%= render "shared/status_select_field", f: f, model: Enrollment %>
+      <%= f.submit t("helpers.search.submit", default: "Search"),
+            class: "cursor-pointer rounded-lg bg-slate-100 px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-200" %>
+    </div>
+  <% end %>
+
+  <div class="overflow-hidden rounded-xl border border-slate-200">
+    <table class="w-full text-sm">
+      <thead class="bg-slate-50">
+        <tr>
+          <th class="px-4 py-3 text-left font-medium text-slate-600"><%= Enrollment.human_attribute_name(:course_id) %></th>
+          <th class="px-4 py-3 text-left font-medium text-slate-600"><%= Enrollment.human_attribute_name(:status) %></th>
+          <th class="px-4 py-3 text-left font-medium text-slate-600"><%= Enrollment.human_attribute_name(:enrolled_at) %></th>
+          <th class="px-4 py-3 text-left font-medium text-slate-600"><%= Enrollment.human_attribute_name(:expired_at) %></th>
+          <th class="px-4 py-3"></th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-slate-200">
+        <% @my_courses.each do |enrollment| %>
+          <tr class="hover:bg-slate-50">
+            <td class="px-4 py-3 text-slate-700"><%= enrollment.course.title %></td>
+            <td class="px-4 py-3"><%= render "shared/status_badge", status: enrollment.status %></td>
+            <td class="px-4 py-3 text-slate-700"><%= enrollment.enrolled_at %></td>
+            <td class="px-4 py-3 text-slate-700"><%= enrollment.expired_at || '---' %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="mt-4 flex justify-center">
+    <%= pagy_nav(@pagy) if @pagy.pages > 1 %>
+  </div>
+</section>

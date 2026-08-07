@@ -1,16 +1,26 @@
 <% add_breadcrumb "Courses", courses_path %>
 <% add_breadcrumb @course.title %>
 <section class="mx-auto max-w-3xl px-6 py-8">
-  <div class="mb-6 flex items-center justify-between">
-    <h1 class="text-2xl font-bold text-slate-900"><%= Course.model_name.human %></h1>
-    <%= link_to t("helpers.links.back", default: "Back"),
-          courses_path,
-          class: "text-sm text-slate-500 hover:text-slate-900" %>
-    <%= publish_toggle_link(@course) %>
-    <% if @course.published? %>
-      <%= link_to "Archive", archive_course_path, class: "text-sm text-slate-500 hover:text-slate-900", data: { turbo_method: :patch } %>
-    <% end %>
+  <div class="mb-6">
+    <div class="flex items-center gap-3">
+      <h1 class="text-2xl font-bold text-slate-900 truncate"><%= @course.title %></h1>
+      <%= render "shared/status_badge", status: @course.status %>
+    </div>
+    <p class="mt-1 text-sm text-slate-500"><%= @course.teacher.name %></p>
   </div>
+
+  <% course_actions = capture do %>
+    <%= render "enrollments/actions", course: @course, enrollment: @enrollment %>
+    <% if can?(:manage, @course) %>
+      <%= publish_toggle_link(@course) %>
+      <% if @course.published? %>
+        <%= link_to "Archive", archive_course_path,
+              class: button_classes(:danger_outlined),
+              data: { turbo_method: :patch, turbo_confirm: "Archive this course?" } %>
+      <% end %>
+    <% end %>
+  <% end %>
+  <%= render "courses/tabs", course: @course, actions: course_actions %>
   <dl class="divide-y divide-slate-200 rounded-xl border border-slate-200">
     <div class="flex px-4 py-3 gap-4">
       <dt class="w-1/3 font-medium text-slate-600"><%= Course.human_attribute_name(:title) %></dt>
@@ -60,9 +70,11 @@
   <div class="mt-6 overflow-hidden rounded-xl border border-slate-200">
     <div class="flex items-center justify-between bg-slate-50 px-4 py-3 border-b border-slate-200">
       <h2 class="font-semibold text-slate-700 text-sm"><%= Section.model_name.human(count: 2) %></h2>
-      <%= link_to t("helpers.links.new", model: Section.model_name.human, default: "New Section"),
-            new_course_section_path(@course),
-            class: "rounded-md bg-emerald-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-emerald-700" %>
+      <% if can?(:create, Section) %>
+        <%= link_to t("helpers.links.new", model: Section.model_name.human, default: "New Section"),
+              new_course_section_path(@course),
+              class: "rounded-md bg-emerald-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-emerald-700" %>
+      <% end %>
     </div>
     <table class="w-full text-sm">
       <thead class="bg-slate-50">
