@@ -128,3 +128,7 @@ en:
           attributes:
             metadata:
               must_be_json: is not a valid JSON
+        lesson_progress:
+          attributes:
+            current_position_seconds:
+              less_than_or_equal_to: "must be less than or equal to %{count}"

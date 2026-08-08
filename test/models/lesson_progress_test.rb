@@ -43,10 +43,33 @@ class LessonProgressTest < ActiveSupport::TestCase
     should validate_uniqueness_of(:enrollment_id).scoped_to(:lesson_id)
   end
 
-  test "completed_at is required if completed is true" do
+  test "marking completed auto-sets completed_at" do
     lesson_progress = build(:lesson_progress, completed: true, completed_at: nil)
 
+    assert lesson_progress.valid?
+    assert_not_nil lesson_progress.completed_at
+  end
+
+  test "marking incomplete clears completed_at" do
+    lesson_progress = create(:lesson_progress, completed: true)
+
+    lesson_progress.update!(completed: false)
+
+    assert_nil lesson_progress.completed_at
+  end
+
+  test "current_position_seconds cannot exceed lesson duration" do
+    lesson = create(:lesson, :video, duration_seconds: 60)
+    lesson_progress = build(:lesson_progress, lesson: lesson, current_position_seconds: 61)
+
     assert_not lesson_progress.valid?
-    assert_includes lesson_progress.errors[:completed_at], "can't be blank"
+    assert_includes lesson_progress.errors[:current_position_seconds], "must be less than or equal to 60"
+  end
+
+  test "current_position_seconds equal to lesson duration is valid" do
+    lesson = create(:lesson, :video, duration_seconds: 60)
+    lesson_progress = build(:lesson_progress, lesson: lesson, current_position_seconds: 60)
+
+    assert lesson_progress.valid?
   end
 end

@@ -10,7 +10,7 @@ class CoursesController < ApplicationController
   def index; end
 
   def show
-    @enrollment = @course.active_enrollment_for(current_user)
+    @enrollment = @course.enrollment_for(current_user)
     @sections = @course.sections.kept.order(:position).includes(:lessons)
   end
 

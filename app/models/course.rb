@@ -82,7 +82,7 @@ class Course < ApplicationRecord
     update status: :archived
   end
 
-  def active_enrollment_for(user)
+  def enrollment_for(user)
     enrollments.active.find_by(user: user)
   end
 

@@ -87,3 +87,5 @@ en:
       file: "File"
       upload: "Upload"
       confirm_delete_attachment: "Delete this attachment?"
+      mark_as_complete: "Mark as complete"
+      mark_as_incomplete: "Mark as incomplete"

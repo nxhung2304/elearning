@@ -36,4 +36,20 @@ module LessonsHelper
   def lesson_locked?(lesson, enrolled:, can_manage:)
     !(enrolled || lesson.is_preview || can_manage)
   end
+
+  def mark_as_button_text(lesson_progress)
+    if lesson_progress&.completed?
+      t(".mark_as_incomplete")
+    else
+      t(".mark_as_complete")
+    end
+  end
+
+  def mark_as_button_classes(lesson_progress)
+    if lesson_progress&.completed?
+      button_classes(:primary)
+    else
+      button_classes(:primary_outlined)
+    end
+  end
 end
