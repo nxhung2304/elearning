@@ -32,6 +32,7 @@ class Lesson < ApplicationRecord
 
   belongs_to :section
   has_many :lesson_resources, dependent: :restrict_with_error
+  has_many :lesson_progresses, dependent: :destroy
 
   positioned on: :section
 

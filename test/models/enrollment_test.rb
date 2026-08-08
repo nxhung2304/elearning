@@ -35,6 +35,7 @@ class EnrollmentTest < ActiveSupport::TestCase
   context "associations" do
     should belong_to(:user)
     should belong_to(:course)
+    should have_many(:lesson_progresses).dependent(:destroy)
   end
 
   context "validations" do

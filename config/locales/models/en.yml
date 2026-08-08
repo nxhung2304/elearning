@@ -29,6 +29,9 @@ en:
       enrollment:
         one: Enrollment
         other: Enrollments
+      lesson_progress:
+        one: Lesson progress
+        other: Lesson progresses
     attributes:
       user:
         email: Email
@@ -108,6 +111,11 @@ en:
         expired: Expired
         cancelled: Cancelled
         revoked: Revoked
+      lesson_progress:
+        completed: Completed
+        completed_at: Completed at
+        total_watched_seconds: Total watched seconds
+        current_position_seconds: Current position seconds
     errors:
       models:
         course:

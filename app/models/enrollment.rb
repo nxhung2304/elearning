@@ -28,8 +28,10 @@
 class Enrollment < ApplicationRecord
   include Discard::Model
 
+  # associations
   belongs_to :user
   belongs_to :course
+  has_many :lesson_progresses, dependent: :destroy
 
   enum :status, { active: 0, completed: 1, expired: 2, revoked: 3 }, default: :active
 
