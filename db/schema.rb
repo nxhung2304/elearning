@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_07_19_064715) do
+ActiveRecord::Schema[8.1].define(version: 2026_08_08_064310) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -114,6 +114,20 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_19_064715) do
     t.index ["slug", "sluggable_type", "scope"], name: "index_friendly_id_slugs_on_slug_and_sluggable_type_and_scope", unique: true
     t.index ["slug", "sluggable_type"], name: "index_friendly_id_slugs_on_slug_and_sluggable_type"
     t.index ["sluggable_type", "sluggable_id"], name: "index_friendly_id_slugs_on_sluggable_type_and_sluggable_id"
+  end
+
+  create_table "lesson_progresses", force: :cascade do |t|
+    t.boolean "completed", default: false, null: false
+    t.datetime "completed_at"
+    t.datetime "created_at", null: false
+    t.integer "current_position_seconds"
+    t.bigint "enrollment_id", null: false
+    t.bigint "lesson_id", null: false
+    t.integer "total_watched_seconds"
+    t.datetime "updated_at", null: false
+    t.index ["enrollment_id", "lesson_id"], name: "index_lesson_progresses_on_enrollment_id_and_lesson_id", unique: true
+    t.index ["enrollment_id"], name: "index_lesson_progresses_on_enrollment_id"
+    t.index ["lesson_id"], name: "index_lesson_progresses_on_lesson_id"
   end
 
   create_table "lesson_resources", force: :cascade do |t|
@@ -328,6 +342,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_19_064715) do
   add_foreign_key "enrollments", "courses"
   add_foreign_key "enrollments", "users"
   add_foreign_key "event_logs", "users"
+  add_foreign_key "lesson_progresses", "enrollments"
+  add_foreign_key "lesson_progresses", "lessons"
   add_foreign_key "lesson_resources", "lessons"
   add_foreign_key "lessons", "sections"
   add_foreign_key "profiles", "users"

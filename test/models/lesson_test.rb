@@ -31,6 +31,7 @@ class LessonTest < ActiveSupport::TestCase
   context "associations" do
     should belong_to(:section)
     should have_many(:lesson_resources).dependent(:restrict_with_error)
+    should have_many(:lesson_progresses).dependent(:destroy)
   end
 
   test "valid factory" do
