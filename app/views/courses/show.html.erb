@@ -1,9 +1,13 @@
 <% add_breadcrumb "Courses", courses_path %>
 <% add_breadcrumb @course.title %>
+<% can_manage = can?(:manage, @course) %>
+<% enrolled = @enrollment.present? %>
+<% all_lessons = @sections.flat_map { |section| curriculum_lessons(section, can_manage: can_manage) } %>
+<% total_duration = section_duration(all_lessons) %>
 <section class="mx-auto max-w-3xl px-6 py-8">
   <div class="mb-6">
     <div class="flex items-center gap-3">
-      <h1 class="text-2xl font-bold text-slate-900 truncate"><%= @course.title %></h1>
+      <h1 class="truncate text-2xl font-bold text-slate-900"><%= @course.title %></h1>
       <%= render "shared/status_badge", status: @course.status %>
     </div>
     <p class="mt-1 text-sm text-slate-500"><%= @course.teacher.name %></p>
@@ -11,7 +15,7 @@
 
   <% course_actions = capture do %>
     <%= render "enrollments/actions", course: @course, enrollment: @enrollment %>
-    <% if can?(:manage, @course) %>
+    <% if can_manage %>
       <%= publish_toggle_link(@course) %>
       <% if @course.published? %>
         <%= link_to "Archive", archive_course_path,
@@ -21,87 +25,35 @@
     <% end %>
   <% end %>
   <%= render "courses/tabs", course: @course, actions: course_actions %>
-  <dl class="divide-y divide-slate-200 rounded-xl border border-slate-200">
-    <div class="flex px-4 py-3 gap-4">
-      <dt class="w-1/3 font-medium text-slate-600"><%= Course.human_attribute_name(:title) %></dt>
-      <dd class="text-slate-900"><%= @course.title %></dd>
-    </div>
-    <div class="flex px-4 py-3 gap-4">
-      <dt class="w-1/3 font-medium text-slate-600"><%= Course.human_attribute_name(:description) %></dt>
-      <dd class="text-slate-900"><%= @course.description %></dd>
-    </div>
-    <div class="flex px-4 py-3 gap-4">
-      <dt class="w-1/3 font-medium text-slate-600"><%= Course.human_attribute_name(:status) %></dt>
-      <dd class="text-slate-900"><%= render "shared/status_badge", status: @course.status %></dd>
-    </div>
-    <div class="flex px-4 py-3 gap-4">
-      <dt class="w-1/3 font-medium text-slate-600"><%= Course.human_attribute_name(:level) %></dt>
-      <dd class="text-slate-900"><%= @course.level %></dd>
-    </div>
-    <div class="flex px-4 py-3 gap-4">
-      <dt class="w-1/3 font-medium text-slate-600"><%= Course.human_attribute_name(:language) %></dt>
-      <dd class="text-slate-900"><%= @course.language %></dd>
-    </div>
-    <div class="flex px-4 py-3 gap-4">
-      <dt class="w-1/3 font-medium text-slate-600"><%= Course.human_attribute_name(:price) %></dt>
-      <dd class="text-slate-900"><%= @course.price %></dd>
-    </div>
-    <div class="flex px-4 py-3 gap-4">
-      <dt class="w-1/3 font-medium text-slate-600"><%= Course.human_attribute_name(:total_lessons) %></dt>
-      <dd class="text-slate-900"><%= @course.total_lessons %></dd>
-    </div>
-    <div class="flex px-4 py-3 gap-4">
-      <dt class="w-1/3 font-medium text-slate-600"><%= Course.human_attribute_name(:category) %></dt>
-      <dd class="text-slate-900"><%= @course.category %></dd>
-    </div>
-    <div class="flex px-4 py-3 gap-4">
-      <dt class="w-1/3 font-medium text-slate-600"><%= Course.human_attribute_name(:teacher) %></dt>
-      <dd class="text-slate-900"><%= @course.teacher.name %></dd>
-    </div>
-    <div class="flex px-4 py-3 gap-4">
-      <dt class="w-1/3 font-medium text-slate-600"><%= Course.human_attribute_name(:created_at) %></dt>
-      <dd class="text-slate-500 text-sm"><%= @course.created_at&.strftime("%Y-%m-%d %H:%M") %></dd>
-    </div>
-    <div class="flex px-4 py-3 gap-4">
-      <dt class="w-1/3 font-medium text-slate-600"><%= Course.human_attribute_name(:updated_at) %></dt>
-      <dd class="text-slate-500 text-sm"><%= @course.updated_at&.strftime("%Y-%m-%d %H:%M") %></dd>
-    </div>
-  </dl>
-  <div class="mt-6 overflow-hidden rounded-xl border border-slate-200">
-    <div class="flex items-center justify-between bg-slate-50 px-4 py-3 border-b border-slate-200">
-      <h2 class="font-semibold text-slate-700 text-sm"><%= Section.model_name.human(count: 2) %></h2>
-      <% if can?(:create, Section) %>
-        <%= link_to t("helpers.links.new", model: Section.model_name.human, default: "New Section"),
-              new_course_section_path(@course),
-              class: "rounded-md bg-emerald-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-emerald-700" %>
+
+  <div class="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-slate-900/5">
+    <% if @course.description.present? %>
+      <p class="whitespace-pre-wrap text-sm leading-relaxed text-slate-700"><%= @course.description %></p>
+    <% end %>
+    <dl class="mt-4 flex flex-wrap gap-x-6 gap-y-2 text-sm">
+      <div class="flex items-center gap-1.5">
+        <dt class="text-slate-400"><%= Course.human_attribute_name(:level) %>:</dt>
+        <dd class="font-medium text-slate-700"><%= @course.level.humanize %></dd>
+      </div>
+      <div class="flex items-center gap-1.5">
+        <dt class="text-slate-400"><%= Course.human_attribute_name(:language) %>:</dt>
+        <dd class="font-medium text-slate-700"><%= @course.language.humanize %></dd>
+      </div>
+      <div class="flex items-center gap-1.5">
+        <dt class="text-slate-400"><%= Course.human_attribute_name(:price) %>:</dt>
+        <dd class="font-medium text-slate-700"><%= @course.price.positive? ? number_to_currency(@course.price) : t("courses.show.free") %></dd>
+      </div>
+      <div class="flex items-center gap-1.5">
+        <dd class="font-medium text-slate-700"><%= t("courses.curriculum.lessons_count", count: all_lessons.size) %></dd>
+      </div>
+      <% if total_duration %>
+        <div class="flex items-center gap-1.5">
+          <dd class="font-medium text-slate-700"><%= total_duration %></dd>
+        </div>
       <% end %>
-    </div>
-    <table class="w-full text-sm">
-      <thead class="bg-slate-50">
-        <tr>
-          <th class="px-4 py-3 text-left font-bold text-slate-600"><%= Section.human_attribute_name(:title) %></th>
-          <th class="px-4 py-3 text-left font-bold text-slate-600"><%= Section.human_attribute_name(:position) %></th>
-          <th class="px-4 py-3"></th>
-        </tr>
-      </thead>
-      <tbody class="divide-y divide-slate-200">
-        <% @course.sections.kept.each do |section| %>
-          <tr class="hover:bg-slate-50">
-            <td class="px-4 py-3"><%= section.title %></td>
-            <td class="px-4 py-3 text-slate-500"><%= section.position %></td>
-            <td class="px-4 py-3 text-right">
-              <%= link_to t("helpers.links.show", default: "Show"),
-                    course_section_path(@course, section),
-                    class: "rounded-md border border-slate-300 px-4 py-1.5 text-xs font-medium text-slate-600 hover:border-slate-900 hover:text-slate-900 mr-2" %>
-              <% if can?(:update, section) %>
-                <%= link_to t("helpers.links.edit", default: "Edit"),
-                      edit_course_section_path(@course, section),
-                      class: "rounded-md border border-slate-300 px-4 py-1.5 text-xs font-medium text-slate-600 hover:border-slate-900 hover:text-slate-900 mr-2" %>
-              <% end %>
-            </td>
-          </tr>
-        <% end %>
-      </tbody>
-    </table>
+    </dl>
   </div>
+
+  <%= render "courses/curriculum", course: @course, sections: @sections,
+        enrolled: enrolled, can_manage: can_manage %>
 </section>

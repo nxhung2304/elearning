@@ -37,6 +37,7 @@ make gen-migration  NAME=AddStatusToUsers FIELDS="status:integer"
 | `specs/ERD.md` | Database schema, relations, domain boundaries theo phase |
 | `specs/Roadmap.md` | Timeline, task checklist theo phase (source of truth cho progress) |
 | `specs/story.md` | Implementation detail: columns, validations, Minitest cases |
+| `specs/design.md` | Design system — colors, surfaces, buttons, inputs, icons, helpers (UI source of truth) |
 | `specs/issues/` | Individual issue files (1 file per GitHub issue) |
 
 > `specs/` là real directory — symlinked từ Obsidian vault (`~/vaults/personal/20-Projects/elearning/`).
@@ -86,14 +87,13 @@ Use `pagy` for pagination and `ransack` for search/filtering in index actions.
 
 ## UI / Design conventions
 
-Follow Google Material Design principles when styling views (Tailwind utility classes, no Node/webpack UI framework):
+**Source of truth: `specs/design.md`.** Đọc file đó trước khi tạo/sửa view. Tóm tắt:
 
-- **Icons:** inline SVG in Material Symbols/Icons outline style (`stroke="currentColor"`, `viewBox="0 0 24 24"`, `stroke-width="2"`, rounded line caps/joins).
-- **Buttons (Material Design 3):** use the `button_classes(variant)` helper in `ApplicationHelper` instead of inlining class strings.
-  - `:primary` / `:danger` — filled pill buttons (`rounded-full`, solid `bg-{color}-600`, `shadow-sm` that deepens on hover).
-  - `:primary_outlined` / `:danger_outlined` — outlined pill buttons for secondary actions (e.g. Cancel).
-  - `:icon` / `:icon_primary` / `:icon_danger` — circular icon-only ghost buttons (`rounded-full p-2`) with a subtle colored hover background, no border. Pair with `title` + `sr-only` text for accessibility.
-- **Surfaces:** cards/lists use elevation instead of borders — `bg-white shadow-sm ring-1 ring-slate-900/5 rounded-2xl`.
-- **Color roles:** emerald = primary/success, red = danger/destructive, slate = neutral text/surfaces.
-- **Inputs:** Material outlined style — `rounded-md border border-slate-300 px-3 py-2 text-sm focus:border-emerald-600 focus:outline-none focus:ring-1 focus:ring-emerald-600`.
-- Keep transitions subtle (`transition-colors` / `transition-shadow`) — elevation and color shifts on hover, no skeuomorphic depth.
+- **Material Design 3** bằng Tailwind utility (Tailwind v4 CLI standalone, không Node build; có DaisyUI CSS plugin + TomSelect).
+- **Color roles:** emerald = primary/success, red = danger, slate = neutral. Focus ring input = emerald.
+- **Buttons:** luôn dùng helper `button_classes(variant)` (`ApplicationHelper`), không inline class.
+- **Surfaces:** elevation thay border — `bg-white shadow-sm ring-1 ring-slate-900/5 rounded-2xl`.
+- **Icons:** inline SVG Material outline (`stroke="currentColor"`, `viewBox="0 0 24 24"`, `stroke-width="2"`).
+- Shared helpers: `tab_link_to`, `title_for`, `add_breadcrumb`, partial `shared/_status_badge`.
+
+> `specs/design.md` § "Known drift" liệt kê chỗ code hiện tại đang lệch chuẩn — đừng nhân bản pattern đó ở view mới.
