@@ -47,7 +47,7 @@
 - [x] [Model] Enrollment — status enum, associations, business rules, i18n (en) [ERD → enrollments](ERD.md#enrollments)
 - [x] [CRUD] Enrollment — Student enroll, danh sách khóa đã enroll (Pagy)
 - [x] [Model] LessonProgress — watched seconds, position, associations, i18n (en) [ERD → lesson_progresses](ERD.md#lesson_progresses)
-- [ ] [CRUD] LessonProgress — Student update watched position, mark completed
+- [x] [CRUD] LessonProgress — Student update watched position, mark completed
 - [ ] [Model] CourseProgress — progress_percentage, completed_lessons_count, associations, i18n (en) [ERD → course_progresses](ERD.md#course_progresses)
 - [ ] Job: UpdateCourseProgressJob (Solid Queue)
 - [ ] Web: Progress bar trên course page

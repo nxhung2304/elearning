@@ -31,6 +31,13 @@ class Ability
       enrolled_course_ids = user.enrollments.active.pluck(:course_id)
       can :read, Lesson, is_published: true,
         section: { course: { id: enrolled_course_ids } }
+      can :update, LessonProgress,
+        enrollment: { user_id: user.id },
+        lesson: {
+          is_published: true, section: {
+            course: { id: enrolled_course_ids }
+          }
+        }
     end
 
     can :read, :dashboard

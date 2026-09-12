@@ -10,6 +10,8 @@ class LessonsController < ApplicationController
 
   def show
     @lesson_resources = @lesson.lesson_resources.kept
+    @enrollment = @course.enrollment_for(current_user)
+    @lesson_progress = @lesson.lesson_progresses.find_by(enrollment: @enrollment)
   end
 
   def new; end

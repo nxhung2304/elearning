@@ -19,7 +19,7 @@ class EnrollmentsController < ApplicationController
   end
 
   def destroy
-    @enrollment = @course.active_enrollment_for(current_user)
+    @enrollment = @course.enrollment_for(current_user)
     if @enrollment.blank?
       redirect_to @course, alert: t("enrollments.flash.not_enrolled") and return
     end

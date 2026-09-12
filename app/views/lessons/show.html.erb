@@ -27,20 +27,48 @@
       </svg>
       <%= t("lessons.show.back_to_curriculum") %>
     <% end %>
-  </div>
+    <% if @enrollment.present? %>
+      <%= button_tag(
+        mark_as_button_text(@lesson_progress),
+        type: "button",
+        class: "cursor-pointer #{mark_as_button_classes(@lesson_progress)}",
+        data: {
+          controller: "lesson-progress",
+          lesson_progress_url_value: my_lesson_progress_path(@lesson),
+          lesson_progress_completed_value: @lesson_progress&.completed || false,
 
+          lesson_progress_complete_text_value: t(".mark_as_complete"),
+          lesson_progress_incomplete_text_value: t(".mark_as_incomplete"),
+
+          lesson_progress_incomplete_class_value: "#{button_classes(:primary_outlined)} cursor-pointer",
+          lesson_progress_complete_class_value: "#{button_classes(:primary)} cursor-pointer",
+
+          action: "click->lesson-progress#toggleCompletion"
+        }
+      ) %>
+    <% end %>
+  </div>
   <% if @lesson.video.attached? %>
     <div class="overflow-hidden rounded-2xl bg-slate-900 shadow-sm ring-1 ring-slate-900/5">
-      <%= video_tag rails_blob_path(@lesson.video), controls: true, preload: "metadata", class: "aspect-video w-full" %>
+      <%= video_tag(
+        rails_blob_path(@lesson.video),
+        controls: true,
+        preload: "metadata",
+        class: "aspect-video w-full",
+        data: @enrollment.present? ? {
+          controller: "lesson-progress",
+          lesson_progress_url_value: my_lesson_progress_path(@lesson),
+          lesson_progress_last_position_seconds_value: @lesson_progress&.current_position_seconds || 0,
+          action: "pause->lesson-progress#pause ended->lesson-progress#ended seeked->lesson-progress#seeked loadedmetadata->lesson-progress#restore",
+        } : {}
+      ) %>
     </div>
   <% end %>
-
   <% if @lesson.content.present? %>
     <div class="<%= "mt-6" if @lesson.video.attached? %> rounded-2xl bg-white p-6 shadow-sm ring-1 ring-slate-900/5">
       <div class="whitespace-pre-wrap text-sm leading-relaxed text-slate-700"><%= @lesson.content %></div>
     </div>
   <% end %>
-
   <% if @lesson_resources.any? %>
     <div class="mt-8">
       <h2 class="mb-3 text-sm font-medium uppercase tracking-wide text-slate-500"><%= t(".attachments") %></h2>
@@ -75,7 +103,6 @@
       </ul>
     </div>
   <% end %>
-
   <% if can_manage %>
     <div class="mt-8">
       <h2 class="mb-3 text-sm font-medium uppercase tracking-wide text-slate-500"><%= t(".upload_attachment") %></h2>

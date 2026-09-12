@@ -28,5 +28,8 @@ Rails.application.routes.draw do
 
   namespace :my do
     resources :courses, only: %i[index]
+    resources :lessons, only: [] do
+      resource :progress, only: %i[update], controller: "lesson_progresses"
+    end
   end
 end
