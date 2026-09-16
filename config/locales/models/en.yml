@@ -32,6 +32,9 @@ en:
       lesson_progress:
         one: Lesson progress
         other: Lesson progresses
+      course_progress:
+        one: Course progress
+        other: Course progresses
     attributes:
       user:
         email: Email
@@ -116,6 +119,10 @@ en:
         completed_at: Completed at
         total_watched_seconds: Total watched seconds
         current_position_seconds: Current position seconds
+      course_progress:
+        progress_percentage: Progress percentage
+        completed_lessons_count: Completed lessons count
+        completed_at: Completed at
     errors:
       models:
         course:
@@ -131,4 +138,9 @@ en:
         lesson_progress:
           attributes:
             current_position_seconds:
-              less_than_or_equal_to: "must be less than or equal to %{count}"
+              less_than_or_equal_to: must be less than or equal to %{count}
+        course_progress:
+          attributes:
+            progress_percentage:
+              must_equal_to_threshold_when_completed_at_present: must equal to %{count} when completed_at is present
+              must_equal_to_time_current: must equal to %{time}
