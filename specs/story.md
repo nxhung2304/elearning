@@ -48,8 +48,8 @@
 - [x] [CRUD] Enrollment — Student enroll, danh sách khóa đã enroll (Pagy)
 - [x] [Model] LessonProgress — watched seconds, position, associations, i18n (en) [ERD → lesson_progresses](ERD.md#lesson_progresses)
 - [x] [CRUD] LessonProgress — Student update watched position, mark completed
-- [ ] [Model] CourseProgress — progress_percentage, completed_lessons_count, associations, i18n (en) [ERD → course_progresses](ERD.md#course_progresses)
-- [ ] Job: UpdateCourseProgressJob (Solid Queue)
+- [x] [Model] CourseProgress — progress_percentage, completed_lessons_count, associations, i18n (en) [ERD → course_progresses](ERD.md#course_progresses)
+- [x] Job: UpdateCourseProgressJob (Solid Queue)
 - [ ] Web: Progress bar trên course page
 - [ ] Minitest: integration tests enrollment flow + progress flow
 

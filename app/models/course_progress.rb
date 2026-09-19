@@ -28,20 +28,17 @@ class CourseProgress < ApplicationRecord
   validates :completed_at, presence: true, if: -> { progress_percentage == COMPLETION_THRESHOLD }
 
   validate :completed_at_cannot_be_in_the_future, if: -> { completed_at.present? }
-  validate :completed_at_cannot_present_if_progress_percentage_not_equal_threshold, if: -> { completed_at.present? }
 
-  before_validation :set_completed_at, if: -> { completed_at.nil? && progress_percentage.to_i >= COMPLETION_THRESHOLD }
+  before_validation :sync_completed_at
 
   private
 
-  def set_completed_at
-    self.completed_at = Time.current
-  end
-
-  def completed_at_cannot_present_if_progress_percentage_not_equal_threshold
-    return if progress_percentage == COMPLETION_THRESHOLD
-
-    errors.add(:progress_percentage, :must_equal_to_threshold_when_completed_at_present, count: COMPLETION_THRESHOLD)
+  def sync_completed_at
+    if progress_percentage.to_i >= COMPLETION_THRESHOLD
+      self.completed_at ||= Time.current
+    else
+      self.completed_at = nil
+    end
   end
 
   def completed_at_cannot_be_in_the_future
