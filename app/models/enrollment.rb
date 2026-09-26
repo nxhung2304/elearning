@@ -31,6 +31,9 @@ class Enrollment < ApplicationRecord
   # associations
   belongs_to :user
   belongs_to :course
+
+  has_one :course_progress, dependent: :destroy
+
   has_many :lesson_progresses, dependent: :destroy
 
   enum :status, { active: 0, completed: 1, expired: 2, revoked: 3 }, default: :active
@@ -46,6 +49,7 @@ class Enrollment < ApplicationRecord
 
   # callbacks
   before_validation :set_enrolled_at, on: :create
+  after_create :create_default_course_progress
 
   def activate
     self.status = :active
@@ -56,5 +60,11 @@ class Enrollment < ApplicationRecord
 
   def set_enrolled_at
     self.enrolled_at = Time.current if enrolled_at.blank? && active?
+  end
+
+  def create_default_course_progress
+    return if course_progress.present?
+
+    create_course_progress!
   end
 end

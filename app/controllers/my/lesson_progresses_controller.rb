@@ -2,21 +2,15 @@ class My::LessonProgressesController < ApplicationController
   before_action :set_lesson_progress, only: :update
 
   MAX_UPDATE_ATTEMPTS = 3
+  FIRST_ATTEMPT = 1
 
   def update
-    @update_attempts ||= 0
-
-    if @lesson_progress.update(lesson_progress_params)
+    if call_update_service_with_retry
       render json: { completed: @lesson_progress.completed }
     else
       render json: { errors: @lesson_progress.errors.full_messages },
         status: :unprocessable_entity
     end
-  rescue ActiveRecord::RecordNotUnique
-    raise if (@update_attempts += 1) >= MAX_UPDATE_ATTEMPTS
-
-    @lesson_progress = @lesson_progress.class.find_by!(enrollment: @enrollment, lesson_id: @lesson_progress.lesson_id)
-    retry
   end
 
   private
@@ -31,5 +25,15 @@ class My::LessonProgressesController < ApplicationController
     @lesson_progress = lesson.lesson_progresses.find_or_initialize_by(enrollment: @enrollment)
 
     authorize! :update, @lesson_progress
+  end
+
+  def call_update_service_with_retry(attempt = FIRST_ATTEMPT)
+    UpdateLessonProgressService.new(@lesson_progress, lesson_progress_params).call
+
+  rescue ActiveRecord::RecordNotUnique
+    raise if attempt >= MAX_UPDATE_ATTEMPTS
+
+    @lesson_progress = @lesson_progress.class.find_by!(enrollment: @enrollment, lesson_id: @lesson_progress.lesson_id)
+    call_update_service_with_retry(attempt + 1)
   end
 end

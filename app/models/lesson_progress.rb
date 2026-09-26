@@ -33,8 +33,16 @@ class LessonProgress < ApplicationRecord
   validates :current_position_seconds, numericality: { greater_than_or_equal_to: 0 }, allow_nil: true
   validate :current_position_seconds_cannot_exceed_lesson_duration
 
+  # scopes
+  scope :completed, -> { where(completed: true) }
+
   # callback
   before_validation :set_completed_at, if: -> { completed_changed? && !completed_at_changed? }
+
+  # class methods
+  def self.completed_count
+    completed.count
+  end
 
   private
 

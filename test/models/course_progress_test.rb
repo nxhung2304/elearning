@@ -45,14 +45,15 @@ class CourseProgressTest < ActiveSupport::TestCase
       assert course_progress.completed_at.present?
     end
 
-    should "not be present if progress_percentage is not equal THRESHOLD" do
+    should "be cleared when progress_percentage drops below THRESHOLD" do
       course_progress = build(:course_progress, progress_percentage: 50, completed_at: Time.current)
 
-      assert_not course_progress.valid?
+      assert course_progress.valid?
+      assert_nil course_progress.completed_at
     end
 
     should "not be in the future" do
-      course_progress = build(:course_progress, completed_at: 1.day.from_now)
+      course_progress = build(:course_progress, :with_completed, completed_at: 1.day.from_now)
 
       assert_not course_progress.valid?
     end
