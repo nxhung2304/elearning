@@ -3,6 +3,9 @@
 export DATABASE_URL=postgres://localhost/elearning_development
 export REDIS_URL=redis://localhost:6379/0
 
+export DEVISE_JWT_SECRET_KEY=
+export CORS_ALLOWED_ORIGINS=
+
 # Optional: override individual database names
 # export DB_NAME=elearning_development
 # export DB_TEST_NAME=elearning_test
