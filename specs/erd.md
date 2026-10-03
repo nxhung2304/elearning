@@ -303,11 +303,7 @@ admin_logs
 # Phase 5 — API (thêm khi lên Mobile)
 
 ```
-# Migration: thêm jti vào users
-users
-+ jti                         # devise-jwt JTI matcher
-
-jwt_denylists
+jwt_denylists                 # devise-jwt Denylist strategy
 - id
 - jti
 - exp                         # để cleanup cron job
