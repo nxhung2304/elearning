@@ -12,7 +12,6 @@
     </div>
     <p class="mt-1 text-sm text-slate-500"><%= @course.teacher.name %></p>
   </div>
-
   <% course_actions = capture do %>
     <%= render "enrollments/actions", course: @course, enrollment: @enrollment %>
     <% if can_manage %>
@@ -25,7 +24,6 @@
     <% end %>
   <% end %>
   <%= render "courses/tabs", course: @course, actions: course_actions %>
-
   <div class="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-slate-900/5">
     <% if @course.description.present? %>
       <p class="whitespace-pre-wrap text-sm leading-relaxed text-slate-700"><%= @course.description %></p>
@@ -53,7 +51,10 @@
       <% end %>
     </dl>
   </div>
-
+  <% if enrolled %>
+    <%= turbo_stream_from @enrollment %>
+    <%= render "courses/progress_bar", course_progress: @enrollment.course_progress %>
+  <% end %>
   <%= render "courses/curriculum", course: @course, sections: @sections,
         enrolled: enrolled, can_manage: can_manage %>
 </section>

@@ -51,6 +51,10 @@ en:
       delete_section: "Delete section"
       add_lesson: "Add lesson"
       delete_section_confirm: "Delete this section and its lessons?"
+    progress_bar:
+      title: "Progress"
+      completed: "Completed"
+      lessons_completed: "%{completed}/%{total} lessons completed"
   sections:
     index:
       title: "Sections"

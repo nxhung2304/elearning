@@ -30,8 +30,13 @@ class CourseProgress < ApplicationRecord
   validate :completed_at_cannot_be_in_the_future, if: -> { completed_at.present? }
 
   before_validation :sync_completed_at
+  after_update_commit :broadcast_progress_update
 
   private
+
+  def broadcast_progress_update
+    broadcast_replace_to enrollment, target: "course_progress", partial: "courses/progress_bar", locals: { course_progress: self }
+  end
 
   def sync_completed_at
     if progress_percentage.to_i >= COMPLETION_THRESHOLD
