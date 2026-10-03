@@ -144,11 +144,12 @@
 
 ## Week 22-23 | API Setup + Auth + Courses
 
-- [ ] Thêm Grape gem + grape-entity, mount `/api/v1/`
+- [x] Thêm Grape gem + grape-entity, mount `/api/v1/`
 - [ ] Migration: thêm `jti` vào users + tạo `jwt_denylists`
 - [ ] Thêm devise-jwt
 - [ ] API: Auth (sign_in, sign_up, sign_out)
-- [ ] API: Courses, Sections, Lessons (reuse Services + grape-entity)
+- [ ] API: Authorization — gọi thủ công `Ability.new(current_user).can?` trong từng endpoint (CanCanCan không tích hợp sẵn Grape)
+- [ ] API: Courses, Sections, Lessons (logic trực tiếp trong Grape endpoint, không có Service sẵn để reuse) + grape-entity
 - [ ] Minitest: request tests
 
 ## Week 24-25 | API Full
