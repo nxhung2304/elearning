@@ -1,4 +1,7 @@
 Rails.application.routes.draw do
+  mount API::Base => "/api"
+
+  mount ActionCable.server => "/cable"
   mount LetterOpenerWeb::Engine, at: "/letter_opener" if Rails.env.development?
   devise_for :users, path: "auth"
 

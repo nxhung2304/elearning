@@ -15,5 +15,8 @@ module Elearning
       g.test_framework :test_unit, fixture: false
       g.fixture_replacement :factory_bot, dir: "test/factories"
     end
+
+    config.paths.add "app/grape", eager_load: true
+    config.paths.add "app/entities", eager_load: true
   end
 end

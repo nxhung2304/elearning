@@ -1,0 +1,47 @@
+# frozen_string_literal: true
+
+module API
+  module V1
+    class <%= class_name %> < Grape::API
+      resource :<%= plural_name %> do
+        desc "List <%= plural_name %>"
+        get do
+          # TODO: return collection
+        end
+
+        desc "Show <%= singular_name %>"
+        params do
+          requires :id, type: Integer
+        end
+        get ":id" do
+          # TODO: return record
+        end
+
+        desc "Create <%= singular_name %>"
+        params do
+          # requires :name, type: String
+        end
+        post do
+          # TODO: create record
+        end
+
+        desc "Update <%= singular_name %>"
+        params do
+          requires :id, type: Integer
+          # optional :name, type: String
+        end
+        put ":id" do
+          # TODO: update record
+        end
+
+        desc "Delete <%= singular_name %>"
+        params do
+          requires :id, type: Integer
+        end
+        delete ":id" do
+          # TODO: destroy record
+        end
+      end
+    end
+  end
+end
