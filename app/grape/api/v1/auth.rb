@@ -1,0 +1,24 @@
+module Api
+  module V1
+    class Auth < Base
+      resource :sign_up do
+        desc "Sign up a user (default is student role)"
+        params do
+          requires :email, type: String, desc: "Email"
+          requires :password, type: String, desc: "Password"
+          requires :password_confirmation, type: String, desc: "Password confirmation"
+        end
+        post do
+          result = Api::V1::Auth::SignUp.new(params).call
+
+          if result[:token]
+            present :token, result[:token]
+            present :user, result[:user]
+          else
+            error!({ errors: result[:errors] }, 422)
+          end
+        end
+      end
+    end
+  end
+end

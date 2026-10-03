@@ -1,11 +1,12 @@
 # frozen_string_literal: true
 
-module API
+module Api
   module V1
-    class Base < Grape::API
+    class Base < Api::Base
       version "v1", using: :path
 
-      mount API::V1::Health
+      mount Api::V1::Health
+      mount Api::V1::Auth
     end
   end
 end

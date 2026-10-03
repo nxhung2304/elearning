@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  mount API::Base => "/"
+  mount Api::Base => "/"
 
   mount ActionCable.server => "/cable"
   mount LetterOpenerWeb::Engine, at: "/letter_opener" if Rails.env.development?
