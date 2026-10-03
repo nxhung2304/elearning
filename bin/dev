@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+export SOLID_QUEUE_IN_PUMA=1
+
 profile="$(cat .rails_starter_profile 2>/dev/null || true)"
 
 if [[ "$profile" == "web" || "$profile" == "web_auth" ]]; then
