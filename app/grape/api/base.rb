@@ -6,6 +6,10 @@ module Api
     default_format :json
     prefix :api
 
+    rescue_from Grape::Exceptions::ValidationErrors do |error|
+      error!({ error: error.message }, 422)
+    end
+
     rescue_from :all do |error|
       error!({ error: error.message }, 500)
     end
