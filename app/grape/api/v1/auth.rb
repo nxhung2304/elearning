@@ -1,6 +1,6 @@
 module Api
   module V1
-    class Auth < Base
+    class Auth < Api::Base
       helpers do
         def token_from_header
           auth_header = headers["Authorization"] || headers["authorization"]
@@ -16,6 +16,7 @@ module Api
           requires :email, type: String, desc: "Email"
           requires :password, type: String, desc: "Password"
           requires :password_confirmation, type: String, desc: "Password confirmation"
+          optional :name, type: String, desc: "Name"
         end
         post do
           result = Api::V1::Auth::SignUp.new(params).call
@@ -55,6 +56,8 @@ module Api
 
           Warden::JWTAuth::TokenRevoker.new.call(token)
           { message: "Signed out successfully" }
+        rescue JWT::DecodeError => e
+          error!({ errors: e.message }, 401)
         end
       end
     end

@@ -20,6 +20,6 @@ class Api::V1::Auth::SignUp < Api::V1::Auth::ApplicationService
   private
 
   def user_params
-    @params.slice(:email, :password, :password_confirmation)
+    @params.slice(:email, :password, :password_confirmation, :name)
   end
 end

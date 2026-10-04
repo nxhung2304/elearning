@@ -14,7 +14,7 @@ module Api
 
     helpers do
       def current_user
-        @current_user ||= User.authorize!(env)
+        @current_user ||= env["warden"].authenticate(scope: :user)
       end
 
       def authenticate!
