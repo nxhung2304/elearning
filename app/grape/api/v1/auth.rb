@@ -1,6 +1,15 @@
 module Api
   module V1
     class Auth < Base
+      helpers do
+        def token_from_header
+          auth_header = headers["Authorization"] || headers["authorization"]
+          return nil unless auth_header
+
+          auth_header.split(" ").last
+        end
+      end
+
       resource :sign_up do
         desc "Sign up a user (default is student role)"
         params do
@@ -35,6 +44,17 @@ module Api
           else
             error!({ errors: result[:errors] }, 422)
           end
+        end
+      end
+
+      resource :sign_out do
+        desc "Sign out user and revoke JWT token"
+        delete do
+          token = token_from_header
+          error!("Authorization token missing", 400) unless token.present?
+
+          Warden::JWTAuth::TokenRevoker.new.call(token)
+          { message: "Signed out successfully" }
         end
       end
     end
