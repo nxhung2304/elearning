@@ -1,4 +1,4 @@
-class Api::V1::Auth::SignUp
+class Api::V1::Auth::SignUp < Api::V1::Auth::ApplicationService
   def initialize(params)
     @params = params
   end
@@ -11,8 +11,7 @@ class Api::V1::Auth::SignUp
     new_user.roles << student_role
 
     if new_user.save
-      token, _payload = Warden::JWTAuth::UserEncoder.new.call(new_user, :user, nil)
-      { token:, user: UserEntity.represent(new_user) }
+      generate_auth_result(new_user)
     else
       { errors: new_user.errors.full_messages }
     end

@@ -41,6 +41,8 @@ class User < ApplicationRecord
     joins(:roles).where(roles: { code: Role::TEACHER })
   }
 
+  before_validation :normalize_email
+
   def active_for_authentication?
     super && status_active?
   end
@@ -70,5 +72,11 @@ class User < ApplicationRecord
 
   def student?
     has_role?(:student)
+  end
+
+  private
+
+  def normalize_email
+    self.email = email.to_s.downcase.strip
   end
 end

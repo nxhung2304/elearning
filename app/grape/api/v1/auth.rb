@@ -19,6 +19,24 @@ module Api
           end
         end
       end
+
+      resource :sign_in do
+        desc "Sign in with email and password"
+        params do
+          requires :email, type: String, desc: "Email"
+          requires :password, type: String, desc: "Password"
+        end
+        post do
+          result = Api::V1::Auth::SignIn.new(params).call
+
+          if result[:token] && result[:user]
+            present :token, result[:token]
+            present :user, result[:user]
+          else
+            error!({ errors: result[:errors] }, 422)
+          end
+        end
+      end
     end
   end
 end
