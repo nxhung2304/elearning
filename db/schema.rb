@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_03_081219) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_09_081737) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -186,6 +186,17 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_03_081219) do
     t.datetime "updated_at", null: false
     t.index ["discarded_at"], name: "index_profiles_on_discarded_at"
     t.index ["user_id"], name: "index_profiles_on_user_id", unique: true
+  end
+
+  create_table "refresh_tokens", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.string "token_digest", null: false
+    t.datetime "expires_at", null: false
+    t.datetime "revoked_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["token_digest"], name: "index_refresh_tokens_on_token_digest", unique: true
+    t.index ["user_id"], name: "index_refresh_tokens_on_user_id"
   end
 
   create_table "roles", force: :cascade do |t|
@@ -366,6 +377,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_03_081219) do
   add_foreign_key "lesson_resources", "lessons"
   add_foreign_key "lessons", "sections"
   add_foreign_key "profiles", "users"
+  add_foreign_key "refresh_tokens", "users"
   add_foreign_key "sections", "courses"
   add_foreign_key "solid_queue_blocked_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
   add_foreign_key "solid_queue_claimed_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
