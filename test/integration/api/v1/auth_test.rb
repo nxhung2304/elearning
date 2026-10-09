@@ -26,7 +26,7 @@ class Api::V1::AuthTest < ActionDispatch::IntegrationTest
     end
 
     assert_response :created
-    assert json["token"].present?
+    assert json["access_token"].present?
     assert_equal "new_student@example.com", json["user"]["email"]
     assert User.last.student?
   end
@@ -74,7 +74,7 @@ class Api::V1::AuthTest < ActionDispatch::IntegrationTest
     post_json "/api/v1/sign_in", email: user.email, password: "password123"
 
     assert_response :success
-    assert json["token"].present?
+    assert json["access_token"].present?
     assert_equal user.email, json["user"]["email"]
   end
 

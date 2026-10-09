@@ -21,9 +21,8 @@ module Api
         post do
           result = Api::V1::Auth::SignUp.new(params).call
 
-          if result[:token]
-            present :token, result[:token]
-            present :user, result[:user]
+          if result[:access_token] && result[:refresh_token] && result[:user]
+            present result, with: AuthEntity
           else
             error!({ errors: result[:errors] }, 422)
           end
@@ -39,9 +38,8 @@ module Api
         post do
           result = Api::V1::Auth::SignIn.new(params).call
 
-          if result[:token] && result[:user]
-            present :token, result[:token]
-            present :user, result[:user]
+          if result[:access_token] && result[:refresh_token] && result[:user]
+            present result, with: AuthEntity
           else
             error!({ errors: result[:errors] }, 422)
           end
