@@ -148,7 +148,7 @@
 - [x] Migration: tạo `jwt_denylists`
 - [x] Thêm devise-jwt
 - [x] API: Auth (sign_in, sign_up, sign_out)
-- [ ] Add refresh_token
+- [x] Add refresh_token
 - [ ] API: Authorization — gọi thủ công `Ability.new(current_user).can?` trong từng endpoint (CanCanCan không tích hợp sẵn Grape)
 - [ ] API: Courses, Sections, Lessons (logic trực tiếp trong Grape endpoint, không có Service sẵn để reuse) + grape-entity
 - [ ] Minitest: request tests

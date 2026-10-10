@@ -15,14 +15,14 @@ Thêm gem `devise-jwt` và cấu hình JWT authentication cho `User`, dùng revo
 - [ ] Gem `devise-jwt` có trong `Gemfile.lock`, cấu hình `secret` lấy từ `ENV["DEVISE_JWT_SECRET_KEY"]` (không hardcode).
 - [ ] `User` model khai báo `:jwt_authenticatable` với `jwt_revocation_strategy: JwtDenylist`.
 - [ ] `JwtDenylist` include `Devise::JWT::RevocationStrategies::Denylist`.
-- [ ] JWT request/response config (`dispatch_requests`, `revocation_requests`) khai báo đúng path sẽ dùng ở issue API Auth kế tiếp (`POST /api/v1/sign_in`, `DELETE /api/v1/sign_out`) — dù controller/endpoint đó chưa tồn tại, config phải sẵn sàng để nối tiếp.
+- [ ] JWT request/response config (`dispatch_requests`, `revocation_requests`) khai báo đúng path sẽ dùng ở issue API Auth kế tiếp (`POST /api/v1/auth/sign_in`, `DELETE /api/v1/auth/sign_out`) — dù controller/endpoint đó chưa tồn tại, config phải sẵn sàng để nối tiếp.
 - [ ] Token sinh ra từ `Warden::JWTAuth` decode được, chứa `jti` khớp với user, `exp` hợp lệ theo `expiration_time` cấu hình.
 - [ ] Minitest: test JWT encode/decode roundtrip cho 1 user (test ở mức model/config, không cần endpoint thật).
 
 ## Implementation Checklist
 
 - [ ] Thêm `gem "devise-jwt"` vào `Gemfile`, `bundle install`.
-- [ ] `config/initializers/devise.rb` — thêm block `config.jwt do |jwt|` với `jwt.secret = ENV.fetch("DEVISE_JWT_SECRET_KEY")`, `jwt.dispatch_requests = [ [ "POST", %r{^/api/v1/sign_in$} ] ]`, `jwt.revocation_requests = [ [ "DELETE", %r{^/api/v1/sign_out$} ] ]`, `jwt.expiration_time = 1.day.to_i` (hoặc giá trị phù hợp — xem Key Decisions).
+- [ ] `config/initializers/devise.rb` — thêm block `config.jwt do |jwt|` với `jwt.secret = ENV.fetch("DEVISE_JWT_SECRET_KEY")`, `jwt.dispatch_requests = [ [ "POST", %r{^/api/v1/auth/sign_in$} ] ]`, `jwt.revocation_requests = [ [ "DELETE", %r{^/api/v1/auth/sign_out$} ] ]`, `jwt.expiration_time = 1.day.to_i` (hoặc giá trị phù hợp — xem Key Decisions).
 - [ ] Thêm `DEVISE_JWT_SECRET_KEY` vào `.envrc` (local) và `.envrc.example` (placeholder) — không commit giá trị thật; CI cần set biến này tương tự `CORS_ALLOWED_ORIGINS`.
 - [ ] `app/models/user.rb` — thêm `:jwt_authenticatable, jwt_revocation_strategy: JwtDenylist` vào dòng `devise :database_authenticatable, ...` hiện có.
 - [ ] `app/models/jwt_denylist.rb` — include `Devise::JWT::RevocationStrategies::Denylist`, `self.table_name = "jwt_denylists"` nếu tên bảng không khớp convention Devise mặc định.

@@ -13,12 +13,12 @@ Thêm 3 endpoint Grape cho mobile client đăng ký/đăng nhập/đăng xuất,
 
 ## Acceptance Criteria
 
-- [ ] `POST /api/v1/sign_up` tạo user mới (role mặc định `student`), trả JWT token + user info, `201`.
-- [ ] `POST /api/v1/sign_up` với email đã tồn tại / password không hợp lệ → `422` kèm message lỗi theo field.
-- [ ] `POST /api/v1/sign_in` với email/password đúng → trả JWT token trong response (header `Authorization` hoặc body — xem Key Decisions) + user info, `200`.
-- [ ] `POST /api/v1/sign_in` sai credential → `401` kèm message chung chung (không tiết lộ email tồn tại hay không).
-- [ ] `DELETE /api/v1/sign_out` với JWT hợp lệ trong header `Authorization` → revoke token (ghi vào `jwt_denylists`), `200`.
-- [ ] `DELETE /api/v1/sign_out` không có token / token đã revoke → `401`.
+- [ ] `POST /api/v1/auth/sign_up` tạo user mới (role mặc định `student`), trả JWT token + user info, `201`.
+- [ ] `POST /api/v1/auth/sign_up` với email đã tồn tại / password không hợp lệ → `422` kèm message lỗi theo field.
+- [ ] `POST /api/v1/auth/sign_in` với email/password đúng → trả JWT token trong response (header `Authorization` hoặc body — xem Key Decisions) + user info, `200`.
+- [ ] `POST /api/v1/auth/sign_in` sai credential → `401` kèm message chung chung (không tiết lộ email tồn tại hay không).
+- [ ] `DELETE /api/v1/auth/sign_out` với JWT hợp lệ trong header `Authorization` → revoke token (ghi vào `jwt_denylists`), `200`.
+- [ ] `DELETE /api/v1/auth/sign_out` không có token / token đã revoke → `401`.
 - [ ] User bị `status_suspended` hoặc `discarded` không sign_in được → `401`.
 - [ ] Minitest: request test cho cả 3 endpoint, happy path + lỗi.
 
@@ -36,20 +36,20 @@ Thêm 3 endpoint Grape cho mobile client đăng ký/đăng nhập/đăng xuất,
 ## Flow Diagram
 
 ```
-POST /api/v1/sign_up
+POST /api/v1/auth/sign_up
     → validate params (email, password, name)
     → User.new + default role student
     → save?
         ├── true  → encode JWT (Warden::JWTAuth::UserEncoder) → 201 { token, user }
         └── false → 422 { errors }
 
-POST /api/v1/sign_in
+POST /api/v1/auth/sign_in
     → find_by(email)
     → valid_password? && status_active? && !discarded?
         ├── true  → encode JWT → 200 { token, user }
         └── false → 401 { error }
 
-DELETE /api/v1/sign_out
+DELETE /api/v1/auth/sign_out
     → decode Authorization header
         ├── valid jti  → JwtDenylist.create(jti, exp) → 200
         └── invalid/missing → 401
