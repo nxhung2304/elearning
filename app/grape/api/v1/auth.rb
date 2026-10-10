@@ -48,8 +48,14 @@ module Api
 
         resource :sign_out do
           desc "Sign out user and revoke JWT token"
+          params do
+            requires :refresh_token, type: String, desc: "The custom refresh token"
+          end
           delete do
             authenticate!
+
+            digest = Digest::SHA256.hexdigest(params[:refresh_token])
+            current_user.refresh_tokens.active.find_by(token_digest: digest)&.update!(revoked_at: Time.current)
 
             token = token_from_header
             error!("Authorization token missing", 400) unless token.present?
