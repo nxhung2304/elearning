@@ -42,6 +42,7 @@ module Api
           post do
             result = Api::V1::Auth::SignIn.new(params).call
 
+            status 200
             present_auth_result(result)
           end
         end
