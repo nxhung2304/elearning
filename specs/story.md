@@ -149,6 +149,17 @@
 - [x] Thêm devise-jwt
 - [x] API: Auth (sign_in, sign_up, sign_out)
 - [x] Add refresh_token
+- [ ] API: Auth — forgot password
+    - [ ] request OTP qua email
+        - Server send OTP (6 số), expire 5-10 phút
+        - Rate limit: tối đa 1 lần/60s, giới hạn tổng số lần gửi/giờ
+        - Không tiết lộ email có tồn tại hay không trong response
+    - [ ] verify code
+        - Max re-try 3 lần, sai quá → invalidate OTP, bắt gửi lại
+        - Verify đúng → invalidate OTP, cấp short-lived token (5-10 phút) để gọi reset password
+    - [ ] reset password
+        - Chỉ nhận token tạm ở bước verify, không nhận OTP trực tiếp
+        - Reset thành công → thu hồi toàn bộ refresh token/session cũ của user
 - [ ] API: Authorization — gọi thủ công `Ability.new(current_user).can?` trong từng endpoint (CanCanCan không tích hợp sẵn Grape)
 - [ ] API: Courses, Sections, Lessons (logic trực tiếp trong Grape endpoint, không có Service sẵn để reuse) + grape-entity
 - [ ] Minitest: request tests
