@@ -94,6 +94,23 @@ module Api
             end
           end
         end
+
+        resource :vertify_otp do
+          desc "Vertify 6-digit OTP"
+          params do
+            requires :email, type: String, desc: "User email address"
+            requires :otp_code, type: String, desc: "OTP code"
+          end
+          post do
+            result = Api::V1::Auth::VertifyOtp.new(params[:email], params[:otp_code]).call
+
+            if result && result[:errors]
+              error!({ errors: result[:errors] }, result[:status] || 422)
+            else
+              { reset_token: result[:reset_token] }
+            end
+          end
+        end
       end
     end
   end
