@@ -78,6 +78,22 @@ module Api
             present_auth_result(result)
           end
         end
+
+        resource :send_otp do
+          desc "Send 6-digit OTP to email"
+          params do
+            requires :email, type: String, desc: "User email address"
+          end
+          post do
+            result = Api::V1::Auth::SendOtp.new(params[:email]).call
+
+            if result && result[:errors]
+              error!({ errors: result[:errors] }, result[:status] || 422)
+            else
+              { message: "OTP sent to email successfully." }
+            end
+          end
+        end
       end
     end
   end

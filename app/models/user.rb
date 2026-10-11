@@ -7,6 +7,8 @@
 #  email                  :string           default(""), not null
 #  encrypted_password     :string           default(""), not null
 #  name                   :string
+#  otp_code               :string(6)
+#  otp_sent_at            :datetime
 #  remember_created_at    :datetime
 #  reset_password_sent_at :datetime
 #  reset_password_token   :string
@@ -22,6 +24,8 @@
 #  index_users_on_status                (status)
 #
 class User < ApplicationRecord
+  OTP_EXPIRATION_TIME = 5.minutes
+
   include Discard::Model
 
   devise :database_authenticatable, :registerable, :recoverable, :rememberable, :validatable, :jwt_authenticatable, jwt_revocation_strategy: JwtDenylist
@@ -37,6 +41,8 @@ class User < ApplicationRecord
   has_many :refresh_tokens, dependent: :destroy
 
   validates :status, presence: true
+  validates :otp_sent_at, comparison: { less_than_or_equal_to: -> { Time.current } }, allow_blank: true
+  validates :otp_code, length: { maximum: 6 }
 
   scope :teachers, -> {
     joins(:roles).where(roles: { code: Role::TEACHER })
@@ -73,6 +79,20 @@ class User < ApplicationRecord
 
   def student?
     has_role?(:student)
+  end
+
+  def generate_otp!
+    self.otp_code = rand(100000..999999).to_s
+    self.otp_sent_at = Time.current
+
+    save!
+  end
+
+  def verify_otp?(input_code)
+    return false if otp_code.blank? || otp_sent_at.blank?
+    return false if Time.current > otp_sent_at + OTP_EXPIRATION_TIME
+
+    otp_code == input_code
   end
 
   private
