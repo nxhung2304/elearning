@@ -14,6 +14,7 @@ class Api::V1::Auth::SendOtp < Api::V1::Auth::ApplicationService
 
       user.generate_otp!
       OtparyMailer.send_otp(user).deliver_later
+      nil
     rescue StandardError => e
       Rails.logger.error "Send otp failed: #{e.message}"
       { errors: [ "Send otp failed" ] }

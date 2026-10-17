@@ -15,4 +15,8 @@ class Api::V1::Auth::ApplicationService
       user: user
     }
   end
+
+  def failure(code, message:, status: 422, **extra)
+    { errors: [ { code: code, message: message, **extra } ], status: status }
+  end
 end

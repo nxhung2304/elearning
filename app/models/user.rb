@@ -88,6 +88,13 @@ class User < ApplicationRecord
     save!
   end
 
+  def invalidate_otp!
+    self.otp_sent_at = nil
+    self.otp_code = nil
+
+    save!
+  end
+
   def verify_otp?(input_code)
     return false if otp_code.blank? || otp_sent_at.blank?
     return false if Time.current > otp_sent_at + OTP_EXPIRATION_TIME
