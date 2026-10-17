@@ -13,8 +13,12 @@ module Api
           if result[:access_token] && result[:refresh_token] && result[:user]
             present result, with: AuthEntity
           else
-            error!({ errors: result[:errors] }, result[:status] || 422)
+            render_errors!(result)
           end
+        end
+
+        def render_errors!(result)
+          error!({ errors: result[:errors] }, result[:status] || 422)
         end
       end
 
@@ -88,9 +92,26 @@ module Api
             result = Api::V1::Auth::SendOtp.new(params[:email]).call
 
             if result && result[:errors]
-              error!({ errors: result[:errors] }, result[:status] || 422)
+              render_errors!(result)
             else
               { message: "OTP sent to email successfully." }
+            end
+          end
+        end
+
+        resource :vertify_otp do
+          desc "Vertify OTP"
+          params do
+            requires :email, type: String, desc: "Email used"
+            requires :otp_code, type: String, desc: "The 6-digit code received"
+          end
+          post do
+            result = Api::V1::Auth::VertifyOtp.new(params[:email], params[:otp_code]).call
+
+            if result && result[:errors]
+              render_errors!(result)
+            else
+              { message: "Vertify otp successfully" }
             end
           end
         end
