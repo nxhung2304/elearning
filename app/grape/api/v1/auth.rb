@@ -83,7 +83,7 @@ module Api
           end
         end
 
-        resource :send_otp do
+        resource :forgot_password do
           desc "Send 6-digit OTP to email"
           params do
             requires :email, type: String, desc: "User email address"
