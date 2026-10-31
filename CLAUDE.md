@@ -40,6 +40,8 @@ make gen-migration  NAME=AddStatusToUsers FIELDS="status:integer"
 | `specs/design.md` | Design system — colors, surfaces, buttons, inputs, icons, helpers (UI source of truth) |
 | `specs/issues/` | Individual issue files (1 file per GitHub issue) |
 
+> Issue file mới: giữ phẳng trong `specs/issues/` (không tạo thư mục con theo khu vực vì skill chỉ tìm 1 cấp). Phân loại bằng tiền tố slug: `<n>-api-<slug>` (Grape API cho mobile), `<n>-console-<slug>` (web). File cũ không đổi tên.
+
 > `specs/` là real directory — symlinked từ Obsidian vault (`~/vaults/personal/20-Projects/elearning/`).
 > Files trong `specs/` **có thể commit** vào git.
 
