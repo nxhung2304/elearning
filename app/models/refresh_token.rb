@@ -34,11 +34,11 @@ class RefreshToken < ApplicationRecord
     expires_at <= Time.current
   end
 
-  def generate_token
+  def generate_token(expiration = REFRESH_TOKEN_EXPIRATION_DAYS.days)
     token = SecureRandom.urlsafe_base64(REFRESH_TOKEN_LENGTH)
 
     self.token_digest = Digest::SHA256.hexdigest(token)
-    self.expires_at = REFRESH_TOKEN_EXPIRATION_DAYS.days.from_now
+    self.expires_at = expiration.from_now
 
     token
   end

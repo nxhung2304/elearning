@@ -63,12 +63,12 @@ module Api
             current_user.refresh_tokens.active.find_by(token_digest: digest)&.update!(revoked_at: Time.current)
 
             token = token_from_header
-            error!("Authorization token missing", 400) unless token.present?
+            error!(Api::ErrorCodes.body(Api::ErrorCodes::TOKEN_MISSING, "Authorization token missing"), 400) unless token.present?
 
             Warden::JWTAuth::TokenRevoker.new.call(token)
             { message: "Signed out successfully" }
           rescue JWT::DecodeError => e
-            error!({ errors: e.message }, 401)
+            error!(Api::ErrorCodes.body(Api::ErrorCodes::TOKEN_INVALID, e.message), 401)
           end
         end
 
@@ -111,7 +111,26 @@ module Api
             if result && result[:errors]
               render_errors!(result)
             else
-              { message: "Vertify otp successfully" }
+              present :reset_password_token, result[:reset_password_token]
+            end
+          end
+        end
+
+        resource :reset_password do
+          desc "Reset password"
+          params do
+            requires :reset_password_token, type: String, desc: "Reset password token"
+            requires :password, type: String, desc: "Password"
+            requires :password_confirmation, type: String, desc: "Password confirmation"
+          end
+          post do
+            result = Api::V1::Auth::ResetPassword.new(current_user, params).call
+
+            if result && result[:errors]
+              render_errors!(result)
+            else
+              status 200
+              present result
             end
           end
         end

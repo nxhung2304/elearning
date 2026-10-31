@@ -7,4 +7,5 @@ Devise.setup do |config|
     jwt.dispatch_requests = [ [ "POST", %r{^/api/v1/auth/sign_in$} ] ]
     jwt.expiration_time = 1.day.to_i
   end
+  config.reset_password_within = 10.minutes
 end

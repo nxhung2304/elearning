@@ -150,11 +150,11 @@
 - [x] API: Auth (sign_in, sign_up, sign_out)
 - [x] Add refresh_token
 - [ ] API: Auth — forgot password
-    - [ ] request OTP qua email
+    - [x] request OTP qua email
         - Server send OTP (6 số), expire 5-10 phút
         - Rate limit: tối đa 1 lần/60s, giới hạn tổng số lần gửi/giờ
         - Không tiết lộ email có tồn tại hay không trong response
-    - [ ] verify code
+    - [x] verify code
         - Max re-try 3 lần, sai quá → invalidate OTP, bắt gửi lại
         - Verify đúng → invalidate OTP, cấp short-lived token (5-10 phút) để gọi reset password
     - [ ] reset password

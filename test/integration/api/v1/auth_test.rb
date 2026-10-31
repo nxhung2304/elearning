@@ -38,6 +38,18 @@ class Api::V1::AuthTest < ActionDispatch::IntegrationTest
     JSON.parse(response.body)
   end
 
+  def with_stubbed_class_method(klass, method_name, replacement)
+    original_method = klass.method(method_name)
+    klass.define_singleton_method(method_name, replacement)
+    yield
+  ensure
+    klass.define_singleton_method(method_name, original_method)
+  end
+
+  def raise_forced_failure
+    proc { |*| raise StandardError, "forced failure" }
+  end
+
   # --- sign_up ---
 
   test "sign_up creates a user with student role and returns token" do
@@ -69,7 +81,7 @@ class Api::V1::AuthTest < ActionDispatch::IntegrationTest
     end
 
     assert_response :unprocessable_entity
-    assert_includes json["errors"], "Email has already been taken"
+    assert_includes json["errors"], { "code" => "validation_failed", "message" => "Email has already been taken" }
   end
 
   test "sign_up with mismatched password confirmation returns unprocessable entity" do
@@ -79,6 +91,16 @@ class Api::V1::AuthTest < ActionDispatch::IntegrationTest
     end
 
     assert_response :unprocessable_entity
+  end
+
+  test "sign_up without student role returns internal error" do
+    with_stubbed_class_method(Role, :find_by, proc { |*| nil }) do
+      post_json "/api/v1/auth/sign_up", email: "no_role@example.com", password: "password123",
+                                    password_confirmation: "password123"
+    end
+
+    assert_response :internal_server_error
+    assert_equal [ { "code" => "internal_error", "message" => "Student role not found" } ], json["errors"]
   end
 
   test "sign_up with missing required param returns bad request" do
@@ -105,14 +127,14 @@ class Api::V1::AuthTest < ActionDispatch::IntegrationTest
     post_json "/api/v1/auth/sign_in", email: user.email, password: "wrong"
 
     assert_response :unprocessable_entity
-    assert_equal [ "Invalid email or password" ], json["errors"]
+    assert_equal [ { "code" => "invalid_credentials", "message" => "Invalid email or password" } ], json["errors"]
   end
 
   test "sign_in with unknown email returns same generic error" do
     post_json "/api/v1/auth/sign_in", email: "nobody@example.com", password: "password123"
 
     assert_response :unprocessable_entity
-    assert_equal [ "Invalid email or password" ], json["errors"]
+    assert_equal [ { "code" => "invalid_credentials", "message" => "Invalid email or password" } ], json["errors"]
   end
 
   test "sign_in as suspended user is rejected" do
@@ -298,5 +320,29 @@ class Api::V1::AuthTest < ActionDispatch::IntegrationTest
     post_json "/api/v1/auth/refresh", {}
 
     assert_response :unprocessable_entity
+  end
+
+  test "refresh returns internal error when token rotation raises" do
+    raw_refresh_token = issue_refresh_token(create(:user))
+
+    with_stubbed_class_method(RefreshToken, :active, raise_forced_failure) do
+      post_json "/api/v1/auth/refresh", refresh_token: raw_refresh_token
+    end
+
+    assert_response :internal_server_error
+    assert_equal [ { "code" => "internal_error", "message" => "Token rotation failed" } ], json["errors"]
+  end
+
+  # --- forgot_password ---
+
+  test "forgot_password returns internal error when sending otp raises" do
+    user = create(:user)
+
+    with_stubbed_class_method(User, :kept, raise_forced_failure) do
+      post_json "/api/v1/auth/forgot_password", email: user.email
+    end
+
+    assert_response :internal_server_error
+    assert_equal [ { "code" => "internal_error", "message" => "Send otp failed" } ], json["errors"]
   end
 end

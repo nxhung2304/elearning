@@ -7,11 +7,11 @@ module Api
     prefix :api
 
     rescue_from Grape::Exceptions::ValidationErrors do |error|
-      error!({ error: error.message }, 422)
+      error!(Api::ErrorCodes.body(Api::ErrorCodes::INVALID_PARAMS, error.message), 422)
     end
 
     rescue_from :all do |error|
-      error!({ error: error.message }, 500)
+      error!(Api::ErrorCodes.body(Api::ErrorCodes::INTERNAL_ERROR, error.message), 500)
     end
 
     mount Api::V1::Base
@@ -22,7 +22,7 @@ module Api
       end
 
       def authenticate!
-        error!("401 Unauthorized", 401) unless current_user
+        error!(Api::ErrorCodes.body(Api::ErrorCodes::UNAUTHORIZED, "Unauthorized"), 401) unless current_user
       end
     end
 

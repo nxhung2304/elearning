@@ -10,14 +10,15 @@ class Api::V1::Auth::SendOtp < Api::V1::Auth::ApplicationService
     ActiveRecord::Base.transaction do
       user = User.kept.lock.find_by(email: @raw_email)
 
-      return if user.nil? || rate_limited?(user)
+      return if user.nil?
+      return failure(Api::ErrorCodes::OTP_RATE_LIMITED, message: "Too many OTP requests, please try again later") if rate_limited?(user)
 
       user.generate_otp!
       OtparyMailer.send_otp(user).deliver_later
       nil
     rescue StandardError => e
       Rails.logger.error "Send otp failed: #{e.message}"
-      { errors: [ "Send otp failed" ] }
+      failure(Api::ErrorCodes::INTERNAL_ERROR, message: "Send otp failed")
     end
   end
 

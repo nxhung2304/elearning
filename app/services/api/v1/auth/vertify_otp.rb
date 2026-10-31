@@ -1,8 +1,4 @@
 class Api::V1::Auth::VertifyOtp < Api::V1::Auth::ApplicationService
-  OTP_EXPIRED = "otp_expired"
-  OTP_ATTEMPTS_EXCEEDED = "otp_attempts_exceeded"
-  INVALID_OTP = "invalid_otp"
-
   MAX_ATTEMPTS = 3
 
   def initialize(email, otp_code)
@@ -14,19 +10,21 @@ class Api::V1::Auth::VertifyOtp < Api::V1::Auth::ApplicationService
     ActiveRecord::Base.transaction do
       user = User.kept.lock.find_by(email: @email)
 
-      next failure(OTP_EXPIRED, message: "OTP is expired or not requested") unless otp_active?(user)
+      next failure(Api::ErrorCodes::OTP_EXPIRED, message: "OTP is expired or not requested") unless otp_active?(user)
 
       if otp_matches?(user)
         consume_otp!(user)
 
-        { success: true }
+        raw_token = user.send(:set_reset_password_token)
+
+        { reset_password_token: raw_token }
       else
         register_failed_attempt!(user)
       end
     end
   rescue StandardError => e
     Rails.logger.error("Verify OTP failed: #{e.message}")
-    failure(Api::ErrorCodes::INTERNAL_ERROR, message: "Verify OTP failed", status: 500)
+    failure(Api::ErrorCodes::INTERNAL_ERROR, message: "Verify OTP failed")
   end
 
   private
@@ -60,9 +58,9 @@ class Api::V1::Auth::VertifyOtp < Api::V1::Auth::ApplicationService
 
     if attempts >= MAX_ATTEMPTS
       consume_otp!(user)
-      failure(OTP_ATTEMPTS_EXCEEDED, message: "Too many invalid attempts, please request a new OTP")
+      failure(Api::ErrorCodes::OTP_ATTEMPTS_EXCEEDED, message: "Too many invalid attempts, please request a new OTP")
     else
-      failure(INVALID_OTP, message: "Invalid OTP", remaining_attempts: MAX_ATTEMPTS - attempts)
+      failure(Api::ErrorCodes::INVALID_OTP, message: "Invalid OTP", remaining_attempts: MAX_ATTEMPTS - attempts)
     end
   end
 

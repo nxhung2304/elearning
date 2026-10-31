@@ -8,11 +8,11 @@ class Api::V1::Auth::Refresh < Api::V1::Auth::ApplicationService
       digest = Digest::SHA256.hexdigest(@raw_refresh_token)
       old_refresh_token_record = RefreshToken.active.lock.find_by(token_digest: digest)
 
-      return { errors: [ "Invalid or expired token" ], status: 401 } unless old_refresh_token_record
+      return failure(Api::ErrorCodes::REFRESH_TOKEN_INVALID, message: "Invalid or expired token") unless old_refresh_token_record
 
       user = old_refresh_token_record.user
 
-      return { errors: [ "Invalid or expired token" ], status: 401 } unless user.kept? && user.active_for_authentication?
+      return failure(Api::ErrorCodes::REFRESH_TOKEN_INVALID, message: "Invalid or expired token") unless user.kept? && user.active_for_authentication?
 
       old_refresh_token_record.update!(revoked_at: Time.current)
 
@@ -31,6 +31,6 @@ class Api::V1::Auth::Refresh < Api::V1::Auth::ApplicationService
     end
   rescue StandardError => e
     Rails.logger.error "Token rotation failed: #{e.message}"
-    { errors: [ "Token rotation failed" ] }
+    failure(Api::ErrorCodes::INTERNAL_ERROR, message: "Token rotation failed")
   end
 end

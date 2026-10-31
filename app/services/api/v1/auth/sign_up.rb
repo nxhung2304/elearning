@@ -5,7 +5,7 @@ class Api::V1::Auth::SignUp < Api::V1::Auth::ApplicationService
 
   def call
     student_role = Role.find_by(code: Role::STUDENT)
-    return { errors: [ "Student role not found" ] } unless student_role
+    return failure(Api::ErrorCodes::INTERNAL_ERROR, message: "Student role not found") unless student_role
 
     new_user = User.new(user_params)
     new_user.roles << student_role
@@ -13,7 +13,7 @@ class Api::V1::Auth::SignUp < Api::V1::Auth::ApplicationService
     if new_user.save
       generate_auth_result(new_user)
     else
-      { errors: new_user.errors.full_messages }
+      validation_failure(new_user)
     end
   end
 

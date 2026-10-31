@@ -10,7 +10,7 @@ class Api::V1::Auth::SignIn < Api::V1::Auth::ApplicationService
     if authenticated
       generate_auth_result(user)
     else
-      { errors: [ "Invalid email or password" ] }
+      failure(Api::ErrorCodes::INVALID_CREDENTIALS, message: "Invalid email or password")
     end
   end
 end
