@@ -1,6 +1,7 @@
 # == Schema Information
 #
 # Table name: courses
+# Database name: primary
 #
 #  id            :bigint           not null, primary key
 #  description   :text             not null
@@ -58,6 +59,8 @@ class Course < ApplicationRecord
 
   # scopes
   scope :enrolled_by, ->(user) { kept.where(id: user.enrollments.active.select(:course_id)) }
+  scope :by_published, -> { kept.where(status: :published) }
+  scope :ordered_by_published_at, -> { order(published_at: :desc, id: :desc) }
 
   # callbacks
   before_validation :set_published_at

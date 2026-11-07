@@ -6,6 +6,8 @@ module Api
       version "v1", using: :path
 
       mount Api::V1::Health
+      mount Api::V1::CourseCategories
+      mount Api::V1::Courses
       mount Api::V1::Auth
     end
   end

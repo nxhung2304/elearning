@@ -18,7 +18,7 @@ help:
 	@printf "  make gen-controller NAME=<Name>   [ACTIONS=\"action ...\"] # controller + views + tests\n"
 	@printf "  make gen-resource   NAME=<Name>   [FIELDS=\"col:type\"]  # full resource (model+ctrl+routes)\n"
 	@printf "  make gen-migration  NAME=<Name>   [FIELDS=\"col:type\"]  # rails generate migration\n"
-	@printf "  make gen-api        NAME=<resource>                   # scaffold Grape API endpoint\n"
+	@printf "  make gen-api        NAME=<resource> [ACTIONS=\"index show ...\"] # scaffold Grape API endpoint\n"
 setup:
 	@bin/setup
 
@@ -56,5 +56,5 @@ gen-migration:
 	@bin/rails generate migration $(NAME) $(FIELDS)
 
 gen-api:
-	@[ -n "$(NAME)" ] || (printf "Usage: make gen-api NAME=<resource>\n"; exit 1)
-	@bin/rails generate grape_api $(NAME)
+	@[ -n "$(NAME)" ] || (printf "Usage: make gen-api NAME=<resource> [ACTIONS=\"index show create update destroy\"]\n"; exit 1)
+	@bin/rails generate grape_api $(NAME) $(if $(ACTIONS),--actions $(ACTIONS))

@@ -1,14 +1,19 @@
 # frozen_string_literal: true
 
-module API
+module Api
   module V1
-    class <%= class_name %> < Grape::API
+    class <%= class_name %> < Api::Base
       resource :<%= plural_name %> do
+<% if action?("index") -%>
         desc "List <%= plural_name %>"
         get do
           # TODO: return collection
         end
+<% end -%>
+<% if action?("show") -%>
+<% unless first_action?("show") -%>
 
+<% end -%>
         desc "Show <%= singular_name %>"
         params do
           requires :id, type: Integer
@@ -16,7 +21,11 @@ module API
         get ":id" do
           # TODO: return record
         end
+<% end -%>
+<% if action?("create") -%>
+<% unless first_action?("create") -%>
 
+<% end -%>
         desc "Create <%= singular_name %>"
         params do
           # requires :name, type: String
@@ -24,7 +33,11 @@ module API
         post do
           # TODO: create record
         end
+<% end -%>
+<% if action?("update") -%>
+<% unless first_action?("update") -%>
 
+<% end -%>
         desc "Update <%= singular_name %>"
         params do
           requires :id, type: Integer
@@ -33,7 +46,11 @@ module API
         put ":id" do
           # TODO: update record
         end
+<% end -%>
+<% if action?("destroy") -%>
+<% unless first_action?("destroy") -%>
 
+<% end -%>
         desc "Delete <%= singular_name %>"
         params do
           requires :id, type: Integer
@@ -41,6 +58,7 @@ module API
         delete ":id" do
           # TODO: destroy record
         end
+<% end -%>
       end
     end
   end

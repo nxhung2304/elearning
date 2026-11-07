@@ -1,6 +1,7 @@
 # == Schema Information
 #
 # Table name: user_roles
+# Database name: primary
 #
 #  id      :bigint           not null, primary key
 #  role_id :bigint           not null

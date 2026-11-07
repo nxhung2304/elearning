@@ -17,12 +17,22 @@ module Api
     mount Api::V1::Base
 
     helpers do
+      include Pagy::Backend
+
       def current_user
         @current_user ||= env["warden"].authenticate(scope: :user)
       end
 
       def authenticate!
         error!(Api::ErrorCodes.body(Api::ErrorCodes::UNAUTHORIZED, "Unauthorized"), 401) unless current_user
+      end
+
+
+      def present_paginated(resource, with:)
+        pagy, records = pagy(resource)
+
+        present :data, records, with: with
+        present :meta, { page: pagy.page, per_page: pagy.limit, total_pages: pagy.pages, total_count: pagy.count }
       end
     end
 
