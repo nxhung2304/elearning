@@ -3,6 +3,10 @@
 class GrapeApiGenerator < Rails::Generators::NamedBase
   source_root File.expand_path("templates", __dir__)
 
+  ACTIONS = %w[index show create update destroy].freeze
+
+  class_option :actions, type: :array, default: ACTIONS
+
   def create_api_file
     template "api.rb.tt", "app/grape/api/v1/#{file_name}.rb"
   end
@@ -13,7 +17,17 @@ class GrapeApiGenerator < Rails::Generators::NamedBase
 
   def mount_api
     inject_into_file "app/grape/api/v1/base.rb",
-      "      mount API::V1::#{class_name}\n",
-      after: /mount API::V1::Health\n/
+      "      mount Api::V1::#{class_name}\n",
+      after: /mount Api::V1::Health\n/
   end
+
+  private
+
+    def action?(name)
+      options[:actions].include?(name)
+    end
+
+    def first_action?(name)
+      ACTIONS.find { |action| action?(action) } == name
+    end
 end
