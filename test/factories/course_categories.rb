@@ -1,6 +1,7 @@
 # == Schema Information
 #
 # Table name: course_categories
+# Database name: primary
 #
 #  id           :bigint           not null, primary key
 #  ancestry     :string

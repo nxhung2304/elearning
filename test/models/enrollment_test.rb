@@ -1,6 +1,7 @@
 # == Schema Information
 #
 # Table name: enrollments
+# Database name: primary
 #
 #  id                  :bigint           not null, primary key
 #  discarded_at        :datetime

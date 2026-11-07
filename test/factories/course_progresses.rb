@@ -1,6 +1,7 @@
 # == Schema Information
 #
 # Table name: course_progresses
+# Database name: primary
 #
 #  id                      :bigint           not null, primary key
 #  completed_at            :datetime

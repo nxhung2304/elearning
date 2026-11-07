@@ -1,6 +1,7 @@
 # == Schema Information
 #
 # Table name: event_logs
+# Database name: primary
 #
 #  id         :bigint           not null, primary key
 #  event_type :string           not null

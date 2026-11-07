@@ -1,6 +1,7 @@
 # == Schema Information
 #
 # Table name: lesson_progresses
+# Database name: primary
 #
 #  id                       :bigint           not null, primary key
 #  completed                :boolean          default(FALSE), not null

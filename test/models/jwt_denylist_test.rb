@@ -1,6 +1,7 @@
 # == Schema Information
 #
 # Table name: jwt_denylists
+# Database name: primary
 #
 #  id         :bigint           not null, primary key
 #  exp        :datetime

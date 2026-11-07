@@ -1,6 +1,7 @@
 # == Schema Information
 #
 # Table name: roles
+# Database name: primary
 #
 #  id         :bigint           not null, primary key
 #  code       :string           not null
